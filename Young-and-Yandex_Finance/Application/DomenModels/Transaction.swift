@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Transaction {
+struct Transaction: Encodable, Decodable {
     let id: Int
     let accountId: Int
     var categoryId: Int
@@ -17,26 +17,3 @@ struct Transaction {
     let createdAt: Date
     var updatedAt: Date
 }
-
-extension Transaction: Encodable, Decodable {
-    
-    // return optional self from Json data
-    static func parce(jsonObject: Any) -> Transaction? {
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: jsonObject)
-            let transaction = try JSONDecoder().decode(Transaction.self, from: jsonData)
-            return transaction
-        }
-        catch {
-            return nil
-        }
-    }
-    
-    // return self as Foundation object (Json)
-    var jsonObject: Any {
-        get {
-            return try! JSONSerialization.jsonObject(with: try JSONEncoder().encode(self))
-        }
-    }
-}
-

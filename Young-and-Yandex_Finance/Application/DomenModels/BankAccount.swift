@@ -12,7 +12,7 @@ struct BankAccount {
     let userId: Int
     var name: String
     var balance: Decimal
-    var currency: Currency
+    var currency: String
     let createdAt: Date
     var updatedAt: Date
 }
