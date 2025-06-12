@@ -18,41 +18,24 @@ struct Transaction {
     var updatedAt: Date
 }
 
-extension Transaction: Encodable {
+extension Transaction: Encodable, Decodable {
+    
+    // return optional self from Json data
     static func parce(jsonObject: Any) -> Transaction? {
-        guard let jsonDict = jsonObject as? [String: Any] else { return nil }
-        guard
-            let id = jsonDict["id"] as? Int,
-            let accountId = jsonDict["accountId"] as? Int,
-            let categoryId = jsonDict["categoryId"] as? Int,
-            let amount = jsonDict["amount"] as? Decimal,
-            let transactionDate = jsonDict["transactionDate"] as? Date,
-            let comment = jsonDict["comment"] as? String,
-            let createdAt = jsonDict["createdAt"] as? Date,
-            let updatedAt = jsonDict["updatedAt"] as? Date
-        else { return nil }
-        
-        
-        return Transaction(
-            id: id,
-            accountId: accountId,
-            categoryId: categoryId,
-            amount: amount,
-            transactionDate: transactionDate,
-            comment: comment,
-            createdAt: createdAt,
-            updatedAt: updatedAt
-        )
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: jsonObject)
+            let transaction = try JSONDecoder().decode(Transaction.self, from: jsonData)
+            return transaction
+        }
+        catch {
+            return nil
+        }
     }
     
-    var jsonObject: Any? {
+    // return self as Foundation object (Json)
+    var jsonObject: Any {
         get {
-            do {
-                return try JSONSerialization.jsonObject(with: try JSONEncoder().encode(self) as Data)
-            }
-            catch {
-                return nil
-            }
+            return try! JSONSerialization.jsonObject(with: try JSONEncoder().encode(self))
         }
     }
 }
