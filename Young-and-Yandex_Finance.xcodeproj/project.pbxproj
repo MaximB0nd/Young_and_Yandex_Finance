@@ -1,0 +1,563 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		0AB8C12D2DFADE9100461B01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AB8C1172DFADE8F00461B01 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0AB8C11E2DFADE8F00461B01;
+			remoteInfo = "Young-and-Yandex_Finance";
+		};
+		0AB8C1372DFADE9100461B01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AB8C1172DFADE8F00461B01 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0AB8C11E2DFADE8F00461B01;
+			remoteInfo = "Young-and-Yandex_Finance";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0AB8C11F2DFADE8F00461B01 /* Young-and-Yandex_Finance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Young-and-Yandex_Finance.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AB8C12C2DFADE9100461B01 /* Young-and-Yandex_FinanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Young-and-Yandex_FinanceTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AB8C1362DFADE9100461B01 /* Young-and-Yandex_FinanceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Young-and-Yandex_FinanceUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		0AB8C1212DFADE8F00461B01 /* Young-and-Yandex_Finance */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Young-and-Yandex_Finance";
+			sourceTree = "<group>";
+		};
+		0AB8C12F2DFADE9100461B01 /* Young-and-Yandex_FinanceTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Young-and-Yandex_FinanceTests";
+			sourceTree = "<group>";
+		};
+		0AB8C1392DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Young-and-Yandex_FinanceUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0AB8C11C2DFADE8F00461B01 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AB8C1292DFADE9100461B01 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AB8C1332DFADE9100461B01 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0AB8C1162DFADE8F00461B01 = {
+			isa = PBXGroup;
+			children = (
+				0AB8C1212DFADE8F00461B01 /* Young-and-Yandex_Finance */,
+				0AB8C12F2DFADE9100461B01 /* Young-and-Yandex_FinanceTests */,
+				0AB8C1392DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */,
+				0AB8C1202DFADE8F00461B01 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0AB8C1202DFADE8F00461B01 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0AB8C11F2DFADE8F00461B01 /* Young-and-Yandex_Finance.app */,
+				0AB8C12C2DFADE9100461B01 /* Young-and-Yandex_FinanceTests.xctest */,
+				0AB8C1362DFADE9100461B01 /* Young-and-Yandex_FinanceUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0AB8C11E2DFADE8F00461B01 /* Young-and-Yandex_Finance */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AB8C1402DFADE9100461B01 /* Build configuration list for PBXNativeTarget "Young-and-Yandex_Finance" */;
+			buildPhases = (
+				0AB8C11B2DFADE8F00461B01 /* Sources */,
+				0AB8C11C2DFADE8F00461B01 /* Frameworks */,
+				0AB8C11D2DFADE8F00461B01 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				0AB8C1212DFADE8F00461B01 /* Young-and-Yandex_Finance */,
+			);
+			name = "Young-and-Yandex_Finance";
+			packageProductDependencies = (
+			);
+			productName = "Young-and-Yandex_Finance";
+			productReference = 0AB8C11F2DFADE8F00461B01 /* Young-and-Yandex_Finance.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0AB8C12B2DFADE9100461B01 /* Young-and-Yandex_FinanceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AB8C1432DFADE9100461B01 /* Build configuration list for PBXNativeTarget "Young-and-Yandex_FinanceTests" */;
+			buildPhases = (
+				0AB8C1282DFADE9100461B01 /* Sources */,
+				0AB8C1292DFADE9100461B01 /* Frameworks */,
+				0AB8C12A2DFADE9100461B01 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0AB8C12E2DFADE9100461B01 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				0AB8C12F2DFADE9100461B01 /* Young-and-Yandex_FinanceTests */,
+			);
+			name = "Young-and-Yandex_FinanceTests";
+			packageProductDependencies = (
+			);
+			productName = "Young-and-Yandex_FinanceTests";
+			productReference = 0AB8C12C2DFADE9100461B01 /* Young-and-Yandex_FinanceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		0AB8C1352DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AB8C1462DFADE9100461B01 /* Build configuration list for PBXNativeTarget "Young-and-Yandex_FinanceUITests" */;
+			buildPhases = (
+				0AB8C1322DFADE9100461B01 /* Sources */,
+				0AB8C1332DFADE9100461B01 /* Frameworks */,
+				0AB8C1342DFADE9100461B01 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0AB8C1382DFADE9100461B01 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				0AB8C1392DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */,
+			);
+			name = "Young-and-Yandex_FinanceUITests";
+			packageProductDependencies = (
+			);
+			productName = "Young-and-Yandex_FinanceUITests";
+			productReference = 0AB8C1362DFADE9100461B01 /* Young-and-Yandex_FinanceUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0AB8C1172DFADE8F00461B01 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					0AB8C11E2DFADE8F00461B01 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					0AB8C12B2DFADE9100461B01 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 0AB8C11E2DFADE8F00461B01;
+					};
+					0AB8C1352DFADE9100461B01 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 0AB8C11E2DFADE8F00461B01;
+					};
+				};
+			};
+			buildConfigurationList = 0AB8C11A2DFADE8F00461B01 /* Build configuration list for PBXProject "Young-and-Yandex_Finance" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0AB8C1162DFADE8F00461B01;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 0AB8C1202DFADE8F00461B01 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0AB8C11E2DFADE8F00461B01 /* Young-and-Yandex_Finance */,
+				0AB8C12B2DFADE9100461B01 /* Young-and-Yandex_FinanceTests */,
+				0AB8C1352DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0AB8C11D2DFADE8F00461B01 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AB8C12A2DFADE9100461B01 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AB8C1342DFADE9100461B01 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0AB8C11B2DFADE8F00461B01 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AB8C1282DFADE9100461B01 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AB8C1322DFADE9100461B01 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0AB8C12E2DFADE9100461B01 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0AB8C11E2DFADE8F00461B01 /* Young-and-Yandex_Finance */;
+			targetProxy = 0AB8C12D2DFADE9100461B01 /* PBXContainerItemProxy */;
+		};
+		0AB8C1382DFADE9100461B01 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0AB8C11E2DFADE8F00461B01 /* Young-and-Yandex_Finance */;
+			targetProxy = 0AB8C1372DFADE9100461B01 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0AB8C13E2DFADE9100461B01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = NYVBARHQBM;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		0AB8C13F2DFADE9100461B01 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = NYVBARHQBM;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0AB8C1412DFADE9100461B01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NYVBARHQBM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "example.Young-and-Yandex-Finance";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0AB8C1422DFADE9100461B01 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NYVBARHQBM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "example.Young-and-Yandex-Finance";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0AB8C1442DFADE9100461B01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NYVBARHQBM;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "example.Young-and-Yandex-FinanceTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Young-and-Yandex_Finance.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Young-and-Yandex_Finance";
+			};
+			name = Debug;
+		};
+		0AB8C1452DFADE9100461B01 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NYVBARHQBM;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "example.Young-and-Yandex-FinanceTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Young-and-Yandex_Finance.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Young-and-Yandex_Finance";
+			};
+			name = Release;
+		};
+		0AB8C1472DFADE9100461B01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NYVBARHQBM;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "example.Young-and-Yandex-FinanceUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Young-and-Yandex_Finance";
+			};
+			name = Debug;
+		};
+		0AB8C1482DFADE9100461B01 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NYVBARHQBM;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "example.Young-and-Yandex-FinanceUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Young-and-Yandex_Finance";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0AB8C11A2DFADE8F00461B01 /* Build configuration list for PBXProject "Young-and-Yandex_Finance" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AB8C13E2DFADE9100461B01 /* Debug */,
+				0AB8C13F2DFADE9100461B01 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AB8C1402DFADE9100461B01 /* Build configuration list for PBXNativeTarget "Young-and-Yandex_Finance" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AB8C1412DFADE9100461B01 /* Debug */,
+				0AB8C1422DFADE9100461B01 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AB8C1432DFADE9100461B01 /* Build configuration list for PBXNativeTarget "Young-and-Yandex_FinanceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AB8C1442DFADE9100461B01 /* Debug */,
+				0AB8C1452DFADE9100461B01 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AB8C1462DFADE9100461B01 /* Build configuration list for PBXNativeTarget "Young-and-Yandex_FinanceUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AB8C1472DFADE9100461B01 /* Debug */,
+				0AB8C1482DFADE9100461B01 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0AB8C1172DFADE8F00461B01 /* Project object */;
+}
