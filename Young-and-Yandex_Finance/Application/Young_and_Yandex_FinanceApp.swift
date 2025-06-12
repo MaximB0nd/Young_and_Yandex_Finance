@@ -11,7 +11,6 @@ import SwiftUI
 struct Young_and_Yandex_FinanceApp: App {
     var body: some Scene {
         WindowGroup {
-           
         }
     }
 }
