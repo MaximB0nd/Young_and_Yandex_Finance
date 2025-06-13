@@ -1,0 +1,4 @@
+id,account_id,account_name,account_balance,account_currency,category_id,category_name,category_emoji,category_is_comming,amount,transaction_date,comment,created_at,updated_at
+1,1,Max,10000.0,RUB,1,One,🤣,true,1000.0,11.04.07 10:00,comment1,12.04.07 10:00,12.04.07 10:00
+2,1,Max,10000.0,RUB,2,Two,😀,true,200.0,12.04.07 10:00,,13.04.07 10:00,13.04.07 10:00
+3,2,Oleg,100.0,EUR,3,Three,❤️,false,30.0,13.04.07 10:00,,14.04.07 10:00,14.04.07 10:00
