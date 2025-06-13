@@ -30,25 +30,24 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		0AB8C1772DFB298F00461B01 /* Exceptions for "Young-and-Yandex_Finance" folder in "Young-and-Yandex_FinanceTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Application/DomenModels/BankAccount.swift,
-				Application/DomenModels/Category.swift,
-				Application/DomenModels/Direction.swift,
-				"Application/DomenModels/Transaction-Json.swift",
-				Application/DomenModels/Transaction.swift,
-				Application/FileCache/TransactionsFileCache.swift,
-				Application/Services/BankAccountsService.swift,
-				Application/Services/CategoriesService.swift,
-				Application/Services/TransactionsService.swift,
-			);
-			target = 0AB8C12B2DFADE9100461B01 /* Young-and-Yandex_FinanceTests */;
-		};
 		0AB8C1782DFB298F00461B01 /* Exceptions for "Young-and-Yandex_Finance" folder in "Young-and-Yandex_FinanceUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Application/Services/TransactionsService.swift,
+			);
+			target = 0AB8C1352DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */;
+		};
+		0AB8C1D02DFB5A4B00461B01 /* Exceptions for "Young-and-Yandex_FinanceTests" folder in "Young-and-Yandex_Finance" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TestJsons/Test2.json,
+			);
+			target = 0AB8C11E2DFADE8F00461B01 /* Young-and-Yandex_Finance */;
+		};
+		0AB8C1D12DFB5A4B00461B01 /* Exceptions for "Young-and-Yandex_FinanceTests" folder in "Young-and-Yandex_FinanceUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TestJsons/Test2.json,
 			);
 			target = 0AB8C1352DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */;
 		};
@@ -58,7 +57,6 @@
 		0AB8C1212DFADE8F00461B01 /* Young-and-Yandex_Finance */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				0AB8C1772DFB298F00461B01 /* Exceptions for "Young-and-Yandex_Finance" folder in "Young-and-Yandex_FinanceTests" target */,
 				0AB8C1782DFB298F00461B01 /* Exceptions for "Young-and-Yandex_Finance" folder in "Young-and-Yandex_FinanceUITests" target */,
 			);
 			path = "Young-and-Yandex_Finance";
@@ -66,6 +64,10 @@
 		};
 		0AB8C12F2DFADE9100461B01 /* Young-and-Yandex_FinanceTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0AB8C1D02DFB5A4B00461B01 /* Exceptions for "Young-and-Yandex_FinanceTests" folder in "Young-and-Yandex_Finance" target */,
+				0AB8C1D12DFB5A4B00461B01 /* Exceptions for "Young-and-Yandex_FinanceTests" folder in "Young-and-Yandex_FinanceUITests" target */,
+			);
 			path = "Young-and-Yandex_FinanceTests";
 			sourceTree = "<group>";
 		};
@@ -160,6 +162,7 @@
 				0AB8C12E2DFADE9100461B01 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				0AB8C1212DFADE8F00461B01 /* Young-and-Yandex_Finance */,
 				0AB8C12F2DFADE9100461B01 /* Young-and-Yandex_FinanceTests */,
 			);
 			name = "Young-and-Yandex_FinanceTests";

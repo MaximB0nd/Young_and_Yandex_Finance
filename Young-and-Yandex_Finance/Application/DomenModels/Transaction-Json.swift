@@ -13,10 +13,12 @@ extension Transaction {
     static func parce(jsonObject: Any) -> Transaction? {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: jsonObject)
+                    
             let transaction = try JSONDecoder().decode(Transaction.self, from: jsonData)
             return transaction
         }
         catch {
+            print(error)
             return nil
         }
     }
