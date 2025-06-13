@@ -32,7 +32,6 @@ struct JsonTests {
         let data = try! Data(contentsOf: fileURL)
         let jsonObj = try! JSONSerialization.jsonObject(with: data)
         let transaction = Transaction.parce(jsonObject: jsonObj)
-        print(transaction)
         #expect(transaction != nil)
     }
 }
