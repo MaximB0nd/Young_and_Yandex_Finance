@@ -34,11 +34,14 @@ final class BankAccountsService {
     }
     
     // set new amount 
-    func changeBalance(id: Int, newAmount: Decimal) async throws {
+    func changeBalance(id: Int, newBalance: Decimal) async throws {
         guard let index = _accounts.firstIndex(where: {$0.id == id}) else {
             throw BankAccountError.notFound
         }
-        _accounts[index].balance = newAmount
+        guard _accounts[index].balance != newBalance else {
+            return 
+        }
+        _accounts[index].balance = newBalance
         _accounts[index].updatedAt = .now
     }
 }
