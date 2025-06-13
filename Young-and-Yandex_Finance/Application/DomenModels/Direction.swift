@@ -10,5 +10,4 @@ import Foundation
 enum Direction: Codable {
     case income
     case outcome
-    case noneState
 }

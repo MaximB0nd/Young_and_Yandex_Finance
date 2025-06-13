@@ -12,7 +12,7 @@ import Foundation
 
 struct APIParsingTests {
     
-    let token = "kcb4bZXBYERmSPyPK8CMo0Zl"
+    let token = "kcb4bZXBYERmSPyPK8CMo0Zl"    //  <-  your token
 
     @Test func testAPIGet() throws {
         guard let url = URL(string: "https://shmr-finance.ru/api/v1/transactions/1")  else { return }
