@@ -24,4 +24,15 @@ struct JsonTests {
         let newTransaction = Transaction.parce(jsonObject: transaction.jsonObject)
         #expect(newTransaction != nil)
     }
+    
+    @Test func testFileParce() {
+        let fileURL = Bundle.main.url(forResource: "Test2", withExtension: "json")!
+        try! FileManager.default.attributesOfItem(atPath: fileURL.path)
+
+        let data = try! Data(contentsOf: fileURL)
+        let jsonObj = try! JSONSerialization.jsonObject(with: data)
+        let transaction = Transaction.parce(jsonObject: jsonObj)
+        print(transaction)
+        #expect(transaction != nil)
+    }
 }

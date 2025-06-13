@@ -10,7 +10,7 @@
     "id": 1,
     "name": "Зарплата",
     "emoji": "💰",
-    "isIncome": 1
+    "isIncome": true
   },
   "amount": "500.00",
   "transactionDate": "2025-06-13T06:28:28.829Z",
