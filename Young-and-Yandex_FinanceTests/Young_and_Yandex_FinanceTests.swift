@@ -6,12 +6,33 @@
 //
 
 import Testing
+import Foundation
+
 @testable import Young_and_Yandex_Finance
 
 struct Young_and_Yandex_FinanceTests {
+    
+    let token = ""
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    @Test func testAPIGet() throws {
+        guard let url = URL(string: "https://shmr-finance.ru/api/v1/transactions/1")  else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            do {
+                print(data)
+                let json = try JSONSerialization.jsonObject(with: data!)
+                print(json)
+                
+            } catch {
+                print("Ошибка парсинга")
+            }
+        }
+        task.resume()
+        var a = true
+        while a { Thread.sleep(forTimeInterval: 5); a = false}
     }
-
 }

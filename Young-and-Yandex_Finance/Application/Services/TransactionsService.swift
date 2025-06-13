@@ -18,7 +18,7 @@ final class TransactionsService {
     init () {
         var transactions = [Transaction]()
         for i in 0..<100 {
-            transactions.append(.init(id: i, accountId: i, categoryId: i, amount: Decimal(i*100), transactionDate: Date.now, createdAt: Date.now, updatedAt: Date.now))
+            transactions.append(.init(id: i, account: .init(id: i, name: "Name \(i)", balance: Decimal(i*100), currency: "RUB"), category: .init(id: i, name: "Category \(i)", emoji: "\(i)", direction: i%2==0 ? .income : .outcome), amount: Decimal(i*100), transactionDate: .now, createdAt: .now, updatedAt: .now))
         }
         _transactions = transactions
     }
@@ -28,8 +28,8 @@ final class TransactionsService {
     }
     
     func createTransaction(accountId: Int, categoryId: Int, amount: Decimal, transactionDate: Date) async {
-        let newId = (_transactions.max(by: { $0.id < $1.id })?.id ?? 0) + 1
-        _transactions.append(.init(id: newId, accountId: accountId, categoryId: categoryId, amount: amount, transactionDate: transactionDate, createdAt: Date.now, updatedAt: Date.now))
+        let newId = (_transactions.map { $0.id }.max() ?? -1) + 1
+        _transactions.append(.init(id: newId, account: .init(id: accountId, name: "", balance: 0, currency: ""), category: .init(id: categoryId, name: "", emoji: "", direction: .noneState), amount: amount, transactionDate: transactionDate, createdAt: .now, updatedAt: .now))
     }
     
     func editTransaction(id: Int, accountId: Int, categoryId: Int, newAmount: Decimal=0, newTransactionDate: Date = .now) async throws {

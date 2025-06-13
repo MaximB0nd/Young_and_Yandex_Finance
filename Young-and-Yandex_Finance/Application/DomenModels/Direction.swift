@@ -7,7 +7,8 @@
 
 import Foundation
 
-enum Direction {
+enum Direction: Codable {
     case income
     case outcome
+    case noneState
 }

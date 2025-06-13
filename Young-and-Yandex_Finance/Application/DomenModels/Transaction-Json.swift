@@ -17,6 +17,7 @@ extension Transaction {
             return transaction
         }
         catch {
+            print("error")
             return nil
         }
     }
