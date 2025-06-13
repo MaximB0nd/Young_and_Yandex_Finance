@@ -16,6 +16,7 @@ enum BankAccountError: Error {
 final class BankAccountsService {
     private var _accounts: [BankAccount]
     
+    // running init factory of accounts
     init () {
         var accounts = [BankAccount]()
         for i in 1...10 {
@@ -24,17 +25,20 @@ final class BankAccountsService {
         _accounts = accounts
     }
     
-    func getAllAccount(id: Int) async throws -> BankAccount {
-        guard let index = _accounts.first(where: { $0.id == id }) else {
+    // get all account by id
+    func getAccount(id: Int) async throws -> BankAccount {
+        guard let index = _accounts.firstIndex(where: { $0.id == id }) else {
             throw BankAccountError.notFound
         }
-        return index
+        return _accounts[index]
     }
     
+    // set new amount 
     func changeBalance(id: Int, newAmount: Decimal) async throws {
-        guard _accounts.contains(where: { $0.id == id }) else {
+        guard let index = _accounts.firstIndex(where: {$0.id == id}) else {
             throw BankAccountError.notFound
         }
-        _accounts[_accounts.firstIndex(where: {$0.id == id})!].balance = newAmount
+        _accounts[index].balance = newAmount
+        _accounts[index].updatedAt = .now
     }
 }

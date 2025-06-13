@@ -13,11 +13,18 @@ extension Transaction {
     static func parce(jsonObject: Any) -> Transaction? {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: jsonObject)
-            let transaction = try JSONDecoder().decode(Transaction.self, from: jsonData)
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .formatted(dateFormatter)
+            let transaction = try decoder.decode(Transaction.self, from: jsonData)
             return transaction
         }
         catch {
-            print("error")
+            print(error)
             return nil
         }
     }

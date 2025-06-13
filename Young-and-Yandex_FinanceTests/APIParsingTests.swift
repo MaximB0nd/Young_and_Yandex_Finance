@@ -10,9 +10,9 @@ import Foundation
 
 @testable import Young_and_Yandex_Finance
 
-struct Young_and_Yandex_FinanceTests {
+struct APIParsingTests {
     
-    let token = ""
+    let token = "kcb4bZXBYERmSPyPK8CMo0Zl"
 
     @Test func testAPIGet() throws {
         guard let url = URL(string: "https://shmr-finance.ru/api/v1/transactions/1")  else { return }
@@ -23,10 +23,9 @@ struct Young_and_Yandex_FinanceTests {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             do {
-                print(data)
                 let json = try JSONSerialization.jsonObject(with: data!)
-                print(json)
-                
+                let transaction = Transaction.parce(jsonObject: json)
+                #expect(transaction != nil)
             } catch {
                 print("Ошибка парсинга")
             }

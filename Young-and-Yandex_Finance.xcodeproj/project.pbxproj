@@ -41,7 +41,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				TestJsons/Test2.json,
-				"TestJsons/Users/maksimbondarev/Documents/Projects/Swift/Young-and-Yandex_Finance/Young-and-Yandex_FinanceTests/TestJsons/Test1.json",
 			);
 			target = 0AB8C11E2DFADE8F00461B01 /* Young-and-Yandex_Finance */;
 		};
@@ -49,7 +48,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				TestJsons/Test2.json,
-				"TestJsons/Users/maksimbondarev/Documents/Projects/Swift/Young-and-Yandex_Finance/Young-and-Yandex_FinanceTests/TestJsons/Test1.json",
 			);
 			target = 0AB8C1352DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */;
 		};

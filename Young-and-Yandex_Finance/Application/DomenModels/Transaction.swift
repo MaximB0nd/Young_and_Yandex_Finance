@@ -7,19 +7,24 @@
 
 import Foundation
 
+///This model has the same values as request from server
+///Parced Json is the same
+///But values of Accaunt and Categoty without their id have none values
+///because these values are not neaded, we will get all information of it by self id to have updated values///
+
 struct Transaction: Codable {
     
     struct Account: Codable {
         let id: Int
-        var name: String
-        var balance: Decimal
-        var currency: String
+        let name: String
+        let balance: Decimal
+        let currency: String
     }
     
     struct Category: Codable {
         let id: Int
         let name: String
-        let emoji: String
+        let emoji: Character
         let direction: Direction
     }
     
@@ -28,7 +33,7 @@ struct Transaction: Codable {
     var category: Category
     var amount: Decimal
     var transactionDate: Date
-    var comment: String?
+    var comment: String
     let createdAt: Date
     var updatedAt: Date
 }

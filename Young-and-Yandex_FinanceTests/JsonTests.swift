@@ -11,21 +11,20 @@ import Foundation
 
 struct JsonTests {
     
-//    @Test func testFileParce() {
-//        let fileURL = Bundle.main.url(forResource: "Test1", withExtension: "json")!
-//        try! FileManager.default.attributesOfItem(atPath: fileURL.path)
-//        
-//        let data = try! Data(contentsOf: fileURL)
-//        let jsonObj = try! JSONSerialization.jsonObject(with: data)
-//        let transaction = Transaction.parce(jsonObject: jsonObj)
-//    }
-    
-    @Test func testTransactionToJson() {
-        var transaction: Transaction? = .init(id: 1, account: .init(id: 1, name: "Name account", balance: 100, currency: "RUB"), category: .init(id: 1, name: "Name category", emoji: "😀", direction: .income), amount: 123, transactionDate: .now, createdAt: .now, updatedAt: .now)
+    @Test func testFileParce() {
+        let fileURL = Bundle.main.url(forResource: "Test2", withExtension: "json")!
+        try! FileManager.default.attributesOfItem(atPath: fileURL.path)
         
-        let jsonData = transaction!.jsonObject
-        transaction = Transaction.parce(jsonObject: jsonData)
+        let data = try! Data(contentsOf: fileURL)
+        let jsonObject = try! JSONSerialization.jsonObject(with: data, options: [])
+        let transaction = Transaction.parce(jsonObject: jsonObject)
+        
+        print(transaction)
+        
         #expect(transaction != nil)
+        
+        print(transaction?.jsonObject)
+        
+        print(Transaction.parce(jsonObject: transaction?.jsonObject))
     }
-
 }
