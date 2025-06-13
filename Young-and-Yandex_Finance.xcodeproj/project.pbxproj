@@ -40,6 +40,10 @@
 		0AB8C1D02DFB5A4B00461B01 /* Exceptions for "Young-and-Yandex_FinanceTests" folder in "Young-and-Yandex_Finance" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				TestCSV/CSV_example.csv,
+				TestCSV/CSV_example1.csv,
+				TestCSV/CSV_example2.csv,
+				TestJsons/Test1.json,
 				TestJsons/Test2.json,
 			);
 			target = 0AB8C11E2DFADE8F00461B01 /* Young-and-Yandex_Finance */;
@@ -47,6 +51,10 @@
 		0AB8C1D12DFB5A4B00461B01 /* Exceptions for "Young-and-Yandex_FinanceTests" folder in "Young-and-Yandex_FinanceUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				TestCSV/CSV_example.csv,
+				TestCSV/CSV_example1.csv,
+				TestCSV/CSV_example2.csv,
+				TestJsons/Test1.json,
 				TestJsons/Test2.json,
 			);
 			target = 0AB8C1352DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */;

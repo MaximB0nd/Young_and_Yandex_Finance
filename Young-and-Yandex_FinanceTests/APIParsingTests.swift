@@ -15,6 +15,11 @@ struct APIParsingTests {
     let token = ""    //  <-  your token
 
     @Test func testAPIGet() throws {
+        if token == "" {
+            Issue.record("Не указан токен")
+            return
+        }
+        
         guard let url = URL(string: "https://shmr-finance.ru/api/v1/transactions/1")  else { return }
         
         var request = URLRequest(url: url)

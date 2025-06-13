@@ -1,0 +1,4 @@
+category_id;account_id;account_name;account_balance;account_currency;category_name;created_at;category_emoji;category_is_comming;amount;id;comment;transaction_date;updated_at
+1;1;Max;10000;RUB;One;12.04.07 10:00;🤣;true;1000;1;comment1;11.04.07 10:00;12.04.07 10:00
+2;1;Max;10000;RUB;Two;13.04.07 10:00;😀;true;200;2;;12.04.07 10:00;13.04.07 10:00
+3;2;Oleg;100;EUR;Three;14.04.07 10:00;❤️;false;30;3;;13.04.07 10:00;14.04.07 10:00
