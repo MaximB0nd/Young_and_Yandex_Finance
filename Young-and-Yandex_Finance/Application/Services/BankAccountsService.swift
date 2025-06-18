@@ -7,20 +7,30 @@
 
 import Foundation
 
-enum BankAccountError: Error {
-    case notFound
-    case updateFailed
-    case enotherError(code: Int, message: String)
-}
-
 final class BankAccountsService {
+    
+    private enum BankAccountError: Error {
+        case notFound
+        case updateFailed
+        case enotherError(code: Int, message: String)
+    }
+    
     private var _accounts: [BankAccount]
     
     // running init factory of accounts
     init () {
         var accounts = [BankAccount]()
         for i in 1...10 {
-            accounts.append(.init(id: i, userId: i, name: "name \(i)", balance: Decimal(i*100), currency: i%2==0 ? "RUB" : "USD", createdAt: Date.now, updatedAt: Date.now))
+            accounts.append(
+                .init(
+                    id: i,
+                    userId: i,
+                    name: "name \(i)",
+                    balance: Decimal(i*100),
+                    currency: i % 2 == 0 ? "RUB" : "USD",
+                    createdAt: Date.now,
+                    updatedAt: Date.now)
+            )
         }
         _accounts = accounts
     }
