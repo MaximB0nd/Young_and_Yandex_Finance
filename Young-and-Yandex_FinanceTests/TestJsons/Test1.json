@@ -1,0 +1,10 @@
+{
+  "id": 1,
+  "accountId":12,
+  "categoryId":11,
+  "amount": "500.00",
+  "transactionDate": "2025-06-12T17:29:02.842Z",
+  "comment": "Зарплата за месяц",
+  "createdAt": "2025-06-12T17:29:02.842Z",
+  "updatedAt": "2025-06-12T17:29:02.842Z"
+}
