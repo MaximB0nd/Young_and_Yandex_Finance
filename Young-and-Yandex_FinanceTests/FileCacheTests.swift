@@ -35,11 +35,6 @@ struct FileCacheTests {
         #expect(cache.transactions.count == 2)
         
         cache.save(fileName: "Result123.json")
-            
-//        let directoryURL = FileManager.default.temporaryDirectory
-//        let fileURL = directoryURL.appendingPathComponent("Result123.json")
-//        print(try! JSONSerialization.jsonObject(with: try! Data(contentsOf: fileURL)))
-
     }
     
     @Test func fileChackLoad() async throws {

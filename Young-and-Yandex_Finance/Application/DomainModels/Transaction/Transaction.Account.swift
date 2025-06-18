@@ -14,11 +14,8 @@ extension Transaction {
         let balance: Decimal
         let currency: String
         
-        enum CodingKeys: String, CodingKey {
-            case id
-            case name
-            case balance
-            case currency
+        private enum CodingKeys: String, CodingKey {
+            case id, name, balance, currency
         }
         
         init(id: Int, name: String, balance: Decimal, currency: String) {
@@ -34,7 +31,7 @@ extension Transaction {
             self.id = try container.decode(Int.self, forKey: .id)
             self.name = try container.decode(String.self, forKey: .name)
             let balance = try container.decode(String.self, forKey: .balance)
-            self.balance = Decimal(string: balance)!
+            self.balance = Decimal(string: balance) ?? 0.0
             self.currency = try container.decode(String.self, forKey: .currency)
         }
         

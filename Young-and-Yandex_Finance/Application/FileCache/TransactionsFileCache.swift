@@ -9,12 +9,10 @@ import Foundation
 
 class TransactionsFileCache {
     private var _transactions: [Transaction] = []
-    ;
+    
     // getter for private var _transactions
     var transactions: [Transaction] {
-        get {
-            return _transactions
-        }
+        _transactions
     }
     
     // func to add a new transaction in _transactions (must have unique id)

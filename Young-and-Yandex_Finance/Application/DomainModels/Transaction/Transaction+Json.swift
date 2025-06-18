@@ -10,7 +10,7 @@ import Foundation
 extension Transaction {
     
     // return optional self from Json data
-    static func parce(jsonObject: Any) -> Transaction? {
+    static func parse(jsonObject: Any) -> Transaction? {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: jsonObject)
                     
@@ -25,8 +25,6 @@ extension Transaction {
     
     // return self as Foundation object (Json)
     var jsonObject: Any {
-        get {
-            return try! JSONSerialization.jsonObject(with: try JSONEncoder().encode(self))
-        }
+        try! JSONSerialization.jsonObject(with: try JSONEncoder().encode(self))
     }
 }

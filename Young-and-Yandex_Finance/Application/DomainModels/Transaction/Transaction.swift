@@ -7,11 +7,6 @@
 
 import Foundation
 
-///This model has the same values as request from server
-///Parced Json is the same
-///But values of Accaunt and Categoty without their id have none values
-///because these values are not neaded, we will get all information of it by self id to have updated values///
-
 struct Transaction {
     let id: Int
     let account: Account

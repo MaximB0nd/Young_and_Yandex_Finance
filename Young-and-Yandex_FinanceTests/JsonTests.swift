@@ -21,7 +21,7 @@ struct JsonTests {
                   comment: nil,
                   createdAt: .now,
                   updatedAt: .now)
-        let newTransaction = Transaction.parce(jsonObject: transaction.jsonObject)
+        let newTransaction = Transaction.parse(jsonObject: transaction.jsonObject)
         #expect(newTransaction != nil)
     }
     
@@ -31,7 +31,7 @@ struct JsonTests {
 
         let data = try! Data(contentsOf: fileURL)
         let jsonObj = try! JSONSerialization.jsonObject(with: data)
-        let transaction = Transaction.parce(jsonObject: jsonObj)
+        let transaction = Transaction.parse(jsonObject: jsonObj)
         #expect(transaction != nil)
     }
 }

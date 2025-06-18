@@ -29,7 +29,7 @@ struct APIParsingTests {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             do {
                 let json = try JSONSerialization.jsonObject(with: data!)
-                let transaction = Transaction.parce(jsonObject: json)
+                let transaction = Transaction.parse(jsonObject: json)
                 #expect(transaction != nil)
             } catch {
                 print("Ошибка парсинга")

@@ -10,24 +10,24 @@ import Foundation
 
 struct CSVTests {
 
-    @Test func testPacreCSV() async throws {
+    @Test func testParseCSV() async throws {
         guard let path = Bundle.main.path(forResource: "CSV_example", ofType: "csv") else { #expect(false); return }
         let data = try Data(contentsOf: URL(fileURLWithPath: path))
-        let transactions = await Transaction.parce(CSV: data)
+        let transactions = await Transaction.parse(CSV: data)
         #expect(transactions != nil)
     }
     
     @Test func testPacreNextCSV() async throws {
         guard let path = Bundle.main.path(forResource: "CSV_example2", ofType: "csv") else { #expect(false); return }
         let data = try Data(contentsOf: URL(fileURLWithPath: path))
-        let transactions = await Transaction.parce(CSV: data)
+        let transactions = await Transaction.parse(CSV: data)
         #expect(transactions != nil)
     }
     
     @Test func testPacreOwnSeperetorCSV() async throws {
         guard let path = Bundle.main.path(forResource: "CSV_example1", ofType: "csv") else { #expect(false); return }
         let data = try Data(contentsOf: URL(fileURLWithPath: path))
-        let transactions = await Transaction.parce(CSV: data, separator: ",", newline: "\n")
+        let transactions = await Transaction.parse(CSV: data, separator: ",", newline: "\n")
         #expect(transactions != nil)
     }
 

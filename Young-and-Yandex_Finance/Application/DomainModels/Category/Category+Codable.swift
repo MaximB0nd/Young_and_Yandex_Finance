@@ -1,30 +1,16 @@
 //
-//  Category.swift
+//  Category+Codable.swift
 //  Young-and-Yandex_Finance
 //
-//  Created by Максим Бондарев on 12.06.2025.
+//  Created by Максим Бондарев on 18.06.2025.
 //
 
 import Foundation
 
-struct Category: Codable {
-    let id: Int
-    let name: String
-    let emoji: Character
-    let direction: Direction
+extension Category: Codable {
     
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case emoji
-        case isIncome
-    }
-    
-    init(id: Int, name: String, emoji: Character, direction: Direction) {
-        self.id = id
-        self.name = name
-        self.emoji = emoji
-        self.direction = direction
+    private enum CodingKeys: String, CodingKey {
+        case id, name, emoji, isIncome
     }
     
     init(from decoder: any Decoder) throws {
@@ -32,7 +18,7 @@ struct Category: Codable {
         self.id = try containet.decode(Int.self, forKey: .id)
         self.name = try containet.decode(String.self, forKey: .name)
         let emoji = try containet.decode(String.self, forKey: .emoji)
-        self.emoji = emoji.first!
+        self.emoji = emoji.first ?? " "
         let income = try containet.decode(Bool.self, forKey: .isIncome)
         self.direction = income ? .income : .outcome
     }

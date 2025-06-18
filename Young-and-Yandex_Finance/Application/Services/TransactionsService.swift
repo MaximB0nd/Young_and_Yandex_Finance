@@ -49,9 +49,7 @@ final class TransactionsService {
         if let newComment = newComment {
             if newComment=="" {
                 _transactions[index].comment=nil
-            }
-            else
-            {
+            } else {
                 _transactions[index].comment = newComment
             }
         }

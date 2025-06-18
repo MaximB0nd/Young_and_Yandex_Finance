@@ -9,15 +9,8 @@ import Foundation
 
 extension Transaction: Codable {
     
-    enum CodingKeys: String, CodingKey {
-        case id
-        case account
-        case category
-        case amount
-        case transactionDate
-        case comment
-        case createdAt
-        case updatedAt
+    private enum CodingKeys: String, CodingKey {
+        case id, account, category, amount, transactionDate, comment, createdAt, updatedAt
     }
     
     init(from decoder: any Decoder) throws {
@@ -49,22 +42,19 @@ extension Transaction: Codable {
         
         if let date = isoDateFormatterWithSec.date(from: transactionDate) {
             self.transactionDate = date
-        }
-        else {
+        } else {
             self.transactionDate = isoDateFormatter.date(from: transactionDate)!
         }
         
         if let date = isoDateFormatterWithSec.date(from: createdAt) {
             self.createdAt = date
-        }
-        else {
+        } else {
             self.createdAt = isoDateFormatter.date(from: createdAt)!
         }
         
         if let date = isoDateFormatterWithSec.date(from: updatedAt) {
             self.updatedAt = date
-        }
-        else {
+        } else {
             self.updatedAt = isoDateFormatter.date(from: updatedAt)!
         }
     }

@@ -9,11 +9,7 @@ import Foundation
 
 extension Transaction {
     
-    ///
-    ///function converts CSV Foundation data to [Transaction]
-    ///it can work with random columns (as json)
-    ///
-    static func parce(CSV: Data, separator: String = ";", newline: String = "\r\n") async -> [Transaction]? {
+    static func parse(CSV: Data, separator: String = ";", newline: String = "\r\n") async -> [Transaction]? {
         let info = String(data: CSV, encoding: .utf8)
         
         guard var rows = info?.split(separator: newline), rows.count > 1 else { return nil }
@@ -73,7 +69,27 @@ extension Transaction {
                   let updatedAt = formatter.date(from: updatedAtStr)
             else { continue }
             
-            transactions.append(Transaction(id: id, account: .init(id: accountId, name: accountName, balance: accountBalance, currency: accountCurrency), category: .init(id: categoryId, name: categoryName, emoji: categoryEmoji, direction: categoryDirection), amount: amount, transactionDate: transactionDate, comment: (comment=="") ? nil : comment, createdAt: createdAt, updatedAt: updatedAt))
+            transactions.append(
+                Transaction(
+                    id: id,
+                    account: .init(
+                        id: accountId,
+                        name: accountName,
+                        balance: accountBalance,
+                        currency: accountCurrency
+                    ),
+                    category: .init(
+                        id: categoryId,
+                        name: categoryName,
+                        emoji: categoryEmoji,
+                        direction: categoryDirection),
+                    amount: amount,
+                    transactionDate: transactionDate,
+                    comment: (comment=="") ? nil : comment,
+                    createdAt: createdAt,
+                    updatedAt: updatedAt
+                )
+            )
         }
         return transactions
     }
