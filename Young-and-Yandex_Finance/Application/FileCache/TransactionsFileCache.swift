@@ -8,6 +8,12 @@
 import Foundation
 
 class TransactionsFileCache {
+    
+    private enum FileCacheErrors: Error {
+        case fileNotFound
+        case decodingError(String)
+    }
+    
     private var _transactions: [Transaction] = []
     
     // getter for private var _transactions
@@ -27,26 +33,40 @@ class TransactionsFileCache {
     }
     
     // func to save all t ransactions in Json file by url
-    func save(fileName: String) {
+    func save(fileName: String) throws {
         let directoryURL = FileManager.default.temporaryDirectory
         let fileURL = directoryURL.appendingPathComponent(fileName)
         let jsonDatas = _transactions.map { $0.jsonObject }
-        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDatas)
-        try! jsonData.write(to: fileURL)
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: jsonDatas)
+            try jsonData.write(to: fileURL)
+        } catch {
+            throw FileCacheErrors.decodingError("Can not convert to JSON")
+        }
     }
     
     // func to load all transaction from Json files by urls
-    func load(paths: String...) {
+    func load(paths: String...) throws {
         let directoryURL = FileManager.default.temporaryDirectory
         for path in paths {
             let fileURL = directoryURL.appendingPathComponent(path)
-            let data = try! Data(contentsOf: fileURL)
-            let transactions = try! JSONDecoder().decode([Transaction].self, from: data)
-            for transaction in transactions {
-                if !_transactions.contains(where: { $0.id == transaction.id}) {
-                    add(transaction)
+            do {
+                let data = try Data(contentsOf: fileURL)
+                let transactions = try JSONDecoder().decode([Transaction].self, from: data)
+                for transaction in transactions {
+                    if !_transactions.contains(where: { $0.id == transaction.id}) {
+                        add(transaction)
+                    }
+                }
+            } catch {
+                switch error {
+                case DecodingError.dataCorrupted:
+                    throw FileCacheErrors.decodingError("Can not decode JSON")
+                default:
+                    throw FileCacheErrors.fileNotFound
                 }
             }
+            
         }
     }
 }
