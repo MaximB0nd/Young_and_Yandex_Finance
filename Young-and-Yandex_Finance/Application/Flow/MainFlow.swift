@@ -18,12 +18,13 @@ enum TabBarFlow: Hashable {
 struct MainFlow: View {
     
     @State var selection: TabBarFlow = .outcome
+    @StateObject var transactionService = TransactionsService()
     
     var body: some View {
         TabView(selection: $selection) {
             
             Tab(value: .outcome) {
-                OutcomeFlow()
+                OutcomeFlow(transactionService: transactionService)
             } label: {
                 outcomeTabItem
             }

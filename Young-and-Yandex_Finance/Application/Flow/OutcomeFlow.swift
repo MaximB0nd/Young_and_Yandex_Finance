@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct OutcomeFlow: View {
+    
+    @ObservedObject var transactionService: TransactionsService
+    
     var body: some View {
-        Text("Some Outcome")
+        NavigationStack {
+            OutcomeScreen(transactionService: transactionService)
+                .navigationTitle(LocalizedStringKey("Расходы сегодня"))
+        }
     }
 }

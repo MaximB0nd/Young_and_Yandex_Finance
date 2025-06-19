@@ -14,15 +14,15 @@ struct TransactionsListView: View {
     
     var body: some View {
         List {
-            ForEach(transactions.filter({$0.category.direction == direction})) { transaction in
-                NavigationLink(value: transaction.id) {
-                    TransactionView(transaction: transaction)
+            Section(header: Text("Операции")) {
+                ForEach(transactions.filter({$0.category.direction == direction})) { transaction in
+                    NavigationLink(value: transaction.id) {
+                        TransactionView(transaction: transaction)
+                    }
                 }
             }
         }
     }
-    
-    
 }
 
 #Preview {
@@ -67,6 +67,6 @@ struct TransactionsListView: View {
         updatedAt: .now
     )]
     
-    TransactionsListView(transactions: transaction, direction: .outcome)
+    TransactionsListView(transactions: transaction, direction: .income)
 }
 
