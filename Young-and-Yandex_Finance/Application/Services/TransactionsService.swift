@@ -28,6 +28,10 @@ final class TransactionsService: ObservableObject {
         _transactions = transactionFileCache.transactions
     }
     
+    func getTransactions(direction: Direction) -> [Transaction] {
+        return _transactions.filter({$0.category.direction == direction})
+    }
+    
     func getTransactions(from: Date, to: Date) async -> [Transaction] {
         return _transactions.filter({$0.transactionDate >= from && $0.transactionDate <= to})
     }
@@ -81,5 +85,7 @@ final class TransactionsService: ObservableObject {
             throw TransactionError.notFound
         }
         _transactions.remove(at: index)
+        transactionFileCache.delete(id: id)
+        try transactionFileCache.save(fileName: filePath)
     }
 }
