@@ -58,35 +58,35 @@ struct MainFlow: View {
     var incomeTabItem: some View {
         VStack {
             Text("Доходы")
-            Image("ChartUp")
+            Image(selection == .income ? "ChartUpGreen" : "ChartUpGray")
         }
     }
     
     var outcomeTabItem: some View {
         VStack {
             Text("Расходы")
-            Image("ChartDown")
+            Image(selection == .outcome ? "ChartDownGreen" : "ChartDownGray")
         }
     }
     
     var accountTabItem: some View {
         VStack {
             Text("Cчет")
-            Image("Account")
+            Image(selection == .account ? "AccountGreen" : "AccountGray")
         }
     }
     
     var articleTabItem: some View {
         VStack {
             Text("Статьи")
-            Image("Articles")
+            Image(selection == .articles ? "ArticlesGreen" : "ArticlesGray")
         }
     }
     
     var settingsTabItem: some View {
         VStack {
             Text("Настройки")
-            Image("Settings")
+            Image(selection == .settings ? "SettingsGreen" : "SettingsGray")
         }
     }
 }

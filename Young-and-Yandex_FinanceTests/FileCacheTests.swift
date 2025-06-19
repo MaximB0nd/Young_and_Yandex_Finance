@@ -34,12 +34,12 @@ struct FileCacheTests {
         cache.add(transaction2)
         #expect(cache.transactions.count == 2)
         
-        cache.save(fileName: "Result123.json")
+         try! cache.save(fileName: "Result123.json")
     }
     
     @Test func fileChackLoad() async throws {
         let cache = TransactionsFileCache()
-        cache.load(paths: "Result123.json")
+        try! cache.load(paths: "Result123.json")
         #expect(cache.transactions.count == 2)
     }
 }
