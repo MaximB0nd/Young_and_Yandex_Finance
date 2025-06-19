@@ -22,29 +22,71 @@ struct MainFlow: View {
     var body: some View {
         TabView(selection: $selection) {
             
-            Tab("Расходы", systemImage: "chart.bar.xaxis.ascending", value: .outcome) {
+            Tab(value: .outcome) {
                 OutcomeFlow()
+            } label: {
+                outcomeTabItem
             }
             
-            Tab("Доходы", systemImage: "chart.bar.xaxis.ascending", value: .income) {
+            Tab(value: .income) {
                 IncomeFlow()
+            } label: {
+                incomeTabItem
             }
             
-            Tab("Счет", systemImage: "person.circle.fill", value: .account) {
+            Tab(value: .account) {
                 BankAccountFlow()
+            } label: {
+                accountTabItem
             }
             
-            Tab("Статьи", systemImage: "book.fill", value: .articles) {
+            Tab(value: .articles) {
                 ArticlesFlow()
+            } label: {
+                articleTabItem
             }
             
-            Tab("Настройки", systemImage: "gear", value: .settings) {
+            
+            Tab(value: .settings) {
                 SettingsFlow()
+            } label: {
+                settingsTabItem
             }
-        }.animation(.bouncy, value: selection)
+        }
     }
-}
-
-#Preview {
-    MainFlow()
+    
+    var incomeTabItem: some View {
+        VStack {
+            Text("Доходы")
+            Image("ChartUp")
+        }
+    }
+    
+    var outcomeTabItem: some View {
+        VStack {
+            Text("Расходы")
+            Image("ChartDown")
+        }
+    }
+    
+    var accountTabItem: some View {
+        VStack {
+            Text("Cчет")
+            Image("Account")
+        }
+    }
+    
+    var articleTabItem: some View {
+        VStack {
+            Text("Статьи")
+            Image("Articles")
+        }
+    }
+    
+    var settingsTabItem: some View {
+        VStack {
+            Text("Настройки")
+            Image("Settings")
+        }
+    }
 }

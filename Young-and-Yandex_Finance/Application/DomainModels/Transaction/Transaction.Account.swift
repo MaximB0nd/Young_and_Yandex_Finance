@@ -43,5 +43,18 @@ extension Transaction {
             let balance = "\(self.balance)"
             try container.encode(balance, forKey: .balance)
         }
+        
+        var currencySymbol: String {
+            switch currency {
+            case "RUB":
+                return "₽"
+            case "EUR":
+                return "€"
+            case "USD":
+                return "$"
+            default:
+                return ""
+            }
+        }
     }
 }
