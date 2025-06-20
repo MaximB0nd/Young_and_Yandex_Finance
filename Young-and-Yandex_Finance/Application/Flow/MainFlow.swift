@@ -17,7 +17,7 @@ enum TabBarFlow: Hashable {
 
 struct MainFlow: View {
     
-    @State var selection: TabBarFlow = .outcome
+    @State var selection: TabBarFlow = .income
     @StateObject var transactionService = TransactionsService()
     
     var body: some View {
@@ -30,7 +30,7 @@ struct MainFlow: View {
             }
             
             Tab(value: .income) {
-                IncomeFlow()
+                IncomeFlow(transactionService: transactionService)
             } label: {
                 incomeTabItem
             }

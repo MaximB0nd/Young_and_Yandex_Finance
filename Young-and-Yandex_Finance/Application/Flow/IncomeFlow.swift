@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct IncomeFlow: View {
+    
+    @ObservedObject var transactionService: TransactionsService
+    
     var body: some View {
+        NavigationStack {
+            IncomeScreen(transactionService: transactionService)
+                .navigationTitle("Доходы сегодня")
+        }
+        
+        
         
     }
-}
-
-#Preview {
-    IncomeFlow()
 }
