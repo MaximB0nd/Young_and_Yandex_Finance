@@ -32,7 +32,7 @@ class TransactionsFileCache {
         _transactions.removeAll(where: { $0.id == id })
     }
     
-    // func to save all t ransactions in Json file by url
+    // func to save all transactions in Json file by url
     func save(fileName: String) throws {
         let directoryURL = FileManager.default.temporaryDirectory
         let fileURL = directoryURL.appendingPathComponent(fileName)
@@ -65,8 +65,7 @@ class TransactionsFileCache {
                 default:
                     throw FileCacheErrors.fileNotFound
                 }
-            }
-            
+            }  
         }
     }
 }

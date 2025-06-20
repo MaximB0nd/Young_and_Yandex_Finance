@@ -14,8 +14,8 @@ struct FileCacheTests {
         let cache = TransactionsFileCache()
         let transaction1: Transaction =
             .init(id: 1,
-                  account: .init(id: 1, name: "nameewsqweqweqweqweqweqweqweqweqweqweqweqweqweqwe", balance: Decimal(1000), currency: "USD"),
-                  category: .init(id: 1, name: "name", emoji: "🤣", direction: .income),
+                  account: .init(id: 1, name: "wqeqwe", balance: Decimal(1000), currency: "USD"),
+                  category: .init(id: 1, name: "Ремонт квартиры", emoji: "🔨", direction: .income),
                   amount: 100.0,
                   transactionDate: .now,
                   comment: nil,
@@ -24,22 +24,22 @@ struct FileCacheTests {
         let transaction2: Transaction =
             .init(id: 2,
                   account: .init(id: 1, name: "name", balance: Decimal(1000), currency: "USD"),
-                  category: .init(id: 1, name: "name", emoji: "🤣", direction: .income),
+                  category: .init(id: 1, name: "На собачку", emoji: "🐕", direction: .income),
                   amount: 100.0,
                   transactionDate: .now,
-                  comment: nil,
+                  comment: "Энни",
                   createdAt: .now,
                   updatedAt: .now)
         cache.add(transaction1)
         cache.add(transaction2)
         #expect(cache.transactions.count == 2)
         
-         try! cache.save(fileName: "Result123.json")
+         try! cache.save(fileName: "Y&Y_Finance-transactions.json")
     }
     
     @Test func fileChackLoad() async throws {
         let cache = TransactionsFileCache()
-        try! cache.load(paths: "Result123.json")
+        try! cache.load(paths: "Y&Y_Finance-transactions.json")
         #expect(cache.transactions.count == 2)
     }
 }

@@ -9,64 +9,43 @@ import SwiftUI
 
 struct TransactionsListView: View {
     
-    var transactions: [Transaction]
+    @ObservedObject var service: TransactionsService
+    @State var model: TransactionListViewModelProtocol
     let direction: Direction
     
     var body: some View {
         List {
+            total
             Section(header: Text("Операции")) {
-                ForEach(transactions.filter({$0.category.direction == direction})) { transaction in
+                ForEach(model.transactions) { transaction in
                     NavigationLink(value: transaction.id) {
                         TransactionView(transaction: transaction)
                     }
                 }
             }
+        }.task {
+            await updateData()
         }
+        .onChange(of: service._transactions){
+            Task {
+                await updateData()
+            }
+        }
+    }
+    
+    var total: some View {
+        HStack {
+            Text("Всего")
+            Spacer()
+            Text("\(model.sum.formatted()) \(model.currencySymbol)")
+        }
+    }
+    
+    func updateData() async {
+        await model.getTransactions(by: direction)
+        await model.getSum()
+        await model.getCurrencySymbol()
     }
 }
 
-#Preview {
-    
-    let transaction = [Transaction(
-        id: 1,
-        account: .init(
-            id: 1,
-            name: "amx",
-            balance: 1.2,
-            currency: "RUB"
-        ),
-        category: .init(
-            id: 1,
-            name: "На собачку",
-            emoji: "🐕",
-            direction: .income
-        ),
-        amount: 100000,
-        transactionDate: .now,
-        comment: "Энни",
-        createdAt: .now,
-        updatedAt: .now
-    ), Transaction(
-        id: 1,
-        account: .init(
-            id: 1,
-            name: "amx",
-            balance: 1.2,
-            currency: "RUB"
-        ),
-        category: .init(
-            id: 1,
-            name: "На собачку",
-            emoji: "🐕",
-            direction: .income
-        ),
-        amount: 100000,
-        transactionDate: .now,
-        comment: "Энни",
-        createdAt: .now,
-        updatedAt: .now
-    )]
-    
-    TransactionsListView(transactions: transaction, direction: .income)
-}
 
