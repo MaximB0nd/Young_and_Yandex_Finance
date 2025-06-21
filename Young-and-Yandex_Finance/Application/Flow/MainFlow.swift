@@ -17,7 +17,7 @@ enum TabBarFlow: Hashable {
 
 struct MainFlow: View {
     
-    @State var selection: TabBarFlow = .income
+    @State var selection: TabBarFlow = .outcome
     @StateObject var transactionService = TransactionsService()
     
     var body: some View {

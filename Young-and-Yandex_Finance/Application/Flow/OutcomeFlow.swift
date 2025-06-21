@@ -22,6 +22,16 @@ struct OutcomeFlow: View {
                     ToolbarItem(placement: .topBarLeading) {
                         plusButton
                     }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        NavigationLink {
+                            MyHistoryScreen(direction: .outcome)
+                                .navigationTitle("Моя история")
+                                
+                        } label: {
+                            Image(systemName: "clock")
+                                .foregroundStyle(Color("Clock"))
+                        }
+                    }
                 }
         }
     }
@@ -45,7 +55,7 @@ struct OutcomeFlow: View {
     var minusButton: some View {
         Button("-"){
             Task {
-                if let lastTransactionId = transactionService._transactions.last?.id {
+                if let lastTransactionId = transactionService._transactions.first(where: {$0.category.direction == .outcome})?.id {
                     try await transactionService.deleteTransaction(id: lastTransactionId)
                 }
             }

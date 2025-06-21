@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct MyHistoryScreen: View {
+    
+    let direction: Direction
+    
+    @State var dateFrom: Date = DateConverter.previousMonth(date: Date.now)
+
+    @State var dateTo: Date = DateConverter.endOfDay(date: Date.now)
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        DateIntervalPicker(dateFrom: $dateFrom, dateTo: $dateTo)
     }
 }
 
 #Preview {
-    MyHistoryScreen()
+    MyHistoryScreen(direction: .outcome)
 }
