@@ -24,8 +24,8 @@ final class TodayTransactionListViewModel {
     }
 
     func getTransactions(by direction: Direction) async {
-        let today = Calendar.current.startOfDay(for: Date())
-        let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: today) ?? Date()
+        let today = DateConverter.startOfDay(.now)
+        let endOfDay = DateConverter.endOfDay(.now)
         self.transactions = await transactionService.getTransactions(from: today, to: endOfDay).filter({$0.category.direction == direction})
     }
     
