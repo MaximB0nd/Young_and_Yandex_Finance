@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 @Observable
-final class TransactionListViewModel: TransactionListViewModelProtocol {
+final class TodayTransactionListViewModel: TransactionListViewModelProtocol {
     
     private(set) var transactions: [Transaction] = []
     private(set) var sum: Decimal = 0
@@ -17,7 +17,7 @@ final class TransactionListViewModel: TransactionListViewModelProtocol {
 
     var transactionService: TransactionsService
     
-    init(transactionService: TransactionsService) {
+    init(transactionService: TransactionsService, from dateFrom: Date? = nil, to dateTo: Date? = nil) {
         self.transactionService = transactionService
         self.transactions = []
     }

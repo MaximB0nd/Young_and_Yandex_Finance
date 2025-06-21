@@ -10,16 +10,19 @@ import SwiftUI
 struct MyHistoryScreen: View {
     
     let direction: Direction
+    @ObservedObject var transactionService: TransactionsService
     
-    @State var dateFrom: Date = DateConverter.previousMonth(date: Date.now)
+    @State var dateFrom: Date = DateConverter.previousMonth(date: .now)
 
-    @State var dateTo: Date = DateConverter.endOfDay(date: Date.now)
+    @State var dateTo: Date = DateConverter.endOfDay(.now)
     
     var body: some View {
-        DateIntervalPicker(dateFrom: $dateFrom, dateTo: $dateTo)
+        
+        List{
+            DateIntervalPicker(dateFrom: $dateFrom, dateTo: $dateTo)
+            TransactionsListView(service: transactionService, model: TodayTransactionListViewModel(transactionService: transactionService), direction: direction)
+            
+        
+        }
     }
-}
-
-#Preview {
-    MyHistoryScreen(direction: .outcome)
 }

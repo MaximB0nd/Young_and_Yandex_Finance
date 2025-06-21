@@ -14,15 +14,15 @@ struct TransactionsListView: View {
     let direction: Direction
     
     var body: some View {
-        List {
             total
+            
             Section(header: Text("Операции")) {
                 ForEach(model.transactions) { transaction in
                     NavigationLink(value: transaction.id) {
                         TransactionView(transaction: transaction)
                     }
                 }
-            }
+            
         }.task {
             await updateData()
         }

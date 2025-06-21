@@ -12,7 +12,9 @@ struct IncomeScreen: View {
     @ObservedObject var transactionService: TransactionsService
     
     var body: some View {
-        TransactionsListView(service: transactionService, model: TransactionListViewModel(transactionService: transactionService), direction: .income)
+        List {
+            TransactionsListView(service: transactionService, model: TodayTransactionListViewModel(transactionService: transactionService), direction: .income)
+        }
     }
 }
 

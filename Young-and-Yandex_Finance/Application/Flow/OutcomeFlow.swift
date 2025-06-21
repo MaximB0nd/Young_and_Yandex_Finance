@@ -24,7 +24,7 @@ struct OutcomeFlow: View {
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         NavigationLink {
-                            MyHistoryScreen(direction: .outcome)
+                            MyHistoryScreen(direction: .outcome, transactionService: transactionService)
                                 .navigationTitle("Моя история")
                                 
                         } label: {

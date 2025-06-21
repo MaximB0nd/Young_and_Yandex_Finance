@@ -13,20 +13,18 @@ struct DateIntervalPicker: View {
     @Binding var dateTo: Date
     
     var body: some View {
-        List {
-            
+        Group {
             dateFromPicker
-                
             dateToPicker
         }
         .onChange(of: dateFrom) {
             DateConverter.checkDate(date1: &dateFrom, date2: &dateTo, closure: {$0 < $1})
-            dateFrom = DateConverter.startOfDay(date: dateFrom)
+            dateFrom = DateConverter.startOfDay(dateFrom)
             print(dateFrom)
         }
         .onChange(of: dateTo) {
             DateConverter.checkDate(date1: &dateTo, date2: &dateFrom, closure: {$0 > $1})
-            dateTo = DateConverter.endOfDay(date: dateTo)
+            dateTo = DateConverter.endOfDay(dateTo)
             print(dateTo)
         }
     }

@@ -8,14 +8,16 @@
 import Foundation
 
 final class DateConverter {
-    static func startOfDay(date: Date) -> Date {
-        return Calendar.current.startOfDay(for: date)
+    static func startOfDay(_ date: Date) -> Date {
+        Calendar.current.startOfDay(for: date)
     }
-    
-    static func endOfDay(date: Date) -> Date {
-        let startDate = startOfDay(date: date)
-        let startOfNextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate) ?? date
-        return Calendar.current.date(byAdding: .minute, value: -1, to: startOfNextDay) ?? date
+
+    static func endOfDay(_ date: Date, in calendar: Calendar = .current) -> Date {
+        guard let nextDay = calendar.date(byAdding: .day, value: 1, to: date) else {
+            return date
+        }
+        let startOfNextDay = calendar.startOfDay(for: nextDay)
+        return calendar.date(byAdding: .second, value: -1, to: startOfNextDay) ?? startOfNextDay
     }
     
     static func previousMonth(date: Date) -> Date {
