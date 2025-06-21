@@ -15,7 +15,8 @@ struct OutcomeScreen: View {
     var body: some View {
         List {
             TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
-        }.task {
+        }
+        .task {
             await model.updateData()
         }
         .onChange(of: transactionService._transactions){

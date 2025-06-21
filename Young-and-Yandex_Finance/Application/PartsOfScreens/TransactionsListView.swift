@@ -14,14 +14,15 @@ struct TransactionsListView: View {
     let currencySymbol: String
     
     var body: some View {
-            total
-            
-            Section(header: Text("Операции")) {
-                ForEach(transactions) { transaction in
-                    NavigationLink(value: transaction.id) {
-                        TransactionView(transaction: transaction)
-                    }
+        
+        total
+        
+        Section(header: Text("Операции")) {
+            ForEach(transactions) { transaction in
+                NavigationLink(value: transaction.id) {
+                    TransactionView(transaction: transaction)
                 }
+            }
         }
     }
     

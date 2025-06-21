@@ -21,7 +21,7 @@ final class MyHistoryTransactionListViewModel {
     }
 
     func sortByDate(_ transactions: [Transaction]) -> [Transaction] {
-        return transactions.sorted { $0.createdAt > $1.createdAt }
+        return transactions.sorted { $0.transactionDate > $1.transactionDate }
     }
     
     func sortByAmount(_ transactions: [Transaction]) -> [Transaction] {

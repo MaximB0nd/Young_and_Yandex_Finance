@@ -12,7 +12,3 @@ struct BankAccountFlow: View {
         Text("Bank Account ")
     }
 }
-
-#Preview {
-    BankAccountFlow()
-}

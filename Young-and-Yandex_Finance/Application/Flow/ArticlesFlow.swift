@@ -12,7 +12,3 @@ struct ArticlesFlow: View {
         Text("Some arcticles")
     }
 }
-
-#Preview {
-    ArticlesFlow()
-}

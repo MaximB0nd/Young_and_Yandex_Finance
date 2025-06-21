@@ -34,7 +34,6 @@ class TransactionsFileCache {
     
     // func to save all transactions in Json file by url
     func save(fileName: String) throws {
-        print(_transactions)
         let directoryURL = FileManager.default.temporaryDirectory
         let fileURL = directoryURL.appendingPathComponent(fileName)
         let jsonDatas = _transactions.map { $0.jsonObject }

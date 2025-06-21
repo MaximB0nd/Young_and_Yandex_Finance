@@ -11,12 +11,10 @@ struct MyHistoryScreen: View {
     
     let direction: Direction
     @ObservedObject var transactionService: TransactionsService
+    
     @State var model: MyHistoryTransactionListViewModel
-    
     @State var dateFrom: Date = DateConverter.previousMonth(date: .now)
-
     @State var dateTo: Date = DateConverter.endOfDay(.now)
-    
     @State var sortSelection: SortSelectionType = .none
     
     var body: some View {
@@ -25,7 +23,8 @@ struct MyHistoryScreen: View {
             DateIntervalPicker(dateFrom: $dateFrom, dateTo: $dateTo)
             SortSelection(selection: $sortSelection)
             TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
-        }.task {
+        }
+        .task {
             await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
         }
         .onChange(of: transactionService._transactions){

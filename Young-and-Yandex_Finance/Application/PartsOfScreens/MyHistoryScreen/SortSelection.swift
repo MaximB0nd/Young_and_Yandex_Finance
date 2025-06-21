@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 struct SortSelection: View {
     
     @Binding var selection: SortSelectionType

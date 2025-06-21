@@ -52,39 +52,3 @@ extension Decimal {
             return formatter.string(from: number) ?? "\(self)"
     }
 }
-
-#Preview {
-    let transaction = Transaction(
-        id: 1,
-        account: .init(
-            id: 1,
-            name: "amx",
-            balance: 1.2,
-            currency: "RUB"
-        ),
-        category: .init(
-            id: 1,
-            name: "На собачку",
-            emoji: "🐕",
-            direction: .income
-        ),
-        amount: 100000,
-        transactionDate: .now,
-        comment: "Энни",
-        createdAt: .now,
-        updatedAt: .now
-    )
-    
-    List {
-        Spacer()
-        Spacer()
-        Spacer()
-        Spacer()
-        Spacer()
-        Spacer()
-        NavigationLink(destination: {Text("Hello")}){  TransactionView(transaction: transaction)
-        }
-        Spacer()
-    }.offset(y: 20)
-    
-}

@@ -47,7 +47,6 @@ struct MainFlow: View {
                 articleTabItem
             }
             
-            
             Tab(value: .settings) {
                 SettingsFlow()
             } label: {
