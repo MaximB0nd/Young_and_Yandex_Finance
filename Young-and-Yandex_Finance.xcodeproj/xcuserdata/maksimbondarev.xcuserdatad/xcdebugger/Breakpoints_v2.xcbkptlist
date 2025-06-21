@@ -3,4 +3,20 @@
    uuid = "CC0458A2-8E8B-472C-AC2A-CD7B4BBF4C89"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D7DB0D62-F80D-4E03-84B5-1C2CEE14E20E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../../../../var/folders/6s/wcphqbbj4rb5b1b__nrqtdzh0000gn/T/swift-generated-sources/@__swiftmacro_24Young_and_Yandex_Finance24TransactionListViewModelC18transactionService18ObservationTrackedfMp_.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1"
+            endingLineNumber = "1">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

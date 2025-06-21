@@ -12,27 +12,59 @@ enum TransactionError: Error {
     case enotherError(code: Int, message: String)
 }
 
-final class TransactionsService {
-    private var _transactions: [Transaction]
+@MainActor
+final class TransactionsService: ObservableObject {
+    
+    @Published private(set) var _transactions: [Transaction]
+    private let transactionFileCache = TransactionsFileCache()
+    private let filePath = "Y&Y_Finance-transactions.json"
+    
+    func loadTransactions() {
+        Task {
+            try await Task.sleep(for: .seconds(1))
+            try transactionFileCache.load(paths: filePath)
+            _transactions = transactionFileCache.transactions
+        }
+    }
     
     init () {
-        var transactions = [Transaction]()
-        for i in 0..<100 {
-            transactions.append(.init(id: i, account: .init(id: i, name: "Name \(i)", balance: Decimal(100*i), currency: "RUB"), category: .init(id: i, name: "Category \(i)", emoji: "😄", direction: i%2==0 ? .income : .outcome), amount: Decimal(i*100), transactionDate: .now, comment: "Some comment \(i)", createdAt: .now, updatedAt: .now))
+        do {
+            try transactionFileCache.load(paths: filePath)
+        } catch {
+            _transactions = []
         }
-        _transactions = transactions
+        _transactions = transactionFileCache.transactions
+    }
+    
+    func getTransactions(direction: Direction) -> [Transaction] {
+        loadTransactions()
+        return _transactions.filter({$0.category.direction == direction})
     }
     
     func getTransactions(from: Date, to: Date) async -> [Transaction] {
+        loadTransactions()
         return _transactions.filter({$0.transactionDate >= from && $0.transactionDate <= to})
     }
     
-    func createTransaction(account: Transaction.Account, category: Category, amount: Decimal, transactionDate: Date, comment: String? = nil) async {
+    func createTransaction(account: Transaction.Account, category: Category, amount: Decimal, transactionDate: Date, comment: String? = nil) async throws {
+        loadTransactions()
         let newId = (_transactions.map { $0.id }.max() ?? -1) + 1
-        _transactions.append(.init(id: newId, account: account, category: category, amount: amount, transactionDate: transactionDate, comment: comment, createdAt: .now, updatedAt: .now))
+        let newTransaction = Transaction(id: newId,
+                                         account: account,
+                                         category: category,
+                                         amount: amount,
+                                         transactionDate: transactionDate,
+                                         comment: comment,
+                                         createdAt: .now,
+                                         updatedAt: .now)
+        DispatchQueue.main.async { self._transactions.append(newTransaction)
+        }
+        transactionFileCache.add(newTransaction)
+        try transactionFileCache.save(fileName: filePath)
     }
     
     func editTransaction(id: Int, newCategory: Category? = nil, newAmount: Decimal? = nil, newTransactionDate: Date? = nil, newComment: String? = nil) async throws {
+        loadTransactions()
         guard let index = _transactions.firstIndex(where: { $0.id == id}) else {
             throw TransactionError.notFound
         }
@@ -54,12 +86,19 @@ final class TransactionsService {
             }
         }
         _transactions[index].updatedAt = Date.now
+        
+        transactionFileCache.delete(id: id)
+        transactionFileCache.add(_transactions[index])
+        try transactionFileCache.save(fileName: filePath)
     }
     
     func deleteTransaction(id: Int) async throws {
+        loadTransactions()
         guard let index = _transactions.firstIndex(where: { $0.id == id }) else {
             throw TransactionError.notFound
         }
         _transactions.remove(at: index)
+        transactionFileCache.delete(id: id)
+        try transactionFileCache.save(fileName: filePath)
     }
 }
