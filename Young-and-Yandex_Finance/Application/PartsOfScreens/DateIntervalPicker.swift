@@ -20,12 +20,10 @@ struct DateIntervalPicker: View {
         .onChange(of: dateFrom) {
             DateConverter.checkDate(date1: &dateFrom, date2: &dateTo, closure: {$0 < $1})
             dateFrom = DateConverter.startOfDay(dateFrom)
-            print(dateFrom)
         }
         .onChange(of: dateTo) {
             DateConverter.checkDate(date1: &dateTo, date2: &dateFrom, closure: {$0 > $1})
             dateTo = DateConverter.endOfDay(dateTo)
-            print(dateTo)
         }
     }
     
@@ -34,7 +32,6 @@ struct DateIntervalPicker: View {
             Text("Начало")
             Spacer()
             DatePicker(selection: $dateFrom, displayedComponents: .date) {}
-                .tint(.black)
                 .background(Color("DatePicker").clipShape(.buttonBorder))
         }
         .environment(\.colorScheme, .light)
@@ -45,7 +42,6 @@ struct DateIntervalPicker: View {
             Text("Конец")
             Spacer()
             DatePicker(selection: $dateTo, displayedComponents: .date) {}
-                .foregroundStyle(.black)
                 .background(Color("DatePicker").clipShape(.buttonBorder))
         }
         .environment(\.colorScheme, .light)

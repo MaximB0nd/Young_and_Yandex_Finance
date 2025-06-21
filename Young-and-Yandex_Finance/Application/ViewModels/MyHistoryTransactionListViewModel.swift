@@ -1,32 +1,27 @@
 //
-//  TransactionListViewModel.swift
+//  MyHistoryTransactionListViewModel.swift
 //  Young-and-Yandex_Finance
 //
-//  Created by Максим Бондарев on 20.06.2025.
+//  Created by Максим Бондарев on 21.06.2025.
 //
 
 import Foundation
-import SwiftUI
 
-@Observable
-final class TodayTransactionListViewModel {
-    
+final class MyHistoryTransactionListViewModel {
     private(set) var transactions: [Transaction] = []
     private(set) var sum: Decimal = 0
     private(set) var currencySymbol: String = ""
     private var direction: Direction
-
+    
     var transactionService: TransactionsService
     
     init(transactionService: TransactionsService, direction: Direction) {
         self.transactionService = transactionService
         self.direction = direction
     }
-
-    func getTransactions(by direction: Direction) async {
-        let today = Calendar.current.startOfDay(for: Date())
-        let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: today) ?? Date()
-        self.transactions = await transactionService.getTransactions(from: today, to: endOfDay).filter({$0.category.direction == direction})
+    
+    func getTransactions(from date1: Date, to date2: Date, by direction: Direction) async {
+        self.transactions = await transactionService.getTransactions(from: date1, to: date2).filter({$0.category.direction == direction})
     }
     
     func getSum() async {
@@ -37,10 +32,9 @@ final class TodayTransactionListViewModel {
         currencySymbol = transactions.count > 0 ? transactions[0].account.currencySymbol : ""
     }
     
-    func updateData() async {
-        await getTransactions(by: direction)
+    func updateData(from date1: Date, to date2: Date) async {
+        await getTransactions(from: date1, to: date2, by: direction)
         await getSum()
         await getCurrencySymbol()
     }
 }
-    

@@ -9,27 +9,19 @@ import SwiftUI
 
 struct TransactionsListView: View {
     
-    @ObservedObject var service: TransactionsService
-    @State var model: TransactionListViewModelProtocol
-    let direction: Direction
+    let transactions: [Transaction]
+    let sum: Decimal
+    let currencySymbol: String
     
     var body: some View {
             total
             
             Section(header: Text("Операции")) {
-                ForEach(model.transactions) { transaction in
+                ForEach(transactions) { transaction in
                     NavigationLink(value: transaction.id) {
                         TransactionView(transaction: transaction)
                     }
                 }
-            
-        }.task {
-            await updateData()
-        }
-        .onChange(of: service._transactions){
-            Task {
-                await updateData()
-            }
         }
     }
     
@@ -37,14 +29,8 @@ struct TransactionsListView: View {
         HStack {
             Text("Всего")
             Spacer()
-            Text("\(model.sum.formatted()) \(model.currencySymbol)")
+            Text("\(sum.formatted()) \(currencySymbol)")
         }
-    }
-    
-    func updateData() async {
-        await model.getTransactions(by: direction)
-        await model.getSum()
-        await model.getCurrencySymbol()
     }
 }
 

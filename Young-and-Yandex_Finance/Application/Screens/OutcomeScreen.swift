@@ -10,12 +10,27 @@ import SwiftUI
 struct OutcomeScreen: View {
     
     @ObservedObject var transactionService: TransactionsService
+    @State var model: TodayTransactionListViewModel
     
     var body: some View {
         List {
-            TransactionsListView(service: transactionService, model: TodayTransactionListViewModel(transactionService: transactionService), direction: .outcome)
+            TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
+        }.task {
+            await model.updateData()
+        }
+        .onChange(of: transactionService._transactions){
+            Task {
+                await model.updateData()
+            }
         }
     }
+    
+    init(transactionService: TransactionsService) {
+        self.transactionService = transactionService
+        self.model = .init(transactionService: transactionService, direction: .outcome)
+    }
+    
+    
 }
 
 

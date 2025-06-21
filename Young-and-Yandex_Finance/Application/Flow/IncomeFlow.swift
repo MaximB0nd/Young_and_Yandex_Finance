@@ -22,6 +22,17 @@ struct IncomeFlow: View {
                     ToolbarItem(placement: .topBarLeading) {
                         plusButton
                     }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        NavigationLink {
+                            MyHistoryScreen(direction: .income, transactionService: transactionService)
+                                .navigationTitle("Моя история")
+                                
+                        } label: {
+                            Image(systemName: "clock")
+                                .foregroundStyle(Color("Clock"))
+                        }
+                    }
+                    
                 }
         }
     }
