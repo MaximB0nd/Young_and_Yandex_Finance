@@ -17,27 +17,35 @@ struct MyHistoryScreen: View {
 
     @State var dateTo: Date = DateConverter.endOfDay(.now)
     
+    @State var sortSelection: SortSelectionType = .none
+    
     var body: some View {
         
         List{
             DateIntervalPicker(dateFrom: $dateFrom, dateTo: $dateTo)
+            SortSelection(selection: $sortSelection)
             TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
         }.task {
-            await model.updateData(from: dateFrom, to: dateTo)
+            await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
         }
         .onChange(of: transactionService._transactions){
             Task {
-                await model.updateData(from: dateFrom, to: dateTo)
+                await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
             }
         }
         .onChange(of: dateTo){
             Task {
-                await model.updateData(from: dateFrom, to: dateTo)
+                await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
             }
         }
         .onChange(of: dateFrom){
             Task {
-                await model.updateData(from: dateFrom, to: dateTo)
+                await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
+            }
+        }
+        .onChange(of: sortSelection) {
+            Task {
+                await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
             }
         }
     }

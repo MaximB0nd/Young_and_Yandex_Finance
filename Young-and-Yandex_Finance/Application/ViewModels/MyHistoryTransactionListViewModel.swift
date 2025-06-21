@@ -19,9 +19,28 @@ final class MyHistoryTransactionListViewModel {
         self.transactionService = transactionService
         self.direction = direction
     }
+
+    func sortByDate(_ transactions: [Transaction]) -> [Transaction] {
+        return transactions.sorted { $0.createdAt > $1.createdAt }
+    }
     
-    func getTransactions(from date1: Date, to date2: Date, by direction: Direction) async {
-        self.transactions = await transactionService.getTransactions(from: date1, to: date2).filter({$0.category.direction == direction})
+    func sortByAmount(_ transactions: [Transaction]) -> [Transaction] {
+        return transactions.sorted { $0.amount > $1.amount }
+    }
+    
+    func getTransactions(from date1: Date, to date2: Date, by direction: Direction, sortBy: SortSelectionType?) async {
+        var transactions = await transactionService.getTransactions(from: date1, to: date2).filter({$0.category.direction == direction})
+        if let sortBy = sortBy {
+            switch sortBy {
+            case .price:
+                transactions = sortByAmount(transactions)
+            case .date:
+                transactions = sortByDate(transactions)
+            case .none:
+                break
+            }
+        }
+        self.transactions = transactions
     }
     
     func getSum() async {
@@ -32,8 +51,8 @@ final class MyHistoryTransactionListViewModel {
         currencySymbol = transactions.count > 0 ? transactions[0].account.currencySymbol : ""
     }
     
-    func updateData(from date1: Date, to date2: Date) async {
-        await getTransactions(from: date1, to: date2, by: direction)
+    func updateData(from date1: Date, to date2: Date, sort by: SortSelectionType?) async {
+        await getTransactions(from: date1, to: date2, by: direction, sortBy: by)
         await getSum()
         await getCurrencySymbol()
     }

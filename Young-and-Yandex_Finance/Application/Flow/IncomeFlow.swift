@@ -39,7 +39,8 @@ struct IncomeFlow: View {
     
     var plusButton: some View {
         Button("+"){
-            Task{try! await transactionService.createTransaction(
+            Task{
+                try! await transactionService.createTransaction(
                 account:
                         .init(
                             id: 1,
@@ -52,8 +53,8 @@ struct IncomeFlow: View {
                             name: "Inding",
                             emoji: "🐕",
                             direction: .income),
-                amount: 100,
-                transactionDate: .now)
+                amount: Decimal(Int.random(in: 1...10000)),
+                transactionDate: Calendar.current.date(byAdding: .day, value: Int.random(in: -10...10), to: .now)!)
             }
         }
     }
