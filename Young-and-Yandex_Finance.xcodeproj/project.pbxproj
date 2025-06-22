@@ -227,11 +227,12 @@
 				};
 			};
 			buildConfigurationList = 0AB8C11A2DFADE8F00461B01 /* Build configuration list for PBXProject "Young-and-Yandex_Finance" */;
-			developmentRegion = en;
+			developmentRegion = ru;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 0AB8C1162DFADE8F00461B01;
 			minimizedProjectReferenceProxies = 1;
