@@ -43,12 +43,3 @@ extension TransactionView: View {
         Text("\(transaction.amount.formatted()) \(transaction.account.currencySymbol)" )
     }
 }
-
-extension Decimal {
-    func formatted(decimalPlaces: Int = 2) -> String {
-            let number = NSDecimalNumber(decimal: self)
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .decimal
-            return formatter.string(from: number) ?? "\(self)"
-    }
-}

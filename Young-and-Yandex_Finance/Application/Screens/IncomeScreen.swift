@@ -13,15 +13,21 @@ struct IncomeScreen: View {
     @State var model: TodayTransactionListViewModel
     
     var body: some View {
-        List {
-            TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
-        }.task {
-            await model.updateData()
-        }
-        .onChange(of: transactionService._transactions){
-            Task {
+        ZStack(alignment: .bottomTrailing) {
+            List {
+                TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
+            }.task {
                 await model.updateData()
             }
+            .onChange(of: transactionService._transactions){
+                Task {
+                    await model.updateData()
+                }
+            }
+            
+            PlusButton(direction: .income, transactionService: transactionService)
+                .padding(26)
+            
         }
     }
     

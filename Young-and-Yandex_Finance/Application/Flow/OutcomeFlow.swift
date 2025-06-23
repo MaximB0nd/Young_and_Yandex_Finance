@@ -12,54 +12,19 @@ struct OutcomeFlow: View {
     @ObservedObject var transactionService: TransactionsService
     
     var body: some View {
-        NavigationStack {
-            OutcomeScreen(transactionService: transactionService)
-                .navigationTitle(LocalizedStringKey("Расходы сегодня"))
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        minusButton
-                    }
-                    ToolbarItem(placement: .topBarLeading) {
-                        plusButton
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink {
-                            MyHistoryScreen(direction: .outcome, transactionService: transactionService)
-                                .navigationTitle("Моя история")
-                                
-                        } label: {
-                            Image(systemName: "clock")
-                                .foregroundStyle(Color("Clock"))
-                        }
+        OutcomeScreen(transactionService: transactionService)
+            .navigationTitle(LocalizedStringKey("Расходы сегодня"))
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        MyHistoryFlow(direction: .outcome, transactionService: transactionService)
+                            .navigationTitle("Моя история")
+                        
+                    } label: {
+                        Image(systemName: "clock")
+                            .foregroundStyle(.people)
                     }
                 }
-        }
-    }
-    
-    var plusButton: some View {
-        Button("+"){
-            Task{
-                try! await transactionService.createTransaction(
-                account:
-                        .init(
-                            id: 1,
-                            name: "Max",
-                            balance: 1000,
-                            currency: "RUB"),
-                category: .init(id: 1, name: "Inding", emoji: "🐕", direction: .outcome),
-                amount: Decimal(Int.random(in: 1...10000)),
-                transactionDate: Calendar.current.date(byAdding: .day, value: Int.random(in: -10...10), to: .now)!)
-            }
-        }
-    }
-    
-    var minusButton: some View {
-        Button("-"){
-            Task {
-                if let lastTransactionId = transactionService._transactions.first(where: {$0.category.direction == .outcome})?.id {
-                    try await transactionService.deleteTransaction(id: lastTransactionId)
-                }
-            }
-        }
+            }        
     }
 }
