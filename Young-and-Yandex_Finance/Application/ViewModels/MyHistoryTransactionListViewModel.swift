@@ -56,4 +56,9 @@ final class MyHistoryTransactionListViewModel {
         await getSum()
         await getCurrencySymbol()
     }
+    
+    func presaveDate(date1: inout Date, date2: inout Date, closure: ((Date, Date) -> Bool)) {
+        DateConverter.checkDate(date1: &date1, date2: &date2, closure: closure)
+    }
+    
 }

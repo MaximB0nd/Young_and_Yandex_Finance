@@ -20,7 +20,7 @@ struct MyHistoryScreen: View {
     var body: some View {
         
         List{
-            DateIntervalPicker(dateFrom: $dateFrom, dateTo: $dateTo)
+            DateIntervalPicker(model: model, dateFrom: $dateFrom, dateTo: $dateTo)
             SortSelection(selection: $sortSelection)
             TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
         }

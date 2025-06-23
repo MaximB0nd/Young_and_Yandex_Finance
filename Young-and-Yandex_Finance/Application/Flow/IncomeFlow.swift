@@ -13,25 +13,19 @@ struct IncomeFlow: View {
     
     var body: some View {
         
-        NavigationStack {
-            IncomeScreen(transactionService: transactionService)
-                .navigationTitle("Доходы сегодня")
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink {
-                            MyHistoryFlow(direction: .income, transactionService: transactionService)
-                                .navigationTitle("Моя история")
-                            
-                        } label: {
-                            Image(systemName: "clock")
-                                .foregroundStyle(.people)
-                        }
+        IncomeScreen(transactionService: transactionService)
+            .navigationTitle("Доходы сегодня")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        MyHistoryFlow(direction: .income, transactionService: transactionService)
+                            .navigationTitle("Моя история")
+                        
+                    } label: {
+                        Image(systemName: "clock")
+                            .foregroundStyle(.people)
                     }
-                    
                 }
-        }
-        
-        
-        
+            }
     }
 }
