@@ -8,7 +8,16 @@
 import SwiftUI
 
 struct EditBankAccountScreen: View {
+    
+    @Binding var account: BankAccount?
+    
     var body: some View {
+        List {
+            Section {
+                EditBankBalance(balance: account!.balance)
+            }
+        }
+        .listSectionSpacing(16)
         
     }
 }

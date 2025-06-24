@@ -15,7 +15,7 @@ struct EditBankAccountFlow: View {
     
     var body: some View {
         NavigationStack {
-            Text("Edit")
+            EditBankAccountScreen(account: $account)
                 .navigationTitle(Text("Мой счет"))
                 .toolbar {
                     ToolbarItem {
@@ -34,6 +34,7 @@ struct EditBankAccountFlow: View {
             Text("Сохранить")
                 .foregroundStyle(.people)
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 

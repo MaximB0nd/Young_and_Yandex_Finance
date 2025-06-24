@@ -26,8 +26,7 @@ struct StateBankAccountScreen: View {
             .listRowBackground(Color.lightAccent)
                 
         }
+        .listSectionSpacing(16)
     }
-    
-    
     
 }

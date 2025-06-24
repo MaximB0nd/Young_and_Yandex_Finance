@@ -21,6 +21,7 @@ struct BankBalance: View {
                 Text("\(balance.formatted())")
                 Text(currency)
             }
+            .foregroundStyle(.black)
         }
     }
 }

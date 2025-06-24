@@ -17,6 +17,7 @@ struct BankCurrency: View {
             Spacer()
             Text(currency)
         }
+        .foregroundStyle(.black)
     }
 }
 
