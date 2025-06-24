@@ -22,7 +22,7 @@ extension TransactionView: View {
             .font(.system(size: 10))
             .background(
                 Circle()
-                    .fill(Color("EmojiBackground"))
+                    .fill(Color.lightAccent)
                     .frame(width: 22, height: 22)
             )
     }
