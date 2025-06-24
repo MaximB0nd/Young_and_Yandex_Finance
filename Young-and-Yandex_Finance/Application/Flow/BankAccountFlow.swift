@@ -9,6 +9,8 @@ import SwiftUI
 
 struct BankAccountFlow: View {
     var body: some View {
-        Text("Bank Account ")
+        NavigationStack {
+            Text("Bank Account ")
+        }
     }
 }

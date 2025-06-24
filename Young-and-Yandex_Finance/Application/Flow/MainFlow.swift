@@ -21,38 +21,36 @@ struct MainFlow: View {
     @StateObject var transactionService = TransactionsService()
     
     var body: some View {
-        NavigationStack {
-            TabView(selection: $selection) {
-                
-                Tab(value: .outcome) {
-                    OutcomeFlow(transactionService: transactionService)
-                } label: {
-                    outcomeTabItem
-                }
-                
-                Tab(value: .income) {
-                    IncomeFlow(transactionService: transactionService)
-                } label: {
-                    incomeTabItem
-                }
-                
-                Tab(value: .account) {
-                    BankAccountFlow()
-                } label: {
-                    accountTabItem
-                }
-                
-                Tab(value: .articles) {
-                    ArticlesFlow()
-                } label: {
-                    articleTabItem
-                }
-                
-                Tab(value: .settings) {
-                    SettingsFlow()
-                } label: {
-                    settingsTabItem
-                }
+        TabView(selection: $selection) {
+            
+            Tab(value: .outcome) {
+                OutcomeFlow(transactionService: transactionService)
+            } label: {
+                outcomeTabItem
+            }
+            
+            Tab(value: .income) {
+                IncomeFlow(transactionService: transactionService)
+            } label: {
+                incomeTabItem
+            }
+            
+            Tab(value: .account) {
+                BankAccountFlow()
+            } label: {
+                accountTabItem
+            }
+            
+            Tab(value: .articles) {
+                ArticlesFlow()
+            } label: {
+                articleTabItem
+            }
+            
+            Tab(value: .settings) {
+                SettingsFlow()
+            } label: {
+                settingsTabItem
             }
         }
     }
