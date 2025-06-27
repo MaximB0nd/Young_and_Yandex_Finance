@@ -21,7 +21,7 @@ struct EditBankAccountScreen: View {
             }
         }
         .listSectionSpacing(16)
-        
+        .scrollDismissesKeyboard(.immediately)
     }
 }
 

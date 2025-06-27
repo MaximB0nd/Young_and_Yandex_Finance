@@ -10,19 +10,27 @@ import SwiftUI
 struct EditBankBalance: View {
     
     @Binding var balance: Decimal
+    @State var text: String = ""
     
     var body: some View {
-        
-            HStack {
-                Text("💰")
-                Text("Баланс")
-                Spacer()
-                TextField(value: $balance, format: .number) {}
-                    .keyboardType(.numbersAndPunctuation)
-                    .submitLabel(.done)
-                    .multilineTextAlignment(.trailing)
-                    .scrollDismissesKeyboard(.immediately)
-            }
-            
+        HStack {
+            Text("💰")
+            Text("Баланс")
+            Spacer()
+            TextField(text: $text) {}
+                .keyboardType(.numbersAndPunctuation)
+                .submitLabel(.done)
+                .multilineTextAlignment(.trailing)
+                .onChange(of: text) { _, newValue in
+                    let val = newValue.convertToDecimal
+                    text = val
+                    balance = Decimal(string: val, locale: Locale.current) ?? 0
+                }
+        }
+    }
+    
+    init(balance: Binding<Decimal>) {
+        self._balance = balance
+        _text = .init(initialValue: balance.wrappedValue.description)
     }
 }
