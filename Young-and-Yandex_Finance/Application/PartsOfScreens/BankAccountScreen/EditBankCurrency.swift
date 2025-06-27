@@ -10,12 +10,14 @@ import SwiftUI
 struct EditBankCurrency: View {
     
     @State var isPresented = false
-    @Binding var currency: String
+    @Binding var account: BankAccount
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         currencyLine
-            .sheet(isPresented: $isPresented){
-                
+            .confirmationDialog("Валюта", isPresented: $isPresented) {
+                EditBankCurrencyList(isPresented: $isPresented, selectedCurrency: Binding(get: {account.currency}, set: {account.currency = $0})
+                )
             }
     }
     
@@ -30,8 +32,11 @@ struct EditBankCurrency: View {
         Button {
             isPresented.toggle()
         } label: {
-            Spacer()
-            Text("")
+            HStack{
+                Spacer()
+                Text("\(account.currencySymbol)")
+                    .foregroundStyle(colorScheme == .dark ? .white : .black)
+            }
         }
     }
 }

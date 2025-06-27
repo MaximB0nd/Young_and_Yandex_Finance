@@ -17,7 +17,7 @@ struct EditBankAccountScreen: View {
                 EditBankBalance(balance: Binding(get: {account.balance}, set: {newValue in account.balance = newValue}))
             }
             Section {
-                EditBankCurrency(currency: Binding(get: {account.currency}, set: {newValue in account.currency = newValue}))
+                EditBankCurrency(account: $account)
             }
         }
         .listSectionSpacing(16)

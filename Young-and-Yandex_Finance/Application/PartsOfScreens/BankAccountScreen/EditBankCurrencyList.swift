@@ -18,10 +18,18 @@ struct EditBankCurrencyList: View {
         "USD": "$"
     ]
     
-    
     var body: some View {
-        ForEach(currencies.keys.sorted(), id: \.self) { key in
-            
+        Group{
+            ForEach(currencies.keys.sorted(), id: \.self) { key in
+                Button {
+                    selectedCurrency = key
+                } label: {
+                    Text("\(key)  \(currencies[key] ?? "")")
+                }
+            }
+            Button("Cancel", role: .cancel) {
+                isPresented.toggle()
+            }
         }
     }
 }
