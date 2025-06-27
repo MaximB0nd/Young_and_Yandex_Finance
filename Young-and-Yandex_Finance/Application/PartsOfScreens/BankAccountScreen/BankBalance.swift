@@ -12,8 +12,6 @@ struct BankBalance: View {
     let balance: Decimal
     let currency: String
     
-    @Environment(\.colorScheme) var colorScheme
-    
     @State var isHidden: Bool = true
     
     var body: some View {
@@ -22,15 +20,26 @@ struct BankBalance: View {
                 Text("💰")
                 Text("Баланс")
                     .padding(.trailing, 15)
+                    .foregroundStyle(.black)
                 HStack{
                     Spacer()
                     Text("\(balance.formatted())")
                     Text(currency)
                 }
-                .foregroundStyle(.white)
-                .background(.white)
-                .blur(radius: 5)
-                
+                .foregroundStyle(isHidden ? .white : .black)
+                .background(isHidden ? .white : .clear)
+                .blur(radius: isHidden ? 5 : 0)
+                .transition(.opacity)
+                .onReceive(NotificationCenter.default.publisher(for: .shakeNotification)) {_ in
+                    withAnimation(.bouncy) {
+                        isHidden.toggle()
+                    }
+                }
+                .onTapGesture {
+                    withAnimation(.bouncy) {
+                        isHidden.toggle()
+                    }
+                }
             }
         }
     }
