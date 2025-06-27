@@ -10,13 +10,12 @@ import SwiftUI
 struct StateBankAccountFlow: View {
     
     @Binding var mode: BankAccountFlowMode
-    @Binding var account: BankAccount?
-    @ObservedObject var bankAccountService: BankAccountsService
+    @ObservedObject var model: BankAccountFlowViewModel
     
     
     var body: some View {
         NavigationStack {
-            StateBankAccountScreen(account: $account)
+            StateBankAccountScreen(model: model)
                 .navigationTitle(Text("Мой счет"))
                 .toolbar {
                     ToolbarItem {
@@ -29,7 +28,7 @@ struct StateBankAccountFlow: View {
     
     var editButton: some View {
         Button {
-            withAnimation(.easeIn(duration: 0.2)) {
+            withAnimation(.easeIn(duration: 0.1)) {
                 self.mode = .edit
             }
         } label: {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditBankBalance: View {
     
-    @State var balance: Decimal
+    @Binding var balance: Decimal
     
     var body: some View {
         
@@ -19,13 +19,9 @@ struct EditBankBalance: View {
                 Spacer()
                 TextField(value: $balance, format: .number) {}
                     .keyboardType(.numbersAndPunctuation)
-                    .onSubmit {}
                     .submitLabel(.done)
                     .multilineTextAlignment(.trailing)
             }
             
     }
-}
-#Preview {
-    EditBankBalance(balance: 100)
 }

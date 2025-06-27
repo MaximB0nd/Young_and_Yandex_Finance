@@ -43,8 +43,8 @@ final class BankAccountsService: ObservableObject {
         return _accounts[index]
     }
     
-    // set new amount 
-    func changeBalance(id: Int, newName: String?, newBalance: Decimal?, newCurrency: String?) async throws {
+    @MainActor
+    func changeData(id: Int, newName: String? = nil, newBalance: Decimal? = nil, newCurrency: String? = nil) async throws {
         guard let index = _accounts.firstIndex(where: {$0.id == id}) else {
             throw BankAccountError.notFound
         }

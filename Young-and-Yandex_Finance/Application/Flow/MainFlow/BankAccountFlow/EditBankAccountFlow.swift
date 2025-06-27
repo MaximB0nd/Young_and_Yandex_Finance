@@ -10,8 +10,8 @@ import SwiftUI
 struct EditBankAccountFlow: View {
     
     @Binding var mode: BankAccountFlowMode
-    @Binding var account: BankAccount?
-    @ObservedObject var bankAccountService: BankAccountsService
+    @State var account: BankAccount
+    var model: BankAccountFlowViewModel
     
     var body: some View {
         NavigationStack {
@@ -27,7 +27,10 @@ struct EditBankAccountFlow: View {
     
     var saveButton: some View {
         Button {
-            withAnimation(.easeIn(duration: 0.2)) {
+            Task {
+                try await model.updateBankAccount(newValue: account)
+            }
+            withAnimation(.easeIn(duration: 0.1)) {
                 self.mode = .state
             }
         } label: {
@@ -35,6 +38,20 @@ struct EditBankAccountFlow: View {
                 .foregroundStyle(.people)
         }
         .buttonStyle(PlainButtonStyle())
+    }
+    
+    init(mode: Binding<BankAccountFlowMode>, model: BankAccountFlowViewModel) {
+        self._mode = mode
+        let prev = model.bankAccount
+        self.account = .init(
+            id: prev?.id ?? 0,
+            userId: prev?.userId ?? 0,
+            name: prev?.name ?? "",
+            balance: prev?.balance ?? 0,
+            currency: prev?.currency ?? "",
+            createdAt: prev?.createdAt ?? Date(),
+            updatedAt: prev?.updatedAt ?? Date())
+        self.model = model
     }
 }
 

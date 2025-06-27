@@ -11,13 +11,15 @@ enum BankAccountFlowMode {
     case loading
     case state
     case edit
+    case error
 }
 
 struct BankAccountFlow: View {
     
     @State var mode: BankAccountFlowMode = .loading
-    @ObservedObject var bankAccountService: BankAccountsService
-    @State var account: BankAccount?
+    var bankAccountService: BankAccountsService
+    
+    @ObservedObject var model: BankAccountFlowViewModel
     
     var body: some View {
         ZStack{
@@ -25,19 +27,39 @@ struct BankAccountFlow: View {
             case .loading:
                 LoadingView()
                     .transition(.opacity)
+                    .task {
+                        do {
+                            try await model.fetchBankAccounts()
+                            mode = .state
+                        } catch {
+                            mode = .error
+                        }
+                    }
                 
             case .state:
-                StateBankAccountFlow(mode: $mode, account: $account, bankAccountService: bankAccountService)
+                StateBankAccountFlow(mode: $mode, model: model)
                     .transition(.opacity)
-                
-                
+                    
             case .edit:
-                EditBankAccountFlow(mode: $mode, account: $account, bankAccountService: bankAccountService)
+                EditBankAccountFlow(mode: $mode, model: model)
                     .transition(.opacity)
+                
+            case .error:
+                ErrorScreen()
             }
-        }.task {
-            account = try? await bankAccountService.getAccount(id: 1)
-            mode = .state
         }
+        .refreshable {
+            Task {
+                try await model.fetchBankAccounts()
+            }
+            
+        }
+        
+        
+    }
+    
+    init(bankAccountService: BankAccountsService) {
+        self.bankAccountService = bankAccountService
+        self.model = .init(id: 1, bankService: bankAccountService)
     }
 }

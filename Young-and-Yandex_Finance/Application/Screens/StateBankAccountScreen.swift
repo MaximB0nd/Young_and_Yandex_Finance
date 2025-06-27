@@ -9,19 +9,19 @@ import SwiftUI
 
 struct StateBankAccountScreen: View {
     
-    @Binding var account: BankAccount?
+    @ObservedObject var model: BankAccountFlowViewModel
     
     var body: some View {
         List {
             Section {
-                BankBalance(balance: account!.balance, currency: account!.currencySymbol)
+                BankBalance(balance: model.bankAccount?.balance ?? 0, currency: model.bankAccount?.currencySymbol ?? "")
                     
             }
             .listRowBackground(Color.accent)
             
             
             Section {
-                BankCurrency(currency: account!.currencySymbol)
+                BankCurrency(currency: model.bankAccount?.currencySymbol ?? "")
             }
             .listRowBackground(Color.lightAccent)
                 
