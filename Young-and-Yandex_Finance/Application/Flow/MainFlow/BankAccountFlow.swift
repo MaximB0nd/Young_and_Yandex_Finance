@@ -39,22 +39,35 @@ struct BankAccountFlow: View {
             case .state:
                 StateBankAccountFlow(mode: $mode, model: model)
                     .transition(.opacity)
+                    .refreshable {
+                        Task {
+                            try await model.fetchBankAccounts()
+                        }
+                    }
                     
             case .edit:
                 EditBankAccountFlow(mode: $mode, model: model)
                     .transition(.opacity)
+                    
                 
             case .error:
                 ErrorScreen()
+                    .refreshable {
+                        Task {
+                            try await model.fetchBankAccounts()
+                        }
+                    }
             }
         }
-        .refreshable {
-            Task {
+        .task {
+            mode = .loading
+            do {
                 try await model.fetchBankAccounts()
+                mode = .state
+            } catch {
+                mode = .error
             }
-            
         }
-        
         
     }
     

@@ -21,6 +21,7 @@ struct EditBankBalance: View {
                     .keyboardType(.numbersAndPunctuation)
                     .submitLabel(.done)
                     .multilineTextAlignment(.trailing)
+                    .scrollDismissesKeyboard(.immediately)
             }
             
     }
