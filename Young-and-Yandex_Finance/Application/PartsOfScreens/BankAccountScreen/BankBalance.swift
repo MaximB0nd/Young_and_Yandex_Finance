@@ -28,7 +28,8 @@ struct BankBalance: View {
                 }
                 .foregroundStyle(isHidden ? .white : .black)
                 .background(isHidden ? .white : .clear)
-                .blur(radius: isHidden ? 5 : 0)
+                .clipShape(.capsule)
+                .blur(radius: isHidden ? 9 : 0)
                 .transition(.opacity)
                 .onReceive(NotificationCenter.default.publisher(for: .shakeNotification)) {_ in
                     withAnimation(.bouncy) {
