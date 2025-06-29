@@ -17,6 +17,8 @@ struct EditBankCurrency: View {
         currencyLine
             .confirmationDialog("Валюта", isPresented: $isPresented) {
                 EditBankCurrencyList(isPresented: $isPresented, selectedCurrency: Binding(get: {account.currency}, set: {account.currency = $0}))
+            } message: {
+                Text("Валюта")
             }
             .tint(.people)
     }
@@ -36,6 +38,11 @@ struct EditBankCurrency: View {
                 Spacer()
                 Text("\(account.currencySymbol)")
                     .foregroundStyle(colorScheme == .dark ? .white : .black)
+                Image(systemName: "chevron.right")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 10, height: 10)
+                    .foregroundStyle(.gray)
             }
         }
     }

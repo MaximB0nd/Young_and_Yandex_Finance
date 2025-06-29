@@ -20,6 +20,8 @@ struct EditBankCurrencyList: View {
     
     var body: some View {
         Group{
+            Button {} label: {}
+            
             ForEach(currencies.keys.sorted(), id: \.self) { key in
                 Button {
                     selectedCurrency = key
