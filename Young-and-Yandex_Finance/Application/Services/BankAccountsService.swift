@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class BankAccountsService {
+final class BankAccountsService: ObservableObject {
     
     private enum BankAccountError: Error {
         case notFound
@@ -15,7 +15,7 @@ final class BankAccountsService {
         case enotherError(code: Int, message: String)
     }
     
-    private var _accounts: [BankAccount]
+    @Published private(set) var _accounts: [BankAccount]
     
     // running init factory of accounts
     init () {
@@ -25,9 +25,9 @@ final class BankAccountsService {
                 .init(
                     id: i,
                     userId: i,
-                    name: "name \(i)",
+                    name: "Max",
                     balance: Decimal(i*100),
-                    currency: i % 2 == 0 ? "RUB" : "USD",
+                    currency: i % 2 == 0 ? "USD" : "RUB",
                     createdAt: Date.now,
                     updatedAt: Date.now)
             )
@@ -43,8 +43,8 @@ final class BankAccountsService {
         return _accounts[index]
     }
     
-    // set new amount 
-    func changeBalance(id: Int, newName: String?, newBalance: Decimal?, newCurrency: String?) async throws {
+    @MainActor
+    func changeData(id: Int, newName: String? = nil, newBalance: Decimal? = nil, newCurrency: String? = nil) async throws {
         guard let index = _accounts.firstIndex(where: {$0.id == id}) else {
             throw BankAccountError.notFound
         }

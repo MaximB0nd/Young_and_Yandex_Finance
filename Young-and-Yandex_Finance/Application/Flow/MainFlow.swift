@@ -17,42 +17,41 @@ enum TabBarFlow: Hashable {
 
 struct MainFlow: View {
     
-    @State var selection: TabBarFlow = .outcome
+    @State var selection: TabBarFlow = .account
     @StateObject var transactionService = TransactionsService()
+    @StateObject var backAccountService = BankAccountsService()
     
     var body: some View {
-        NavigationStack {
-            TabView(selection: $selection) {
-                
-                Tab(value: .outcome) {
-                    OutcomeFlow(transactionService: transactionService)
-                } label: {
-                    outcomeTabItem
-                }
-                
-                Tab(value: .income) {
-                    IncomeFlow(transactionService: transactionService)
-                } label: {
-                    incomeTabItem
-                }
-                
-                Tab(value: .account) {
-                    BankAccountFlow()
-                } label: {
-                    accountTabItem
-                }
-                
-                Tab(value: .articles) {
-                    ArticlesFlow()
-                } label: {
-                    articleTabItem
-                }
-                
-                Tab(value: .settings) {
-                    SettingsFlow()
-                } label: {
-                    settingsTabItem
-                }
+        TabView(selection: $selection) {
+            
+            Tab(value: .outcome) {
+                OutcomeFlow(transactionService: transactionService)
+            } label: {
+                outcomeTabItem
+            }
+            
+            Tab(value: .income) {
+                IncomeFlow(transactionService: transactionService)
+            } label: {
+                incomeTabItem
+            }
+            
+            Tab(value: .account) {
+                BankAccountFlow(bankAccountService: backAccountService)
+            } label: {
+                accountTabItem
+            }
+            
+            Tab(value: .articles) {
+                ArticlesFlow()
+            } label: {
+                articleTabItem
+            }
+            
+            Tab(value: .settings) {
+                SettingsFlow()
+            } label: {
+                settingsTabItem
             }
         }
     }

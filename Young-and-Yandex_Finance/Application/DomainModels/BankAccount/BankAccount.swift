@@ -15,4 +15,17 @@ struct BankAccount {
     var currency: String
     let createdAt: Date
     var updatedAt: Date
+    
+    var currencySymbol: String {
+        switch currency {
+        case "RUB":
+            return "₽"
+        case "EUR":
+            return "€"
+        case "USD":
+            return "$"
+        default:
+            return ""
+        }
+    }
 }

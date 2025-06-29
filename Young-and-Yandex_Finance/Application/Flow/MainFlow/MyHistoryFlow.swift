@@ -23,8 +23,6 @@ struct MyHistoryFlow: View {
                     }.tint(.people)
                 }
             }
-            .onAppear {
-                UIBarButtonItem.appearance().tintColor = .people
-            }
+            
     }
 }

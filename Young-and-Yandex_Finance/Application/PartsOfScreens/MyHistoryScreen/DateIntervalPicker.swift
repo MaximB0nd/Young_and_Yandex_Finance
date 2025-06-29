@@ -31,7 +31,7 @@ struct DateIntervalPicker: View {
             Text("Начало")
             Spacer()
             DatePicker(selection: $dateFrom, displayedComponents: .date) {}
-                .background(Color("DatePicker").clipShape(.buttonBorder))
+                .background(Color("LightAccent").clipShape(.buttonBorder))
         }
         .environment(\.colorScheme, .light)
     }
@@ -41,7 +41,7 @@ struct DateIntervalPicker: View {
             Text("Конец")
             Spacer()
             DatePicker(selection: $dateTo, displayedComponents: .date) {}
-                .background(Color("DatePicker").clipShape(.buttonBorder))
+                .background(Color("LightAccent").clipShape(.buttonBorder))
         }
         .environment(\.colorScheme, .light)
     }
