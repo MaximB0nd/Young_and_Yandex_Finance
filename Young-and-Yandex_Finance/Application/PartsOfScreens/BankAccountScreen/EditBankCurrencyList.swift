@@ -27,9 +27,6 @@ struct EditBankCurrencyList: View {
                     Text("\(key)  \(currencies[key] ?? "")")
                 }
             }
-            Button("Cancel", role: .cancel) {
-                isPresented.toggle()
-            }
         }
     }
 }

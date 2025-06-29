@@ -16,9 +16,9 @@ struct EditBankCurrency: View {
     var body: some View {
         currencyLine
             .confirmationDialog("Валюта", isPresented: $isPresented) {
-                EditBankCurrencyList(isPresented: $isPresented, selectedCurrency: Binding(get: {account.currency}, set: {account.currency = $0})
-                )
+                EditBankCurrencyList(isPresented: $isPresented, selectedCurrency: Binding(get: {account.currency}, set: {account.currency = $0}))
             }
+            .tint(.people)
     }
     
     var currencyLine: some View {
