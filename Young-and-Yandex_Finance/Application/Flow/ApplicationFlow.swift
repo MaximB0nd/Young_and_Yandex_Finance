@@ -10,6 +10,9 @@ import SwiftUI
 struct ApplicationFlow: View {
     var body: some View {
         MainFlow()
+            .onAppear {
+                UIBarButtonItem.appearance().tintColor = .people
+            }
     }
 }
 
