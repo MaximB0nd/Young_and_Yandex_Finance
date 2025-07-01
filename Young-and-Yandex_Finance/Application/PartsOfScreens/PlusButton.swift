@@ -10,7 +10,7 @@ import SwiftUI
 struct PlusButton: View {
     
     let direction: Direction
-    @ObservedObject var transactionService: TransactionsService
+    @StateObject var transactionService = TransactionsService.shared
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -31,7 +31,7 @@ struct PlusButton: View {
                             emoji: "🐕",
                             direction: direction),
                 amount: Decimal(Int.random(in: 1...10000)) + 0.7777777777,
-                transactionDate: Calendar.current.date(byAdding: .day, value: Int.random(in: -2...2), to: .now)!)
+                transactionDate: .now)
             }
         } label: {
             ZStack {

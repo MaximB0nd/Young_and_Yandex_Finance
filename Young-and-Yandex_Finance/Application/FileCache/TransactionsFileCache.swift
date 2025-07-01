@@ -9,6 +9,8 @@ import Foundation
 
 class TransactionsFileCache {
     
+    static var shared = TransactionsFileCache()
+    
     private enum FileCacheErrors: Error {
         case fileNotFound
         case decodingError(String)

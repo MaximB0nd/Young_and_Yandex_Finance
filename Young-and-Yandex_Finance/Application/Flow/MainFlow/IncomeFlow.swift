@@ -9,17 +9,17 @@ import SwiftUI
 
 struct IncomeFlow: View {
     
-    @ObservedObject var transactionService: TransactionsService
+    @StateObject var transactionService = TransactionsService.shared
     
     var body: some View {
         NavigationStack {
         
-            IncomeScreen(transactionService: transactionService)
+            IncomeScreen()
                 .navigationTitle("Доходы сегодня")
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         NavigationLink {
-                            MyHistoryFlow(direction: .income, transactionService: transactionService)
+                            MyHistoryFlow(direction: .income)
                                 .navigationTitle("Моя история")
                             
                         } label: {
@@ -28,8 +28,6 @@ struct IncomeFlow: View {
                         }
                     }
                 }
-            
-            
         }
     }
 }

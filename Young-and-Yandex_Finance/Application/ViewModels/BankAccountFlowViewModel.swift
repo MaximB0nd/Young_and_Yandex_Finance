@@ -7,15 +7,14 @@
 
 import Foundation
 
-class BankAccountFlowViewModel: ObservableObject {
+final class BankAccountFlowViewModel: ObservableObject {
     
     @Published private(set) var bankAccount: BankAccount?
     
-    let bankService: BankAccountsService
+    let bankService = BankAccountsService.shared
     let id: Int
     
-    init(id: Int, bankService: BankAccountsService) {
-        self.bankService = bankService
+    init(id: Int) {
         self.id = id
         Task {
             bankAccount = try await bankService.getAccount(id: id)

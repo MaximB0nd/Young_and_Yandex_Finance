@@ -73,6 +73,6 @@ struct BankAccountFlow: View {
     
     init(bankAccountService: BankAccountsService) {
         self.bankAccountService = bankAccountService
-        self.model = .init(id: 1, bankService: bankAccountService)
+        self.model = .init(id: 1)
     }
 }

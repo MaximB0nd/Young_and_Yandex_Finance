@@ -13,10 +13,9 @@ final class MyHistoryTransactionListViewModel {
     private(set) var currencySymbol: String = ""
     private var direction: Direction
     
-    var transactionService: TransactionsService
+    var transactionService = TransactionsService.shared
     
-    init(transactionService: TransactionsService, direction: Direction) {
-        self.transactionService = transactionService
+    init(direction: Direction) {
         self.direction = direction
     }
 
@@ -60,5 +59,4 @@ final class MyHistoryTransactionListViewModel {
     func presaveDate(date1: inout Date, date2: inout Date, closure: ((Date, Date) -> Bool)) {
         DateConverter.checkDate(date1: &date1, date2: &date2, closure: closure)
     }
-    
 }

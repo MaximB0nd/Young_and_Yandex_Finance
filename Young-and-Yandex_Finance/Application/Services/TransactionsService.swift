@@ -12,22 +12,15 @@ enum TransactionError: Error {
     case enotherError(code: Int, message: String)
 }
 
-@MainActor
 final class TransactionsService: ObservableObject {
     
+    static var shared = TransactionsService()
+    
     @Published private(set) var _transactions: [Transaction]
-    private let transactionFileCache = TransactionsFileCache()
+    private let transactionFileCache = TransactionsFileCache.shared
     private let filePath = "Y&Y_Finance-transactions.json"
     
-    func loadTransactions() {
-        Task {
-            try await Task.sleep(for: .seconds(1))
-            try transactionFileCache.load(paths: filePath)
-            _transactions = transactionFileCache.transactions
-        }
-    }
-    
-    init () {
+    private init () {
         do {
             try transactionFileCache.load(paths: filePath)
         } catch {
@@ -36,16 +29,28 @@ final class TransactionsService: ObservableObject {
         _transactions = transactionFileCache.transactions
     }
     
+    @MainActor
+    func loadTransactions() {
+        Task {
+            try await Task.sleep(for: .seconds(1))
+            try transactionFileCache.load(paths: filePath)
+            _transactions = transactionFileCache.transactions
+        }
+    }
+    
+    @MainActor
     func getTransactions(direction: Direction) -> [Transaction] {
         loadTransactions()
         return _transactions.filter({$0.category.direction == direction})
     }
     
+    @MainActor
     func getTransactions(from: Date, to: Date) async -> [Transaction] {
         loadTransactions()
         return _transactions.filter({$0.transactionDate >= from && $0.transactionDate <= to})
     }
     
+    @MainActor
     func createTransaction(account: Transaction.Account, category: Category, amount: Decimal, transactionDate: Date, comment: String? = nil) async throws {
         loadTransactions()
         let newId = (_transactions.map { $0.id }.max() ?? -1) + 1
@@ -63,6 +68,7 @@ final class TransactionsService: ObservableObject {
         try transactionFileCache.save(fileName: filePath)
     }
     
+    @MainActor
     func editTransaction(id: Int, newCategory: Category? = nil, newAmount: Decimal? = nil, newTransactionDate: Date? = nil, newComment: String? = nil) async throws {
         loadTransactions()
         guard let index = _transactions.firstIndex(where: { $0.id == id}) else {
@@ -92,6 +98,7 @@ final class TransactionsService: ObservableObject {
         try transactionFileCache.save(fileName: filePath)
     }
     
+    @MainActor
     func deleteTransaction(id: Int) async throws {
         loadTransactions()
         guard let index = _transactions.firstIndex(where: { $0.id == id }) else {

@@ -9,8 +9,8 @@ import SwiftUI
 
 struct OutcomeScreen: View {
     
-    @ObservedObject var transactionService: TransactionsService
-    @State var model: TodayTransactionListViewModel
+    @StateObject var transactionService = TransactionsService.shared
+    @State var model = TodayTransactionListViewModel(direction: .outcome)
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -25,18 +25,10 @@ struct OutcomeScreen: View {
                     await model.updateData()
                 }
             }
-            
-            PlusButton(direction: .outcome, transactionService: transactionService)
+            PlusButton(direction: .outcome)
                 .padding(26)
         }
     }
-    
-    init(transactionService: TransactionsService) {
-        self.transactionService = transactionService
-        self.model = .init(transactionService: transactionService, direction: .outcome)
-    }
-    
-    
 }
 
 

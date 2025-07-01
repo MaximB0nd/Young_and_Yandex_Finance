@@ -9,6 +9,8 @@ import Foundation
 
 final class BankAccountsService: ObservableObject {
     
+    static let shared = BankAccountsService()
+    
     private enum BankAccountError: Error {
         case notFound
         case updateFailed
@@ -18,7 +20,7 @@ final class BankAccountsService: ObservableObject {
     @Published private(set) var _accounts: [BankAccount]
     
     // running init factory of accounts
-    init () {
+    private init () {
         var accounts = [BankAccount]()
         for i in 1...10 {
             accounts.append(

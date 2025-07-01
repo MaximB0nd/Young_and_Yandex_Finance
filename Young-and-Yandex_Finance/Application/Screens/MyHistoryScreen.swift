@@ -9,8 +9,7 @@ import SwiftUI
 
 struct MyHistoryScreen: View {
     
-    let direction: Direction
-    @ObservedObject var transactionService: TransactionsService
+    @StateObject var transactionService = TransactionsService.shared
     
     @State var model: MyHistoryTransactionListViewModel
     @State var dateFrom: Date = DateConverter.previousMonth(date: .now)
@@ -49,9 +48,7 @@ struct MyHistoryScreen: View {
         }
     }
     
-    init(direction: Direction, transactionService: TransactionsService ) {
-        self.direction = direction
-        self.transactionService = transactionService
-        self.model = .init(transactionService: transactionService, direction: direction)
+    init(direction: Direction) {
+        self.model = .init(direction: direction)
     }
 }

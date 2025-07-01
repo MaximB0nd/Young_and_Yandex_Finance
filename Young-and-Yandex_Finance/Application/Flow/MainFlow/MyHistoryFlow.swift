@@ -10,10 +10,10 @@ import SwiftUI
 struct MyHistoryFlow: View {
     
     let direction: Direction
-    @ObservedObject var transactionService: TransactionsService
+    @StateObject var transactionService = TransactionsService.shared
     
     var body: some View {
-        MyHistoryScreen(direction: direction, transactionService: transactionService)
+        MyHistoryScreen(direction: direction)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {

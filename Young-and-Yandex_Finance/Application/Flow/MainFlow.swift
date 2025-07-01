@@ -18,20 +18,19 @@ enum TabBarFlow: Hashable {
 struct MainFlow: View {
     
     @State var selection: TabBarFlow = .account
-    @StateObject var transactionService = TransactionsService()
-    @StateObject var backAccountService = BankAccountsService()
+    @StateObject var backAccountService: BankAccountsService = .shared
     
     var body: some View {
         TabView(selection: $selection) {
             
             Tab(value: .outcome) {
-                OutcomeFlow(transactionService: transactionService)
+                OutcomeFlow()
             } label: {
                 outcomeTabItem
             }
             
             Tab(value: .income) {
-                IncomeFlow(transactionService: transactionService)
+                IncomeFlow()
             } label: {
                 incomeTabItem
             }
