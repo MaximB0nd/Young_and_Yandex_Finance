@@ -29,7 +29,7 @@ final class BankAccountsService {
                     id: i,
                     userId: i,
                     name: "Max",
-                    balance: Decimal(i*100),
+                    balance: Decimal(0),
                     currency: i % 2 == 0 ? "USD" : "RUB",
                     createdAt: Date.now,
                     updatedAt: Date.now)
