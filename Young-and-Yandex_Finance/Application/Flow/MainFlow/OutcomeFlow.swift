@@ -9,17 +9,14 @@ import SwiftUI
 
 struct OutcomeFlow: View {
     
-    @ObservedObject var transactionService: TransactionsService
-    
     var body: some View {
         NavigationStack {
-            
-            OutcomeScreen(transactionService: transactionService)
+            OutcomeScreen()
                 .navigationTitle(LocalizedStringKey("Расходы сегодня"))
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         NavigationLink {
-                            MyHistoryFlow(direction: .outcome, transactionService: transactionService)
+                            MyHistoryFlow(direction: .outcome)
                                 .navigationTitle("Моя история")
                             
                         } label: {
@@ -28,8 +25,6 @@ struct OutcomeFlow: View {
                         }
                     }
                 }
-            
-            
         }
     }
 }

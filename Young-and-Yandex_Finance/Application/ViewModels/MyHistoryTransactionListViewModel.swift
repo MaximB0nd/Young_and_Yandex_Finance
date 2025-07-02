@@ -7,16 +7,29 @@
 
 import Foundation
 
-final class MyHistoryTransactionListViewModel {
+@Observable
+final class MyHistoryTransactionListViewModel {    
+    
+    var dateFrom: Date = DateConverter.previousMonth(date: .now)
+    var dateTo: Date = DateConverter.endOfDay(.now)
+    var sortSelection: SortSelectionType = .none
+    
     private(set) var transactions: [Transaction] = []
     private(set) var sum: Decimal = 0
     private(set) var currencySymbol: String = ""
     private var direction: Direction
     
-    var transactionService: TransactionsService
+    var transactionService = TransactionsService.shared
     
-    init(transactionService: TransactionsService, direction: Direction) {
-        self.transactionService = transactionService
+    var getStartDateFrom: Date {
+        DateConverter.startOfDay(dateFrom)
+    }
+    
+    var getEndDateTo: Date {
+        DateConverter.endOfDay(dateTo)
+    }
+    
+    init(direction: Direction) {
         self.direction = direction
     }
 
@@ -57,8 +70,7 @@ final class MyHistoryTransactionListViewModel {
         await getCurrencySymbol()
     }
     
-    func presaveDate(date1: inout Date, date2: inout Date, closure: ((Date, Date) -> Bool)) {
+    static func presaveDate(date1: inout Date, date2: inout Date, closure: ((Date, Date) -> Bool)) {
         DateConverter.checkDate(date1: &date1, date2: &date2, closure: closure)
     }
-    
 }

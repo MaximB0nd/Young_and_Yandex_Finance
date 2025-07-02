@@ -9,49 +9,36 @@ import SwiftUI
 
 struct MyHistoryScreen: View {
     
-    let direction: Direction
-    @ObservedObject var transactionService: TransactionsService
-    
     @State var model: MyHistoryTransactionListViewModel
-    @State var dateFrom: Date = DateConverter.previousMonth(date: .now)
-    @State var dateTo: Date = DateConverter.endOfDay(.now)
-    @State var sortSelection: SortSelectionType = .none
     
     var body: some View {
         
         List{
-            DateIntervalPicker(model: model, dateFrom: $dateFrom, dateTo: $dateTo)
-            SortSelection(selection: $sortSelection)
+            DateIntervalPicker(dateFrom: $model.dateFrom, dateTo: $model.dateTo)
+            SortSelection(selection: $model.sortSelection)
             TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
         }
         .task {
-            await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
+            await model.updateData(from: model.getStartDateFrom, to: model.getEndDateTo, sort: model.sortSelection)
         }
-        .onChange(of: transactionService._transactions){
+        .onChange(of: model.sortSelection) {
             Task {
-                await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
+                await model.updateData(from: model.getStartDateFrom, to: model.getEndDateTo, sort: model.sortSelection)
             }
         }
-        .onChange(of: dateTo){
+        .onChange(of: model.dateTo) {
             Task {
-                await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
+                await model.updateData(from: model.getStartDateFrom, to: model.getEndDateTo, sort: model.sortSelection)
             }
         }
-        .onChange(of: dateFrom){
+        .onChange(of: model.dateFrom) {
             Task {
-                await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
-            }
-        }
-        .onChange(of: sortSelection) {
-            Task {
-                await model.updateData(from: dateFrom, to: dateTo, sort: sortSelection)
+                await model.updateData(from: model.getStartDateFrom, to: model.getEndDateTo, sort: model.sortSelection)
             }
         }
     }
     
-    init(direction: Direction, transactionService: TransactionsService ) {
-        self.direction = direction
-        self.transactionService = transactionService
-        self.model = .init(transactionService: transactionService, direction: direction)
+    init(direction: Direction) {
+        self.model = MyHistoryTransactionListViewModel(direction: direction)
     }
 }

@@ -7,17 +7,28 @@
 
 import Foundation
 
-enum TransactionError: Error {
-    case notFound
-    case enotherError(code: Int, message: String)
-}
-
-@MainActor
-final class TransactionsService: ObservableObject {
+@Observable
+final class TransactionsService{
     
-    @Published private(set) var _transactions: [Transaction]
-    private let transactionFileCache = TransactionsFileCache()
+    private enum TransactionError: Error {
+        case notFound
+        case enotherError(code: Int, message: String)
+    }
+    
+    static var shared = TransactionsService()
+    
+    private(set) var _transactions: [Transaction]
+    private let transactionFileCache = TransactionsFileCache.shared
     private let filePath = "Y&Y_Finance-transactions.json"
+    
+    private init () {
+        do {
+            try transactionFileCache.load(paths: filePath)
+        } catch {
+            _transactions = []
+        }
+        _transactions = transactionFileCache.transactions
+    }
     
     func loadTransactions() {
         Task {
@@ -25,15 +36,6 @@ final class TransactionsService: ObservableObject {
             try transactionFileCache.load(paths: filePath)
             _transactions = transactionFileCache.transactions
         }
-    }
-    
-    init () {
-        do {
-            try transactionFileCache.load(paths: filePath)
-        } catch {
-            _transactions = []
-        }
-        _transactions = transactionFileCache.transactions
     }
     
     func getTransactions(direction: Direction) -> [Transaction] {
@@ -57,8 +59,7 @@ final class TransactionsService: ObservableObject {
                                          comment: comment,
                                          createdAt: .now,
                                          updatedAt: .now)
-        DispatchQueue.main.async { self._transactions.append(newTransaction)
-        }
+        self._transactions.append(newTransaction)
         transactionFileCache.add(newTransaction)
         try transactionFileCache.save(fileName: filePath)
     }

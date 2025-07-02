@@ -7,11 +7,14 @@
 
 import Foundation
 
+@Observable
 final class CategoriesService {
+    
+    static let shared = CategoriesService()
     
     private var _categories: [Category]
     
-    init () {
+    private init () {
         var categories = [Category]()
         for i in 0..<100 {
             categories.append(.init(id: i, name: "Test \(i)", emoji: Character(String(i)), direction: i%2==0 ? .outcome : .outcome))

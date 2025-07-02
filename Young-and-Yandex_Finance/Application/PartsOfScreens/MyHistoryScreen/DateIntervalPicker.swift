@@ -9,7 +9,6 @@ import SwiftUI
 
 struct DateIntervalPicker: View {
     
-    let model: MyHistoryTransactionListViewModel
     @Binding var dateFrom: Date
     @Binding var dateTo: Date
     
@@ -18,11 +17,11 @@ struct DateIntervalPicker: View {
             dateFromPicker
             dateToPicker
         }
-        .onChange(of: dateTo) {
-            model.presaveDate(date1: &dateTo, date2: &dateFrom, closure: {$0 >= $1})
-        }
         .onChange(of: dateFrom) {
-            model.presaveDate(date1: &dateFrom, date2: &dateTo, closure: {$0 <= $1})
+            MyHistoryTransactionListViewModel.presaveDate(date1: &dateFrom, date2: &dateTo, closure: {$0 < $1})
+        }
+        .onChange(of: dateTo) {
+            MyHistoryTransactionListViewModel.presaveDate(date1: &dateTo, date2: &dateFrom, closure: {$0 > $1})
         }
     }
     

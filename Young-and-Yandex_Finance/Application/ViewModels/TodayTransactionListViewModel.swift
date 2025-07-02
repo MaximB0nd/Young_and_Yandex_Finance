@@ -16,10 +16,9 @@ final class TodayTransactionListViewModel {
     private(set) var currencySymbol: String = ""
     private var direction: Direction
 
-    var transactionService: TransactionsService
+    var transactionService = TransactionsService.shared
     
-    init(transactionService: TransactionsService, direction: Direction) {
-        self.transactionService = transactionService
+    init(direction: Direction) {
         self.direction = direction
     }
 

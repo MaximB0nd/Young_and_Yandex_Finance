@@ -17,9 +17,7 @@ enum BankAccountFlowMode {
 struct BankAccountFlow: View {
     
     @State var mode: BankAccountFlowMode = .loading
-    var bankAccountService: BankAccountsService
-    
-    @ObservedObject var model: BankAccountFlowViewModel
+    @State var model = BankAccountFlowViewModel.shared
     
     var body: some View {
         ZStack{
@@ -37,7 +35,7 @@ struct BankAccountFlow: View {
                     }
                 
             case .state:
-                StateBankAccountFlow(mode: $mode, model: model)
+                StateBankAccountFlow(mode: $mode)
                     .transition(.opacity)
                     .refreshable {
                         Task {
@@ -46,7 +44,7 @@ struct BankAccountFlow: View {
                     }
                     
             case .edit:
-                EditBankAccountFlow(mode: $mode, model: model)
+                EditBankAccountFlow(mode: $mode)
                     .transition(.opacity)
                     
                 
@@ -65,14 +63,10 @@ struct BankAccountFlow: View {
                 try await model.fetchBankAccounts()
                 mode = .state
             } catch {
+                print(error)
                 mode = .error
             }
         }
         
-    }
-    
-    init(bankAccountService: BankAccountsService) {
-        self.bankAccountService = bankAccountService
-        self.model = .init(id: 1, bankService: bankAccountService)
     }
 }
