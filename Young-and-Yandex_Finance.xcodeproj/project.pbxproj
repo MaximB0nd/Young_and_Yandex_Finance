@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0AC529C72E15E223009B1D80 /* FuzzySearch in Frameworks */ = {isa = PBXBuildFile; productRef = 0AC529C62E15E223009B1D80 /* FuzzySearch */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		0AB8C12D2DFADE9100461B01 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		0AB8C11F2DFADE8F00461B01 /* Young-and-Yandex_Finance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Young-and-Yandex_Finance.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB8C12C2DFADE9100461B01 /* Young-and-Yandex_FinanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Young-and-Yandex_FinanceTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB8C1362DFADE9100461B01 /* Young-and-Yandex_FinanceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Young-and-Yandex_FinanceUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AC529BF2E15D973009B1D80 /* FuzzySearch */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FuzzySearch; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -91,6 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AC529C72E15E223009B1D80 /* FuzzySearch in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,9 +120,11 @@
 		0AB8C1162DFADE8F00461B01 = {
 			isa = PBXGroup;
 			children = (
+				0AC529BF2E15D973009B1D80 /* FuzzySearch */,
 				0AB8C1212DFADE8F00461B01 /* Young-and-Yandex_Finance */,
 				0AB8C12F2DFADE9100461B01 /* Young-and-Yandex_FinanceTests */,
 				0AB8C1392DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */,
+				0AC529C52E15E223009B1D80 /* Frameworks */,
 				0AB8C1202DFADE8F00461B01 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -129,6 +137,13 @@
 				0AB8C1362DFADE9100461B01 /* Young-and-Yandex_FinanceUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		0AC529C52E15E223009B1D80 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,6 +166,7 @@
 			);
 			name = "Young-and-Yandex_Finance";
 			packageProductDependencies = (
+				0AC529C62E15E223009B1D80 /* FuzzySearch */,
 			);
 			productName = "Young-and-Yandex_Finance";
 			productReference = 0AB8C11F2DFADE8F00461B01 /* Young-and-Yandex_Finance.app */;
@@ -438,6 +454,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = FuzzySearch;
 				DEVELOPMENT_TEAM = NYVBARHQBM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -466,6 +483,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = FuzzySearch;
 				DEVELOPMENT_TEAM = NYVBARHQBM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -599,6 +617,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0AC529C62E15E223009B1D80 /* FuzzySearch */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FuzzySearch;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0AB8C1172DFADE8F00461B01 /* Project object */;
 }

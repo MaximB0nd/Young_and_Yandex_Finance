@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct ArticlesFlow: View {
+struct CategoryFlow: View {
     var body: some View {
-        Text("Some arcticles")
+        NavigationStack {
+            CategoryScreen()
+        }
     }
 }

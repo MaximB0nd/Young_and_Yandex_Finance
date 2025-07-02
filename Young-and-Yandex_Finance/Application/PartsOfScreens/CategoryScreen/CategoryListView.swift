@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CategoryList: View {
     
+    @State var searchText: String = ""
     let categories: [Category]
     
     var body: some View {
@@ -17,6 +18,7 @@ struct CategoryList: View {
                 CategoryView(category: category)
             }
         }
+        .searchable(text: $searchText)
     }
 }
 
