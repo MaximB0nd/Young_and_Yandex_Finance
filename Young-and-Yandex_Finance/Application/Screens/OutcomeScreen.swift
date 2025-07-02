@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OutcomeScreen: View {
     
-    @StateObject var transactionService = TransactionsService.shared
+    @State var transactionService = TransactionsService.shared
     @State var model = TodayTransactionListViewModel(direction: .outcome)
     
     var body: some View {

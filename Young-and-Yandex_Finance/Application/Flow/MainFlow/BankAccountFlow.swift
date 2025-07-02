@@ -17,9 +17,7 @@ enum BankAccountFlowMode {
 struct BankAccountFlow: View {
     
     @State var mode: BankAccountFlowMode = .loading
-    var bankAccountService: BankAccountsService
-    
-    @ObservedObject var model: BankAccountFlowViewModel
+    @State var model = BankAccountFlowViewModel.shared
     
     var body: some View {
         ZStack{
@@ -69,10 +67,5 @@ struct BankAccountFlow: View {
             }
         }
         
-    }
-    
-    init(bankAccountService: BankAccountsService) {
-        self.bankAccountService = bankAccountService
-        self.model = .init(id: 1)
     }
 }

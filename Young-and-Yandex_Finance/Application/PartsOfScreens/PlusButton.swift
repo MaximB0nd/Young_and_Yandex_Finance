@@ -10,7 +10,7 @@ import SwiftUI
 struct PlusButton: View {
     
     let direction: Direction
-    @StateObject var transactionService = TransactionsService.shared
+    let transactionService = TransactionsService.shared
     
     @Environment(\.colorScheme) var colorScheme
     

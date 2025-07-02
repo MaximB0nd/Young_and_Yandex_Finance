@@ -9,11 +9,8 @@ import SwiftUI
 
 struct IncomeFlow: View {
     
-    @StateObject var transactionService = TransactionsService.shared
-    
     var body: some View {
         NavigationStack {
-        
             IncomeScreen()
                 .navigationTitle("Доходы сегодня")
                 .toolbar {

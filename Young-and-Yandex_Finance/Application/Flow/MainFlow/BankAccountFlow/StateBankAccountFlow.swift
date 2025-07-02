@@ -10,7 +10,7 @@ import SwiftUI
 struct StateBankAccountFlow: View {
     
     @Binding var mode: BankAccountFlowMode
-    @ObservedObject var model: BankAccountFlowViewModel
+    @State var model: BankAccountFlowViewModel
     
     
     var body: some View {

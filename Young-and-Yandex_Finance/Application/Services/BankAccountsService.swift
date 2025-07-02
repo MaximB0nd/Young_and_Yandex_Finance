@@ -7,7 +7,8 @@
 
 import Foundation
 
-final class BankAccountsService: ObservableObject {
+@Observable
+final class BankAccountsService {
     
     static let shared = BankAccountsService()
     
@@ -17,7 +18,7 @@ final class BankAccountsService: ObservableObject {
         case enotherError(code: Int, message: String)
     }
     
-    @Published private(set) var _accounts: [BankAccount]
+    private(set) var _accounts: [BankAccount]
     
     // running init factory of accounts
     private init () {

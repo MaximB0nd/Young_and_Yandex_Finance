@@ -7,6 +7,7 @@
 
 import Foundation
 
+@Observable
 final class CategoriesService {
     
     static let shared = CategoriesService()

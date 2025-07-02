@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StateBankAccountScreen: View {
     
-    @ObservedObject var model: BankAccountFlowViewModel
+    @State var model: BankAccountFlowViewModel
     
     var body: some View {
         List {

@@ -10,7 +10,7 @@ import SwiftUI
 struct MyHistoryFlow: View {
     
     let direction: Direction
-    @StateObject var transactionService = TransactionsService.shared
+    @State var transactionService = TransactionsService.shared
     
     var body: some View {
         MyHistoryScreen(direction: direction)
