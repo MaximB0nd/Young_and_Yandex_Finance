@@ -10,12 +10,10 @@ import SwiftUI
 struct StateBankAccountFlow: View {
     
     @Binding var mode: BankAccountFlowMode
-    @State var model: BankAccountFlowViewModel
-    
     
     var body: some View {
         NavigationStack {
-            StateBankAccountScreen(model: model)
+            StateBankAccountScreen()
                 .navigationTitle(Text("Мой счет"))
                 .toolbar {
                     ToolbarItem {

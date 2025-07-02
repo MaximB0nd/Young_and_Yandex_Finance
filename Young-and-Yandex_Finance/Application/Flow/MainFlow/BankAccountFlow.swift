@@ -35,7 +35,7 @@ struct BankAccountFlow: View {
                     }
                 
             case .state:
-                StateBankAccountFlow(mode: $mode, model: model)
+                StateBankAccountFlow(mode: $mode)
                     .transition(.opacity)
                     .refreshable {
                         Task {
@@ -44,7 +44,7 @@ struct BankAccountFlow: View {
                     }
                     
             case .edit:
-                EditBankAccountFlow(mode: $mode, model: model)
+                EditBankAccountFlow(mode: $mode)
                     .transition(.opacity)
                     
                 
@@ -63,6 +63,7 @@ struct BankAccountFlow: View {
                 try await model.fetchBankAccounts()
                 mode = .state
             } catch {
+                print(error)
                 mode = .error
             }
         }

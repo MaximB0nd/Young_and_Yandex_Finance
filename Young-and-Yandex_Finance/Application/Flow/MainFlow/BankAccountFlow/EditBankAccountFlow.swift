@@ -11,7 +11,7 @@ struct EditBankAccountFlow: View {
     
     @Binding var mode: BankAccountFlowMode
     @State var account: BankAccount
-    var model: BankAccountFlowViewModel
+    @State var model = BankAccountFlowViewModel.shared
     
     var body: some View {
         NavigationStack {
@@ -40,8 +40,9 @@ struct EditBankAccountFlow: View {
         .buttonStyle(PlainButtonStyle())
     }
     
-    init(mode: Binding<BankAccountFlowMode>, model: BankAccountFlowViewModel) {
+    init(mode: Binding<BankAccountFlowMode>) {
         self._mode = mode
+        let model = BankAccountFlowViewModel.shared
         let prev = model.bankAccount
         self.account = .init(
             id: prev?.id ?? 0,
@@ -51,7 +52,6 @@ struct EditBankAccountFlow: View {
             currency: prev?.currency ?? "",
             createdAt: prev?.createdAt ?? Date(),
             updatedAt: prev?.updatedAt ?? Date())
-        self.model = model
     }
 }
 
