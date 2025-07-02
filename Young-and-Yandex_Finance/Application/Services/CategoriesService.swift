@@ -22,7 +22,7 @@ final class CategoriesService {
         _categories = categories
     }
     
-    func gelAll() async -> [Category] {
+    func getAll() async -> [Category] {
         return _categories
     }
     
