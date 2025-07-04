@@ -38,16 +38,11 @@ final class CategoryViewModel: Sendable {
     }
     
     func fuzzySearch(for text: String) async {
-        var allCat = await getCategories()
+        let allCat = await getCategories()
         let resultsIndexes = await fuse.search(text, in: allCat, by: \.propertiesCustomWeight).map({$0.index})
         
-        for index in stride(from: allCat.count-1, through: 0, by: -1)  {
-            if !resultsIndexes.contains(index) {
-                allCat.remove(at: index)
-            }
-        }
         DispatchQueue.main.async {
-            self.categories = allCat
+            self.categories = resultsIndexes.map {allCat[$0]}
         }
     }
 }
