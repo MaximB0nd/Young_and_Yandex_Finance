@@ -41,7 +41,7 @@ struct MainFlow: View {
             }
             
             Tab(value: .articles) {
-                ArticlesFlow()
+                CategoryFlow()
             } label: {
                 articleTabItem
             }

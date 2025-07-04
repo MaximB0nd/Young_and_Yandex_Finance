@@ -7,7 +7,8 @@
 
 import Foundation
 
-enum Direction: Codable {
-    case income
-    case outcome
+enum Direction: String, Codable, CaseIterable, Identifiable {
+    case income = "Доходы"
+    case outcome = "Расходы"
+    var id: Self { self }
 }

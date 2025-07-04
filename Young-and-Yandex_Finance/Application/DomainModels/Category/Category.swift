@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Ifrit
 
-struct Category {
+struct Category: Identifiable {
     let id: Int
     let name: String
     let emoji: Character
@@ -18,5 +19,13 @@ struct Category {
         self.name = name
         self.emoji = emoji
         self.direction = direction
+    }
+}
+
+extension Category: Searchable {
+    var propertiesCustomWeight: [FuseProp] {
+        return [
+            FuseProp(name, weight: 1)
+        ]
     }
 }
