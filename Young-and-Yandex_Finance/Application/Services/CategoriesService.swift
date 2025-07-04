@@ -16,9 +16,13 @@ final class CategoriesService {
     
     private init () {
         var categories = [Category]()
-        for i in 0..<100 {
-            categories.append(.init(id: i, name: "Test \(i)", emoji: "❤️", direction: i%2==0 ? .income : .outcome))
-        }
+        categories.append(.init(id: 1, name: "Аренда квартиры", emoji: "🏠", direction: .outcome))
+        categories.append(.init(id: 2, name: "Одежда", emoji: "👔", direction: .outcome))
+        categories.append(.init(id: 3, name: "На собачку", emoji: "🐕", direction: .outcome))
+        categories.append(.init(id: 4, name: "Ремонт квартиры", emoji: "🔨", direction: .outcome))
+        categories.append(.init(id: 5, name: "Ремонт дома", emoji: "🏠", direction: .outcome))
+        categories.append(.init(id: 6, name: "Зарплата", emoji: "💰", direction: .income))
+        categories.append(.init(id: 7, name: "Сдача квартиры", emoji: "🏠", direction: .income))
         _categories = categories
     }
     

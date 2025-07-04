@@ -11,6 +11,7 @@ struct CategoryFlow: View {
     var body: some View {
         NavigationStack {
             CategoryScreen()
+                .navigationTitle(Text("Мои статьи"))
         }
     }
 }

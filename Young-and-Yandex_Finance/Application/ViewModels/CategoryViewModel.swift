@@ -21,15 +21,19 @@ class CategoryViewModel {
         }
     }
     
-    func getCategories(by direction: Direction) async {
-        categories = await categotyService.getByDirection(direction)
+    func getCategories() async {
+        categories = await categotyService.getAll()
     }
     
-    func onSearchTextChanged(_ text: String, orBy direction: Direction) async {
-        text.isEmpty ? await fuzzySearch(for: text) : await categotyService.getByDirection(direction)
+    func onSearchTextChanged(_ text: String) async {
+        if text.isEmpty {
+            await getCategories()
+        } else {
+            await fuzzySearch(for: text)
+        }
     }
     
     func fuzzySearch(for text: String) async {
-        
+        categories = await categotyService.getAll().fuzzySearch(searchString: text) ?? []
     }
 }

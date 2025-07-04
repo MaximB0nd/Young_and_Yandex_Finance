@@ -9,7 +9,8 @@ import SwiftUI
 
 struct CategoryList: View {
     
-    @State var searchText: String = ""
+    @Binding var searchText: String
+    let model = CategoryViewModel.shared
     let categories: [Category]
     
     var body: some View {
@@ -21,5 +22,3 @@ struct CategoryList: View {
         .searchable(text: $searchText)
     }
 }
-
-

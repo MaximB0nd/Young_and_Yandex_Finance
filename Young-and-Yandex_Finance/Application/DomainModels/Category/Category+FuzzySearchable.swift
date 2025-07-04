@@ -8,7 +8,7 @@
 import Foundation
 import FuzzySearch
 
-extension Category: FuzzySearchable  {
+extension Category: LevenshteinSearchable  {
     var searchableString: String {
         name
     }

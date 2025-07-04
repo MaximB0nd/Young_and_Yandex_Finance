@@ -10,16 +10,18 @@ import SwiftUI
 struct CategoryScreen: View {
     
     @State var model = CategoryViewModel.shared
-    @State var direction: Direction = .income
+    @State var searchText: String = ""
     
     var body: some View {
-        VStack{
-            DirectionPicker(selectedDirection: $direction)
-            CategoryList(categories: model.categories)
+        VStack (spacing: 0){
+            CategoryList(searchText: $searchText, categories: model.categories)
         }
-        .onChange(of: direction) {
+        .task {
+            await model.onSearchTextChanged(searchText)
+        }
+        .onChange(of: searchText) {
             Task {
-                await model.getCategories(by: direction)
+                await model.onSearchTextChanged(searchText)
             }
         }
     }
