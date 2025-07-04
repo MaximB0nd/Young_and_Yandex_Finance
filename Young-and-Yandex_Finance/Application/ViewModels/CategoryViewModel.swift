@@ -34,6 +34,6 @@ class CategoryViewModel {
     }
     
     func fuzzySearch(for text: String) async {
-        categories = await categotyService.getAll().fuzzySearch(searchString: text) ?? []
+        //categories = await categotyService.getAll().fuzzySearch(searchString: text) ?? []
     }
 }
