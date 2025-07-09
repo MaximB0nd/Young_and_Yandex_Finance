@@ -1,0 +1,15 @@
+{
+  "originHash" : "16d0d6bd09ead7a714440dbb82a177b4c4645e1b8685957dfa8b97089bdbb473",
+  "pins" : [
+    {
+      "identity" : "fuzzysearch",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MaximB0nd/FuzzySearch",
+      "state" : {
+        "branch" : "main",
+        "revision" : "fe253714ea740cece83fe31dbd65504357aaf238"
+      }
+    }
+  ],
+  "version" : 3
+}
