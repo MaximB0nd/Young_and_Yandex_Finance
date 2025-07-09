@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import FuzzySearch
 
-struct Category {
+struct Category: Identifiable {
     let id: Int
     let name: String
     let emoji: Character
@@ -18,5 +19,11 @@ struct Category {
         self.name = name
         self.emoji = emoji
         self.direction = direction
+    }
+}
+
+extension Category: FuzzySearchable {
+    var searchableName: String {
+        name
     }
 }
