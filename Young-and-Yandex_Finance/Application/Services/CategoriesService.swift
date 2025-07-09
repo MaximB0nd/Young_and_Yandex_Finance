@@ -14,7 +14,7 @@ final class CategoriesService {
     
     private var _categories: [Category]
     
-    private init () {        
+    private init () {
         
         let categoryCreation = [
             Category(id: 1, name: "Зарплата", emoji: "💰", direction: .income),
