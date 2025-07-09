@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Ifrit
+import FuzzySearch
 
 struct Category: Identifiable {
     let id: Int
@@ -22,10 +22,8 @@ struct Category: Identifiable {
     }
 }
 
-extension Category: Searchable {
-    var propertiesCustomWeight: [FuseProp] {
-        return [
-            FuseProp(name, weight: 1)
-        ]
+extension Category: FuzzySearchable {
+    var searchableName: String {
+        name
     }
 }

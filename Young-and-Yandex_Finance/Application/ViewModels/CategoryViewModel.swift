@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Ifrit
 
 @Observable
 final class CategoryViewModel: Sendable {
@@ -15,7 +14,6 @@ final class CategoryViewModel: Sendable {
     
     var categories: [Category] = []
     let categotyService = CategoriesService.shared
-    let fuse = Fuse()
     
     init() {
         Task {
@@ -38,11 +36,6 @@ final class CategoryViewModel: Sendable {
     }
     
     func fuzzySearch(for text: String) async {
-        let allCat = await getCategories()
-        let resultsIndexes = await fuse.search(text, in: allCat, by: \.propertiesCustomWeight).map({$0.index})
-        
-        DispatchQueue.main.async {
-            self.categories = resultsIndexes.map {allCat[$0]}
-        }
+        categories = await getCategories().fuzzySearch(input: text, maxWeightDistance: 6, minContains: 1)
     }
 }

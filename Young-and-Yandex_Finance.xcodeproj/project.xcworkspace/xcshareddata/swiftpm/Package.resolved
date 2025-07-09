@@ -1,13 +1,13 @@
 {
-  "originHash" : "f2792c7b9234fba380a1581df405e3291176867111e45a395fd4aa474bb67b4f",
+  "originHash" : "16d0d6bd09ead7a714440dbb82a177b4c4645e1b8685957dfa8b97089bdbb473",
   "pins" : [
     {
-      "identity" : "ifrit",
+      "identity" : "fuzzysearch",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ukushu/Ifrit.git",
+      "location" : "https://github.com/MaximB0nd/FuzzySearch",
       "state" : {
         "branch" : "main",
-        "revision" : "5cb8badc28c7a4b7f59a05b8f0da37c363d25b6a"
+        "revision" : "fe253714ea740cece83fe31dbd65504357aaf238"
       }
     }
   ],

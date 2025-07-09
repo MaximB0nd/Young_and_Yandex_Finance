@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A92542A2E1803AD00663C1F /* Ifrit in Frameworks */ = {isa = PBXBuildFile; productRef = 0A9254292E1803AD00663C1F /* Ifrit */; };
-		0A9254322E1810C900663C1F /* Ifrit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 0A9254292E1803AD00663C1F /* Ifrit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		0ADDA6932E1EC38900C5557B /* FuzzySearch in Frameworks */ = {isa = PBXBuildFile; productRef = 0ADDA6922E1EC38900C5557B /* FuzzySearch */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +34,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0A9254322E1810C900663C1F /* Ifrit in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,7 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A92542A2E1803AD00663C1F /* Ifrit in Frameworks */,
+				0ADDA6932E1EC38900C5557B /* FuzzySearch in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,7 +178,7 @@
 			);
 			name = "Young-and-Yandex_Finance";
 			packageProductDependencies = (
-				0A9254292E1803AD00663C1F /* Ifrit */,
+				0ADDA6922E1EC38900C5557B /* FuzzySearch */,
 			);
 			productName = "Young-and-Yandex_Finance";
 			productReference = 0AB8C11F2DFADE8F00461B01 /* Young-and-Yandex_Finance.app */;
@@ -267,7 +265,7 @@
 			mainGroup = 0AB8C1162DFADE8F00461B01;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				0A9254282E1803AD00663C1F /* XCRemoteSwiftPackageReference "Ifrit" */,
+				0ADDA6912E1EC38900C5557B /* XCRemoteSwiftPackageReference "FuzzySearch" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0AB8C1202DFADE8F00461B01 /* Products */;
@@ -634,9 +632,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0A9254282E1803AD00663C1F /* XCRemoteSwiftPackageReference "Ifrit" */ = {
+		0ADDA6912E1EC38900C5557B /* XCRemoteSwiftPackageReference "FuzzySearch" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ukushu/Ifrit.git";
+			repositoryURL = "https://github.com/MaximB0nd/FuzzySearch";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -645,10 +643,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0A9254292E1803AD00663C1F /* Ifrit */ = {
+		0ADDA6922E1EC38900C5557B /* FuzzySearch */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0A9254282E1803AD00663C1F /* XCRemoteSwiftPackageReference "Ifrit" */;
-			productName = Ifrit;
+			package = 0ADDA6912E1EC38900C5557B /* XCRemoteSwiftPackageReference "FuzzySearch" */;
+			productName = FuzzySearch;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
