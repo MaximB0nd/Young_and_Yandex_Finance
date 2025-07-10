@@ -9,6 +9,8 @@ import SwiftUI
 
 struct PlusButton: View {
     
+    @Binding var isPressed: Bool
+    
     let direction: Direction
     let transactionService = TransactionsService.shared
     
@@ -16,22 +18,8 @@ struct PlusButton: View {
     
     var body: some View {
         Button {
-            Task{
-                try! await transactionService.createTransaction(
-                account:
-                        .init(
-                            id: 1,
-                            name: "Max",
-                            balance: 1000,
-                            currency: "RUB"),
-                category:
-                        .init(
-                            id: 1,
-                            name: "Inding",
-                            emoji: "🐕",
-                            direction: direction),
-                amount: Decimal(Int.random(in: 1...10000)) + 0.7777777777,
-                transactionDate: .now)
+            withAnimation {
+                isPressed = true
             }
         } label: {
             ZStack {

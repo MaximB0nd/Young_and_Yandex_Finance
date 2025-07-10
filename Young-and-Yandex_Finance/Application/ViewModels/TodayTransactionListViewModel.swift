@@ -14,13 +14,11 @@ final class TodayTransactionListViewModel {
     private(set) var transactions: [Transaction] = []
     private(set) var sum: Decimal = 0
     private(set) var currencySymbol: String = ""
-    private var direction: Direction
 
     var transactionService = TransactionsService.shared
     
-    init(direction: Direction) {
-        self.direction = direction
-    }
+    static var shared = TodayTransactionListViewModel()
+    private init() {}
 
     func getTransactions(by direction: Direction) async {
         let today = DateConverter.startOfDay(.now)
@@ -36,7 +34,7 @@ final class TodayTransactionListViewModel {
         currencySymbol = transactions.count > 0 ? transactions[0].account.currencySymbol : ""
     }
     
-    func updateData() async {
+    func updateData(by direction: Direction) async {
         await getTransactions(by: direction)
         await getSum()
         await getCurrencySymbol()

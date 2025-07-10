@@ -9,22 +9,27 @@ import SwiftUI
 
 struct IncomeFlow: View {
     
+    @State var createIncome: Bool = false
+
     var body: some View {
-        NavigationStack {
-            IncomeScreen()
-                .navigationTitle("Доходы сегодня")
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink {
-                            MyHistoryFlow(direction: .income)
-                                .navigationTitle("Моя история")
-                            
-                        } label: {
-                            Image(systemName: "clock")
-                                .foregroundStyle(.people)
+        if createIncome {
+            CreateTransactionFlow(isOpen: $createIncome, direction: .income)
+        } else {
+            NavigationStack {
+                IncomeScreen(createIncome: $createIncome)
+                    .navigationTitle("Доходы сегодня")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            NavigationLink {
+                                MyHistoryFlow(direction: .income)
+                                    .navigationTitle("Моя история")
+                            } label: {
+                                Image(systemName: "clock")
+                                    .foregroundStyle(.people)
+                            }
                         }
                     }
-                }
+            }
         }
     }
 }
