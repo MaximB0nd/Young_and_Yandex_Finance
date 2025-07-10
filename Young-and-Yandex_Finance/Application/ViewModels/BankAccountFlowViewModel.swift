@@ -11,13 +11,7 @@ import SwiftUI
 @Observable
 final class BankAccountFlowViewModel {
     
-    enum LazyLoading {
-        case noninitialized
-        case initialized(BankAccountFlowViewModel)
-    }
     
-    static private var lazyLoading: LazyLoading = .noninitialized
-    static var id = 1
     
     static var shared = BankAccountFlowViewModel()
     

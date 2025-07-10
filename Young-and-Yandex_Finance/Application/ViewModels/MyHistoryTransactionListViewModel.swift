@@ -8,8 +8,8 @@
 import Foundation
 
 @Observable
-final class MyHistoryTransactionListViewModel {    
-    
+final class MyHistoryTransactionListViewModel: TransactionListnerProtocol {
+
     var dateFrom: Date = DateConverter.previousMonth(date: .now)
     var dateTo: Date = DateConverter.endOfDay(.now)
     var sortSelection: SortSelectionType = .none
@@ -31,6 +31,7 @@ final class MyHistoryTransactionListViewModel {
     
     init(direction: Direction) {
         self.direction = direction
+        TransactionsService.subscribe(listener: self)
     }
 
     func sortByDate(_ transactions: [Transaction]) -> [Transaction] {
@@ -64,8 +65,8 @@ final class MyHistoryTransactionListViewModel {
         currencySymbol = transactions.count > 0 ? transactions[0].account.currencySymbol : ""
     }
     
-    func updateData(from date1: Date, to date2: Date, sort by: SortSelectionType?) async {
-        await getTransactions(from: date1, to: date2, by: direction, sortBy: by)
+    func updateTransactions() async {
+        await getTransactions(from: dateFrom, to: dateTo, by: direction, sortBy: sortSelection)
         await getSum()
         await getCurrencySymbol()
     }

@@ -10,7 +10,7 @@ import SwiftUI
 struct IncomeScreen: View {
     
     @State var transactionService = TransactionsService.shared
-    @State var model = TodayTransactionListViewModel.shared
+    @State var model = TodayTransactionListViewModel.sharedIncome
     
     @Binding var createIncome: Bool
     
@@ -24,13 +24,11 @@ struct IncomeScreen: View {
                 )
             }
             .task {
-                print("task")
-                await model.updateData(by: .income)
+                await model.updateData()
             }
             .onChange(of: transactionService._transactions){
-                print("change")
                 Task {
-                    await model.updateData(by: .income)
+                    await model.updateData()
                 }
             }
             PlusButton(isPressed: $createIncome, direction: .income)

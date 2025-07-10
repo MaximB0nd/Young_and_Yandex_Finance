@@ -10,7 +10,7 @@ import SwiftUI
 struct OutcomeScreen: View {
     
     @State var transactionService = TransactionsService.shared
-    @State var model = TodayTransactionListViewModel.shared
+    @State var model = TodayTransactionListViewModel.sharedOutcome
     
     @State var createOutcome = false
     
@@ -20,11 +20,11 @@ struct OutcomeScreen: View {
                 TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
             }
             .task {
-                await model.updateData(by: .outcome)
+                await model.updateData()
             }
             .onChange(of: transactionService._transactions){
                 Task {
-                    await model.updateData(by: .outcome)
+                    await model.updateData()
                 }
             }
             PlusButton(isPressed: $createOutcome, direction: .outcome)

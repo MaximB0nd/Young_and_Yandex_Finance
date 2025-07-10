@@ -7,8 +7,14 @@
 
 import Foundation
 
+struct TransactionListner {
+    weak var listner: TransactionListnerProtocol?
+}
+
 @Observable
 final class TransactionsService{
+    
+    private static var _subscribers: [TransactionListner] = []
     
     private enum TransactionError: Error {
         case notFound
@@ -62,6 +68,7 @@ final class TransactionsService{
         self._transactions.append(newTransaction)
         transactionFileCache.add(newTransaction)
         try transactionFileCache.save(fileName: filePath)
+        await notifySubscribers()
     }
     
     func editTransaction(id: Int, newCategory: Category? = nil, newAmount: Decimal? = nil, newTransactionDate: Date? = nil, newComment: String? = nil) async throws {
@@ -91,6 +98,7 @@ final class TransactionsService{
         transactionFileCache.delete(id: id)
         transactionFileCache.add(_transactions[index])
         try transactionFileCache.save(fileName: filePath)
+        await notifySubscribers()
     }
     
     func deleteTransaction(id: Int) async throws {
@@ -101,5 +109,16 @@ final class TransactionsService{
         _transactions.remove(at: index)
         transactionFileCache.delete(id: id)
         try transactionFileCache.save(fileName: filePath)
+        await notifySubscribers()
+    }
+    
+    static func subscribe(listener: TransactionListnerProtocol) {
+        _subscribers.append(TransactionListner(listner: listener))
+    }
+    
+    func notifySubscribers() async {
+        for subscriber in Self._subscribers {
+            await subscriber.listner?.updateTransactions()
+        }
     }
 }

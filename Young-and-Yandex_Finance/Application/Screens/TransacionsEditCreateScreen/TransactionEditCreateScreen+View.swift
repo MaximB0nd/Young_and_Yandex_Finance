@@ -22,7 +22,17 @@ extension TransacionsEditCreateScreen: View {
                         Text("Отмена")
                     }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        
+                    } label : {
+                        Text("Сохранить")
+                    }
+                }
             }
+        }
+        .onDisappear {
+            isOpen = false
         }
     }
 }

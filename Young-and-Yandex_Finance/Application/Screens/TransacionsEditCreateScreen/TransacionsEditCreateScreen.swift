@@ -11,8 +11,9 @@ struct TransacionsEditCreateScreen {
     
     @Binding var isOpen: Bool
     
+    @State var model: TodayTransactionListViewModel
+    
     let id: Int?
-    let direction: Direction
     var category: Category?
     var amount: Decimal
     var transactionDate: Date
@@ -22,7 +23,6 @@ struct TransacionsEditCreateScreen {
     
     init(direction: Direction, isOpen: Binding<Bool>) {
         self.id = nil
-        self.direction = direction
         self.category = nil
         self.amount = 0
         self.transactionDate = Date()
@@ -30,11 +30,12 @@ struct TransacionsEditCreateScreen {
         
         self.isEdit = false
         self._isOpen = isOpen
+        
+        self.model = direction == .income ? .sharedIncome : .sharedOutcome
     }
     
     init(transaction: Transaction, isOpen: Binding<Bool>) {
         self.id = transaction.id
-        self.direction = transaction.category.direction
         self.amount = transaction.amount
         self.category = transaction.category
         self.comment = transaction.comment ?? ""
@@ -42,6 +43,7 @@ struct TransacionsEditCreateScreen {
         
         self.isEdit = true
         self._isOpen = isOpen
+        self.model = transaction.category.direction == .income ? .sharedIncome : .sharedOutcome
     }
     
     
