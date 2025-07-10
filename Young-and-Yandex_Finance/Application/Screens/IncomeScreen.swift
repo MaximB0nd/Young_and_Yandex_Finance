@@ -24,11 +24,11 @@ struct IncomeScreen: View {
                 )
             }
             .task {
-                await model.updateData()
+                await model.updateTransactions()
             }
             .onChange(of: transactionService._transactions){
                 Task {
-                    await model.updateData()
+                    await model.updateTransactions()
                 }
             }
             PlusButton(isPressed: $createIncome, direction: .income)

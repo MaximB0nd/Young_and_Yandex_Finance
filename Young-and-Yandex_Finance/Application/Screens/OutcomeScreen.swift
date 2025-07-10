@@ -20,11 +20,11 @@ struct OutcomeScreen: View {
                 TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
             }
             .task {
-                await model.updateData()
+                await model.updateTransactions()
             }
             .onChange(of: transactionService._transactions){
                 Task {
-                    await model.updateData()
+                    await model.updateTransactions()
                 }
             }
             PlusButton(isPressed: $createOutcome, direction: .outcome)

@@ -15,7 +15,35 @@ struct CreateTransactionFlow: View {
     var body: some View {
         NavigationStack {
             TransacionsEditCreateScreen(direction: direction, isOpen: $isOpen)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        dismissButton
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        
+                    }
+                }
         }
         .transition(.move(edge: .bottom))
+    }
+    
+    var dismissButton: some View {
+        Button {
+            withAnimation {
+                isOpen = false
+            }
+        } label: {
+            Text("Отмена")
+        }
+    }
+    
+    var saveButton: some View {
+        Button {
+            withAnimation {
+                isOpen = false
+            }
+        } label : {
+            Text("Сохранить")
+        }
     }
 }

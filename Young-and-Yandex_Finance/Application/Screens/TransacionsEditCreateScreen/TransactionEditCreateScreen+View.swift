@@ -12,24 +12,7 @@ extension TransacionsEditCreateScreen: View {
     var body: some View {
         NavigationStack {
             EmptyView()
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        withAnimation {
-                            isOpen = false
-                        }
-                    } label: {
-                        Text("Отмена")
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        
-                    } label : {
-                        Text("Сохранить")
-                    }
-                }
-            }
+            
         }
         .onDisappear {
             isOpen = false

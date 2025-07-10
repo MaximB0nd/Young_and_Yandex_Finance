@@ -34,11 +34,11 @@ final class MyHistoryTransactionListViewModel: TransactionListnerProtocol {
         TransactionsService.subscribe(listener: self)
     }
 
-    func sortByDate(_ transactions: [Transaction]) -> [Transaction] {
+    func sortByDate(_ transactions: [Transaction]) async -> [Transaction] {
         return transactions.sorted { $0.transactionDate > $1.transactionDate }
     }
     
-    func sortByAmount(_ transactions: [Transaction]) -> [Transaction] {
+    func sortByAmount(_ transactions: [Transaction]) async -> [Transaction] {
         return transactions.sorted { $0.amount > $1.amount }
     }
     
@@ -47,9 +47,9 @@ final class MyHistoryTransactionListViewModel: TransactionListnerProtocol {
         if let sortBy = sortBy {
             switch sortBy {
             case .price:
-                transactions = sortByAmount(transactions)
+                transactions = await sortByAmount(transactions)
             case .date:
-                transactions = sortByDate(transactions)
+                transactions = await sortByDate(transactions)
             case .none:
                 break
             }
@@ -71,7 +71,23 @@ final class MyHistoryTransactionListViewModel: TransactionListnerProtocol {
         await getCurrencySymbol()
     }
     
-    static func presaveDate(date1: inout Date, date2: inout Date, closure: ((Date, Date) -> Bool)) {
-        DateConverter.checkDate(date1: &date1, date2: &date2, closure: closure)
+    func presaveDateTo() async {
+        let dateToStart = Calendar.current.startOfDay(for: dateTo)
+        let dateFromStart = Calendar.current.startOfDay(for: dateFrom)
+        
+        if dateToStart < dateFromStart {
+            dateFrom = DateConverter.startOfDay(dateToStart)
+        }
+        dateTo = DateConverter.endOfDay(dateToStart)
+    }
+    
+    func presaveDateFrom() async {
+        let dateToStart = Calendar.current.startOfDay(for: dateTo)
+        let dateFromStart = Calendar.current.startOfDay(for: dateFrom)
+        
+        if dateToStart < dateFromStart {
+            dateTo = DateConverter.endOfDay(dateFromStart)
+        }
+        dateFrom = DateConverter.startOfDay(dateFromStart)
     }
 }

@@ -27,7 +27,7 @@ final class BankAccountsService {
     
     func notifySubscribers() async {
         for subscriber in Self.subscribers {
-            await subscriber.listener?.updateBankAccounts()
+            try? await subscriber.listener?.updateBankAccounts()
         }
     }
     

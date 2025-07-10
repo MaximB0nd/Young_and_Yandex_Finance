@@ -8,5 +8,5 @@
 import Foundation
 
 protocol BankAccountListnerProtocol: AnyObject {
-    func updateBankAccounts() async 
+    func updateBankAccounts() async throws
 }

@@ -17,12 +17,6 @@ struct DateIntervalPicker: View {
             dateFromPicker
             dateToPicker
         }
-        .onChange(of: dateFrom) {
-            MyHistoryTransactionListViewModel.presaveDate(date1: &dateFrom, date2: &dateTo, closure: {$0 < $1})
-        }
-        .onChange(of: dateTo) {
-            MyHistoryTransactionListViewModel.presaveDate(date1: &dateTo, date2: &dateFrom, closure: {$0 > $1})
-        }
     }
     
     var dateFromPicker: some View {
