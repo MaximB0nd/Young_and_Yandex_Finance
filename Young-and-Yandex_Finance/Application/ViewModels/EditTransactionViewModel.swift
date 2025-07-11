@@ -44,7 +44,7 @@ class EditTransactionViewModel: TransactionUpdater {
                     id: id, newCategory: category,
                     newAmount: amount,
                     newTransactionDate: transactionDate,
-                    newComment: comment != "" ? comment : nil)
+                    newComment: comment)
             } catch {
                 errors.append("Не удалось обновить транзакцию")
                 isError = true

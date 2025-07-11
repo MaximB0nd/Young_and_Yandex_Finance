@@ -16,7 +16,7 @@ struct TransacionsEditCreateScreen {
     let direction: Direction
     
     init(direction: Direction) {
-        self.model = direction == .income ? NewTransactionViewModel.sharedIncome : NewTransactionViewModel.sharedOutcome
+        self.model = NewTransactionViewModel(direction: direction)
         self.direction = direction
         self.isEdit = false
     }

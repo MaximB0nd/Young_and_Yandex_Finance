@@ -18,6 +18,7 @@ struct AmountEdit: View {
             Text("Сумма")
             TextField("Cумма", text: $textAmount)
                 .multilineTextAlignment(.trailing)
+                .keyboardType(.decimalPad)
             Text(currency)
         }
     }

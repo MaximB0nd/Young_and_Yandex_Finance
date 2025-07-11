@@ -19,10 +19,6 @@ final class NewTransactionViewModel: TransactionUpdater {
     let service = TransactionsService.shared
     let direction: Direction
     
-    static let sharedOutcome = NewTransactionViewModel(direction: .outcome)
-    static let sharedIncome = NewTransactionViewModel(direction: .income)
-    
-    
     var category: Category?
     var amount: Decimal?
     var transactionDate = Date()
@@ -35,7 +31,7 @@ final class NewTransactionViewModel: TransactionUpdater {
     
     var amountText: String = ""
     
-    private init(direction : Direction) {
+    init(direction : Direction) {
         self.direction = direction
         Task {
             if let account = try? await BankAccountsService.shared.getAccount() {
