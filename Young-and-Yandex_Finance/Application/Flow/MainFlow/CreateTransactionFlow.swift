@@ -13,10 +13,11 @@ struct CreateTransactionFlow: View {
     let direction: Direction
     
     @State var model: NewTransactionViewModel
+    @State var error = false
     
     var body: some View {
         NavigationStack {
-            TransacionsEditCreateScreen(isOpen: $isOpen, model: model)
+            TransacionsEditCreateScreen(isOpen: $isOpen, model: model, direction: direction)
                 .navigationTitle("Мои расходы")
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
@@ -29,6 +30,17 @@ struct CreateTransactionFlow: View {
                 .onDisappear {
                     model.clear()
                 }
+                .alert("Ошибка создания", isPresented: $error, actions: {}) {
+                    VStack {
+                        Text("Ошибка")
+                        Text(model.getErrors)
+                    }
+                }
+        }
+        .onChange(of: model.errors) {
+            if !model.errors.isEmpty {
+                error = true
+            }
         }
     }
     
@@ -40,6 +52,7 @@ struct CreateTransactionFlow: View {
     
     var dismissButton: some View {
         Button {
+            model.clear()
             withAnimation() {
                 isOpen = false
             }
@@ -51,9 +64,16 @@ struct CreateTransactionFlow: View {
     
     var createButton: some View {
         Button {
-            withAnimation {
-                isOpen = false
+            Task {
+                await model.doneTransaction()
             }
+            if model.errors.isEmpty {
+                withAnimation {
+                    isOpen = false
+                }
+            }
+            
+            model.clear()
         } label : {
             Text("Создать")
                 .foregroundStyle(.people)

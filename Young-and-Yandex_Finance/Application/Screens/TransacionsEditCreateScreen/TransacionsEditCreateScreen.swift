@@ -14,19 +14,22 @@ struct TransacionsEditCreateScreen {
     @State var model: any TransactionUpdater
     
     let isEdit: Bool
+    let direction: Direction
     
-    init(isOpen: Binding<Bool>, model: NewTransactionViewModel) {
+    init(isOpen: Binding<Bool>, model: NewTransactionViewModel, direction: Direction) {
         
         self.model = model
         isEdit = false
         self._isOpen = isOpen
+        self.direction = direction
     }
     
-    init(transaction: Transaction, isOpen: Binding<Bool>, model: EditTransactionViewModel) {
+    init(transaction: Transaction, isOpen: Binding<Bool>, model: EditTransactionViewModel, direction: Direction) {
         
         self.model = model
         isEdit = true
         self._isOpen = isOpen
+        self.direction = direction
     }
     
     

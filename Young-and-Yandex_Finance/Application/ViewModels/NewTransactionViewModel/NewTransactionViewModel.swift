@@ -13,7 +13,7 @@ fileprivate enum NewTransactionError: Error {
 }
 
 @Observable
-final class NewTransactionViewModel: TransactionUpdater, BankAccountListnerProtocol {
+final class NewTransactionViewModel: TransactionUpdater {
     
     var account: BankAccount?
     let service = TransactionsService.shared
@@ -25,7 +25,11 @@ final class NewTransactionViewModel: TransactionUpdater, BankAccountListnerProto
     var category: Category?
     var amount: Decimal?
     var transactionDate = Date()
-    var comment: String?
+    var comment: String = ""
+    var errors: [String] = []
+    var getErrors: String {
+        errors.joined(separator: "\n")
+    }
     
     var amountText: String = ""
     
@@ -37,23 +41,38 @@ final class NewTransactionViewModel: TransactionUpdater, BankAccountListnerProto
         BankAccountsService.subscribe(self)
     }
     
-    func doneTransaction() async throws {
-        let account = try await BankAccountsService.shared.getAccount()
+    func doneTransaction() async {
         
-        guard let category = category else {
-            throw NewTransactionError.noCategory
+        do {
+            let _ = try await BankAccountsService.shared.getAccount()
+        } catch {
+            errors.append("Не удалось получить счет")
+            return
         }
         
-        guard let amount = amount else {
-            throw NewTransactionError.noAmount
+        if let _ = category {} else {
+            errors.append("Выберите категорию")
+
+            
         }
         
-        try await TransactionsService.shared.createTransaction(
-            account: Transaction.Account(bankAccount: account),
-            category: category,
-            amount: amount,
-            transactionDate: transactionDate,
-            comment: comment)
+        if let _ = amount {} else {
+            errors.append("Введите сумму")
+        }
+        
+        do {
+            if errors.isEmpty {
+                try await TransactionsService.shared.createTransaction(
+                    account: Transaction.Account(bankAccount: account!),
+                    category: category!,
+                    amount: amount!,
+                    transactionDate: transactionDate,
+                    comment: comment)
+            }
+        } catch {
+            errors = ["Не удалось создать транзакцию"]
+        }
+        
     }
     
     func onChangeAmountText() {
@@ -65,13 +84,11 @@ final class NewTransactionViewModel: TransactionUpdater, BankAccountListnerProto
     func clear() {
         self.category = nil
         self.amount = nil
-        self.comment = nil
+        self.comment = ""
         self.amountText = ""
     }
     
-    func updateBankAccounts() async throws {
-        self.account = try? await BankAccountsService.shared.getAccount()
-    }
+    func onDelete() {}
 }
 
 

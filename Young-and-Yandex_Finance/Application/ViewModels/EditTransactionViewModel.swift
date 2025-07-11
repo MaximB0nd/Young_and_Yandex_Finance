@@ -8,6 +8,20 @@
 import Foundation
 
 class EditTransactionViewModel: TransactionUpdater {
+    var errors: [String] = []
+    
+    var getErrors: String {
+        return errors.joined(separator: "\n")
+    }
+    
+    func doneTransaction() async {
+        
+    }
+    
+    func onDelete() {
+        
+    }
+    
     var account: BankAccount?
     
     var amountText: String
@@ -20,23 +34,19 @@ class EditTransactionViewModel: TransactionUpdater {
         
     }
     
-    func doneTransaction() async throws {
-        
-    }
-    
     var category: Category?
     
     var amount: Decimal?
     
     var transactionDate: Date
     
-    var comment: String?
+    var comment: String
     
     init(transaction: Transaction) {
         self.category = transaction.category
         self.amount = transaction.amount
         self.transactionDate = transaction.transactionDate
-        self.comment = transaction.comment
+        self.comment = transaction.comment ?? ""
         self.amountText = transaction.amount.description
     }
 }

@@ -12,13 +12,19 @@ protocol TransactionUpdater {
     var category: Category? { get set }
     var amount: Decimal? { get set }
     var transactionDate: Date { get set }
-    var comment: String? { get set }
+    var comment: String { get set }
     var amountText: String { get set }
     var account: BankAccount? { get set }
     
-    func doneTransaction() async throws
+    var errors: [String] { get set }
+    
+    var getErrors: String { get }
+    
+    func doneTransaction() async 
     
     func onChangeAmountText()
     
     func clear()
+    
+    func onDelete()
 }
