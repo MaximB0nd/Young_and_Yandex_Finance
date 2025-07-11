@@ -8,6 +8,16 @@
 import Foundation
 
 class EditTransactionViewModel: TransactionUpdater {
+    var amountText: String
+    
+    func onChangeAmountText() {
+        
+    }
+    
+    func clear() {
+        
+    }
+    
     func doneTransaction() async throws {
         
     }
@@ -25,5 +35,6 @@ class EditTransactionViewModel: TransactionUpdater {
         self.amount = transaction.amount
         self.transactionDate = transaction.transactionDate
         self.comment = transaction.comment
+        self.amountText = transaction.amount.description
     }
 }

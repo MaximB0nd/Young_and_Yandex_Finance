@@ -13,6 +13,10 @@ extension TransacionsEditCreateScreen: View {
         NavigationStack {
             List {
                 CategoryPicker(selectedCategory: $model.category)
+                AmountEdit(amount: $model.amount, textAmount: $model.amountText, currency: "")
+            }
+            .onChange(of: model.amountText) {
+                model.onChangeAmountText()
             }
             
         }

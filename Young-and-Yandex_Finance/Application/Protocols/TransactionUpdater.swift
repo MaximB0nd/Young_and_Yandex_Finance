@@ -9,10 +9,15 @@ import Foundation
 
 protocol TransactionUpdater {
     
-    func doneTransaction() async throws
-    
     var category: Category? { get set }
     var amount: Decimal? { get set }
     var transactionDate: Date { get set }
     var comment: String? { get set }
+    var amountText: String { get set }
+    
+    func doneTransaction() async throws
+    
+    func onChangeAmountText()
+    
+    func clear()
 }
