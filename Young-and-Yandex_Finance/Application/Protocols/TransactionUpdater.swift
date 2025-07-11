@@ -14,6 +14,7 @@ protocol TransactionUpdater {
     var transactionDate: Date { get set }
     var comment: String? { get set }
     var amountText: String { get set }
+    var account: BankAccount? { get set }
     
     func doneTransaction() async throws
     

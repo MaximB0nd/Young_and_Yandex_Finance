@@ -8,6 +8,8 @@
 import Foundation
 
 class EditTransactionViewModel: TransactionUpdater {
+    var account: BankAccount?
+    
     var amountText: String
     
     func onChangeAmountText() {
