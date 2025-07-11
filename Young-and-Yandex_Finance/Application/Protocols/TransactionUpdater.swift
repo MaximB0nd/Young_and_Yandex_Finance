@@ -17,14 +17,11 @@ protocol TransactionUpdater {
     var account: BankAccount? { get set }
     
     var errors: [String] { get set }
-    
+    var isError: Bool { get set }
     var getErrors: String { get }
     
-    func doneTransaction() async 
-    
+    func doneTransaction() async
     func onChangeAmountText()
-    
     func clear()
-    
     func onDelete()
 }

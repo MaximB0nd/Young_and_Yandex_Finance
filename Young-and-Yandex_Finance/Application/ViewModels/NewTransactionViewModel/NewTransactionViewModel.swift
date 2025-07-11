@@ -22,6 +22,7 @@ final class NewTransactionViewModel: TransactionUpdater {
     static let sharedOutcome = NewTransactionViewModel(direction: .outcome)
     static let sharedIncome = NewTransactionViewModel(direction: .income)
     
+    
     var category: Category?
     var amount: Decimal?
     var transactionDate = Date()
@@ -30,6 +31,7 @@ final class NewTransactionViewModel: TransactionUpdater {
     var getErrors: String {
         errors.joined(separator: "\n")
     }
+    var isError = false
     
     var amountText: String = ""
     
@@ -43,17 +45,18 @@ final class NewTransactionViewModel: TransactionUpdater {
     
     func doneTransaction() async {
         
+        errors = []
+        
         do {
             let _ = try await BankAccountsService.shared.getAccount()
         } catch {
             errors.append("Не удалось получить счет")
+            isError = true
             return
         }
         
         if let _ = category {} else {
             errors.append("Выберите категорию")
-
-            
         }
         
         if let _ = amount {} else {
@@ -68,9 +71,12 @@ final class NewTransactionViewModel: TransactionUpdater {
                     amount: amount!,
                     transactionDate: transactionDate,
                     comment: comment)
+            } else {
+                isError = true
             }
         } catch {
             errors = ["Не удалось создать транзакцию"]
+            isError = true
         }
         
     }

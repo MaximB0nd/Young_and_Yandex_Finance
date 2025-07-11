@@ -13,7 +13,6 @@ struct CreateTransactionFlow: View {
     let direction: Direction
     
     @State var model: NewTransactionViewModel
-    @State var error = false
     
     var body: some View {
         NavigationStack {
@@ -30,17 +29,9 @@ struct CreateTransactionFlow: View {
                 .onDisappear {
                     model.clear()
                 }
-                .alert("Ошибка создания", isPresented: $error, actions: {}) {
-                    VStack {
-                        Text("Ошибка")
-                        Text(model.getErrors)
-                    }
+                .alert("Ошибка создания", isPresented: $model.isError, actions: {}) {
+                    Text("\(model.getErrors)")
                 }
-        }
-        .onChange(of: model.errors) {
-            if !model.errors.isEmpty {
-                error = true
-            }
         }
     }
     
@@ -66,14 +57,16 @@ struct CreateTransactionFlow: View {
         Button {
             Task {
                 await model.doneTransaction()
-            }
-            if model.errors.isEmpty {
-                withAnimation {
-                    isOpen = false
+                if model.errors.isEmpty {
+                    DispatchQueue.main.async {
+                        model.clear()
+                        withAnimation {
+                            isOpen = false
+                        }
+                    }
                 }
             }
             
-            model.clear()
         } label : {
             Text("Создать")
                 .foregroundStyle(.people)

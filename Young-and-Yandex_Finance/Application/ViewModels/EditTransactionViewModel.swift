@@ -8,6 +8,8 @@
 import Foundation
 
 class EditTransactionViewModel: TransactionUpdater {
+    var isError: Bool = false
+    
     var errors: [String] = []
     
     var getErrors: String {
