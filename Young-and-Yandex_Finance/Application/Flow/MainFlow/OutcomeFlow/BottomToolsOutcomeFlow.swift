@@ -9,10 +9,8 @@ import SwiftUI
 
 struct BottomToolsOutcomeFlow: View {
     
-    @Binding var createOutcome: Bool
-    
     var body: some View {
-        PlusButton(isPressed: $createOutcome, direction: .outcome)
+        PlusButton(direction: .outcome)
             .padding(26)
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlusButton: View {
     
-    @Binding var isPressed: Bool
+    @State var isPressed = false
     
     let direction: Direction
     let transactionService = TransactionsService.shared
@@ -18,9 +18,7 @@ struct PlusButton: View {
     
     var body: some View {
         Button {
-            withAnimation {
-                isPressed = true
-            }
+            isPressed.toggle()
         } label: {
             ZStack {
                 Circle()
@@ -33,5 +31,8 @@ struct PlusButton: View {
             }
         }
         .buttonStyle(PlainButtonStyle())
+        .fullScreenCover(isPresented: $isPressed) {
+            TransacionsEditCreateScreen(direction: direction)
+        }
     }
 }

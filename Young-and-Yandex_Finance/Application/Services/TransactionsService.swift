@@ -62,7 +62,7 @@ final class TransactionsService{
                                          category: category,
                                          amount: amount,
                                          transactionDate: transactionDate,
-                                         comment: comment,
+                                         comment: comment == "" ? nil : comment,
                                          createdAt: .now,
                                          updatedAt: .now)
         self._transactions.append(newTransaction)

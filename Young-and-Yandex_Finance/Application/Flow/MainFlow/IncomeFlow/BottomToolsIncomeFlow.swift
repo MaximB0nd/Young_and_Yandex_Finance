@@ -9,10 +9,8 @@ import SwiftUI
 
 struct BottomToolsIncomeFlow: View {
     
-    @Binding var createIncome: Bool
-    
     var body: some View {
-        PlusButton(isPressed: $createIncome, direction: .income)
+        PlusButton(direction: .income)
             .padding(26)
     }
 }

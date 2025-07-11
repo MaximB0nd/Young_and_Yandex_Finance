@@ -9,28 +9,21 @@ import SwiftUI
 
 struct TransacionsEditCreateScreen {
     
-    @Binding var isOpen: Bool
-    
     @State var model: any TransactionUpdater
+    @Environment(\.dismiss) var dismiss
     
     let isEdit: Bool
     let direction: Direction
     
-    init(isOpen: Binding<Bool>, model: NewTransactionViewModel, direction: Direction) {
-        
-        self.model = model
-        isEdit = false
-        self._isOpen = isOpen
+    init(direction: Direction) {
+        self.model = direction == .income ? NewTransactionViewModel.sharedIncome : NewTransactionViewModel.sharedOutcome
         self.direction = direction
+        self.isEdit = false
     }
     
-    init(transaction: Transaction, isOpen: Binding<Bool>, model: EditTransactionViewModel, direction: Direction) {
-        
-        self.model = model
-        isEdit = true
-        self._isOpen = isOpen
-        self.direction = direction
+    init(transaction: Transaction) {
+        self.model = EditTransactionViewModel(transaction: transaction)
+        self.direction = transaction.category.direction
+        self.isEdit = true
     }
-    
-    
 }

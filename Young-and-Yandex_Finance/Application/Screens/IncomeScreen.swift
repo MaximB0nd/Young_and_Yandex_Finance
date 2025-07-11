@@ -12,8 +12,6 @@ struct IncomeScreen: View {
     @State var transactionService = TransactionsService.shared
     @State var model = TodayTransactionListViewModel.sharedIncome
     
-    @Binding var createIncome: Bool
-    
     var body: some View {
         List {
             TransactionsListView(
@@ -30,8 +28,6 @@ struct IncomeScreen: View {
                 await model.updateTransactions()
             }
         }
-        
-        
     }
 }
 

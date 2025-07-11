@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import SwiftUI
 
+@Observable
 class EditTransactionViewModel: TransactionUpdater {
     
     var service = TransactionsService.shared
@@ -25,6 +27,9 @@ class EditTransactionViewModel: TransactionUpdater {
     }
     
     func doneTransaction() async {
+        
+        errors = []
+        
         if category == nil {
             errors.append("Выберите категорию")
         }
@@ -47,6 +52,8 @@ class EditTransactionViewModel: TransactionUpdater {
         } else {
             isError = true
         }
+        
+        print(errors)
     }
     
     func onChangeAmountText() {
@@ -57,13 +64,14 @@ class EditTransactionViewModel: TransactionUpdater {
     
     func clear() {}
     
-    @MainActor
-    func onDelete() async {
-        do {
-            try await service.deleteTransaction(id: id)
-        } catch {
-            errors.append("Не удалось удалить транзакцию")
-            isError = true
+    func onDelete()  {
+        Task {
+            do {
+                try await service.deleteTransaction(id: id)
+            } catch {
+                errors.append("Не удалось удалить транзакцию")
+                isError = true
+            }
         }
         
     }

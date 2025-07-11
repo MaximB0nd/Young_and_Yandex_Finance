@@ -23,5 +23,5 @@ protocol TransactionUpdater {
     func doneTransaction() async
     func onChangeAmountText() 
     func clear() 
-    func onDelete() async
+    func onDelete()
 }

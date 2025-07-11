@@ -8,35 +8,30 @@
 import SwiftUI
 
 struct IncomeFlow: View {
-    
-    @State var createIncome: Bool = false
 
     var body: some View {
-        if createIncome {
-            CreateTransactionFlow(isOpen: $createIncome, direction: .income)
-                .transition(.move(edge: .bottom))
-        } else {
+        
             NavigationStack {
                 ZStack(alignment: .bottomTrailing) {
-                    IncomeScreen(createIncome: $createIncome)
+                    IncomeScreen()
                         .navigationTitle("Доходы сегодня")
                         .toolbar {
                             ToolbarItem(placement: .topBarTrailing) {
-                                NavigationLink {
-                                    MyHistoryFlow(direction: .income)
-                                        .navigationTitle("Моя история")
-                                } label: {
-                                    Image(systemName: "clock")
-                                        .foregroundStyle(.people)
-                                }
+                                clockButton
                             }
                         }
-                    BottomToolsIncomeFlow(createIncome: $createIncome)
+                    BottomToolsIncomeFlow()
                 }
             }
+    }
+    
+    var clockButton: some View {
+        NavigationLink {
+            MyHistoryFlow(direction: .income)
+                .navigationTitle("Моя история")
+        } label: {
+            Image(systemName: "clock")
+                .foregroundStyle(.people)
         }
-        
-        
-        
     }
 }

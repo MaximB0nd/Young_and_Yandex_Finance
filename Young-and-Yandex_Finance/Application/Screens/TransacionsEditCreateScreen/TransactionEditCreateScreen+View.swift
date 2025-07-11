@@ -13,7 +13,7 @@ extension TransacionsEditCreateScreen: View {
         NavigationStack {
             List {
                 Section {
-                    CategoryPicker(selectedCategory: $model.category)
+                    CategoryPicker(selectedCategory: $model.category, direction: direction)
                     AmountEdit(amount: $model.amount, textAmount: $model.amountText, currency: model.account?.currencySymbol  ?? "")
                     DateEditPicker(date: $model.transactionDate)
                     TimeEditPicker(time: $model.transactionDate)
@@ -25,28 +25,66 @@ extension TransacionsEditCreateScreen: View {
                         deleteButton
                     }
                 }
-                
             }
-            .onChange(of: model.amountText) {
-                model.onChangeAmountText()
+            .navigationTitle("Мои \(direction == .outcome ? "расходы" : "доходы")")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    dismissButton
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    createButton
+                }
             }
-            
+        }
+        .onChange(of: model.amountText) {
+            model.onChangeAmountText()
         }
         .onDisappear {
-            isOpen = false
             model.clear()
         }
+        .alert("Ошибка \(isEdit ? "редактирования" : "создания")",
+               isPresented: $model.isError,
+               actions: {}) {
+            Text("\(model.getErrors)")
+        }
+        
     }
     
     var deleteButton: some View {
         Button {
             model.onDelete()
-            withAnimation {
-                isOpen = false
+            dismiss()
+        } label: {
+            Text("Удалить \(direction == .outcome ? "расход" : "доход")")
+                .foregroundStyle(.red)
+        }
+    }
+    
+    var dismissButton: some View {
+        Button {
+            model.clear()
+            withAnimation() {
+                dismiss()
             }
         } label: {
-            Text("Удалить \(direction == .outcome ? "расхож" : "доход")")
-                .foregroundStyle(.red)
+            Text("Отмена")
+                .foregroundStyle(.people)
+        }
+    }
+    
+    var createButton: some View {
+        Button {
+            Task {
+                await model.doneTransaction()
+                if model.errors.isEmpty {
+                    model.clear()
+                    dismiss()
+                }
+            }
+            
+        } label : {
+            Text("\(isEdit ? "Сохранить" : "Создать")")
+                .foregroundStyle(.people)
         }
     }
 }

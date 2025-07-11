@@ -97,7 +97,7 @@ final class NewTransactionViewModel: TransactionUpdater {
         self.amountText = ""
     }
     
-    func onDelete() async {}
+    func onDelete() {}
 }
 
 

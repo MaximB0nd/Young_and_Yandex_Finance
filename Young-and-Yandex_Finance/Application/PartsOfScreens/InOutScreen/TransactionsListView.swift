@@ -13,17 +13,36 @@ struct TransactionsListView: View {
     let sum: Decimal
     let currencySymbol: String
     
+    @State var selectedTransaction: Transaction? = nil
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
-        
-        total
-        
-        Section(header: Text("Операции")) {
-            ForEach(transactions) { transaction in
-                NavigationLink(value: transaction.id) {
-                    TransactionView(transaction: transaction)
+        Group {
+            
+            Section {
+                total
+            }
+           
+            
+            Section(header: Text("Операции")) {
+                
+                ForEach(transactions) { transaction in
+                    Button {
+                        selectedTransaction = transaction
+                    } label: {
+                        TransactionView(transaction: transaction)
+                            .contentShape(Rectangle())
+                            .foregroundStyle(colorScheme == .light ? .black : .white)
+                    }
+                    .fullScreenCover(item: $selectedTransaction) { transaction in
+                        TransacionsEditCreateScreen(transaction: transaction)
+                    }
                 }
+                
             }
         }
+        
+            
     }
     
     var total: some View {
