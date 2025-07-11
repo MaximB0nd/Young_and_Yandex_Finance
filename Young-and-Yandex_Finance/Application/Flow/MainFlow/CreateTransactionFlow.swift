@@ -12,38 +12,51 @@ struct CreateTransactionFlow: View {
     @Binding var isOpen: Bool
     let direction: Direction
     
+    @State var model: NewTransactionViewModel
+    
     var body: some View {
         NavigationStack {
-            TransacionsEditCreateScreen(direction: direction, isOpen: $isOpen)
+            TransacionsEditCreateScreen(isOpen: $isOpen, model: model)
+                .navigationTitle("Мои расходы")
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         dismissButton
                     }
                     ToolbarItem(placement: .topBarTrailing) {
-                        
+                        createButton
                     }
                 }
+                .onDisappear {
+                    model.clear()
+                }
         }
-        .transition(.move(edge: .bottom))
+    }
+    
+    init(isOpen: Binding<Bool>, direction: Direction) {
+        self._isOpen = isOpen
+        self.direction = direction
+        self.model = direction == .income ? .sharedIncome : .sharedOutcome
     }
     
     var dismissButton: some View {
         Button {
-            withAnimation {
+            withAnimation() {
                 isOpen = false
             }
         } label: {
             Text("Отмена")
+                .foregroundStyle(.people)
         }
     }
     
-    var saveButton: some View {
+    var createButton: some View {
         Button {
             withAnimation {
                 isOpen = false
             }
         } label : {
-            Text("Сохранить")
+            Text("Создать")
+                .foregroundStyle(.people)
         }
     }
 }

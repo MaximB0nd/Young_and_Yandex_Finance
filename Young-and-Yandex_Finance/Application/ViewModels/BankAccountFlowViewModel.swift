@@ -18,6 +18,7 @@ final class BankAccountFlowViewModel: BankAccountListnerProtocol {
     let bankService = BankAccountsService.shared
     
     private init() {
+        BankAccountsService.subscribe(self)
         Task {
             bankAccount = try await bankService.getAccount()
         }

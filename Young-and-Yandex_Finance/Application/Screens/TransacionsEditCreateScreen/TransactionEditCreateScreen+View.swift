@@ -11,7 +11,9 @@ extension TransacionsEditCreateScreen: View {
     
     var body: some View {
         NavigationStack {
-            EmptyView()
+            List {
+                CategoryPicker(selectedCategory: $model.category)
+            }
             
         }
         .onDisappear {

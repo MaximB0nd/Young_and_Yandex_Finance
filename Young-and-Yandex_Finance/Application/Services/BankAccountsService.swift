@@ -21,7 +21,7 @@ final class BankAccountsService {
     
     private static var subscribers: [BankAccountListner] = []
     
-    static func addSubscriber(_ listener: BankAccountListnerProtocol) {
+    static func subscribe(_ listener: BankAccountListnerProtocol) {
         subscribers.append(BankAccountListner(listener: listener))
     }
     
@@ -97,5 +97,8 @@ final class BankAccountsService {
         }
         
         if isChanged { _accounts[index].updatedAt = .now }
+        
+        await notifySubscribers()
+
     }
 }
