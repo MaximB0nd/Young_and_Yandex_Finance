@@ -17,7 +17,7 @@ struct MyHistoryFlow: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        
+                        AnalyticsScreen()
                     } label: {
                         Image(systemName: "document")
                     }.tint(.people)

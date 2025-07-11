@@ -23,7 +23,6 @@ struct TransactionsListView: View {
                 total
             }
            
-            
             Section(header: Text("Операции")) {
                 
                 ForEach(transactions) { transaction in
@@ -41,8 +40,6 @@ struct TransactionsListView: View {
                 
             }
         }
-        
-            
     }
     
     var total: some View {
