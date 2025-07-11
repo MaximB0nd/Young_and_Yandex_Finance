@@ -14,14 +14,14 @@ protocol TransactionUpdater {
     var transactionDate: Date { get set }
     var comment: String { get set }
     var amountText: String { get set }
-    var account: BankAccount? { get set }
+    var account: Transaction.Account? { get set }
     
     var errors: [String] { get set }
     var isError: Bool { get set }
     var getErrors: String { get }
     
     func doneTransaction() async
-    func onChangeAmountText()
-    func clear()
-    func onDelete()
+    func onChangeAmountText() 
+    func clear() 
+    func onDelete() async
 }

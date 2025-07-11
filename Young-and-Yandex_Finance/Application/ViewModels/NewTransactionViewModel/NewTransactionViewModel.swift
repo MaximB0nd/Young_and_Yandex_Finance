@@ -15,7 +15,7 @@ fileprivate enum NewTransactionError: Error {
 @Observable
 final class NewTransactionViewModel: TransactionUpdater {
     
-    var account: BankAccount?
+    var account: Transaction.Account?
     let service = TransactionsService.shared
     let direction: Direction
     
@@ -38,7 +38,9 @@ final class NewTransactionViewModel: TransactionUpdater {
     private init(direction : Direction) {
         self.direction = direction
         Task {
-            self.account = try? await BankAccountsService.shared.getAccount()
+            if let account = try? await BankAccountsService.shared.getAccount() {
+                self.account = Transaction.Account(bankAccount: account)
+            }
         }
         BankAccountsService.subscribe(self)
     }
@@ -47,9 +49,10 @@ final class NewTransactionViewModel: TransactionUpdater {
         
         errors = []
         
-        do {
-            let _ = try await BankAccountsService.shared.getAccount()
-        } catch {
+        if let account = try? await BankAccountsService.shared.getAccount() {
+            self.account = Transaction.Account(bankAccount: account)
+        }
+        else {
             errors.append("Не удалось получить счет")
             isError = true
             return
@@ -59,14 +62,14 @@ final class NewTransactionViewModel: TransactionUpdater {
             errors.append("Выберите категорию")
         }
         
-        if let _ = amount {} else {
+        if amountText == "" {
             errors.append("Введите сумму")
         }
         
         do {
             if errors.isEmpty {
                 try await TransactionsService.shared.createTransaction(
-                    account: Transaction.Account(bankAccount: account!),
+                    account: account!,
                     category: category!,
                     amount: amount!,
                     transactionDate: transactionDate,
@@ -87,14 +90,14 @@ final class NewTransactionViewModel: TransactionUpdater {
         amount = Decimal(string: val, locale: Locale.current) ?? 0
     }
     
-    func clear() {
+    func clear()  {
         self.category = nil
         self.amount = nil
         self.comment = ""
         self.amountText = ""
     }
     
-    func onDelete() {}
+    func onDelete() async {}
 }
 
 
