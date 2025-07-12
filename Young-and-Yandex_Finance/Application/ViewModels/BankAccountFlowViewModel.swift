@@ -9,44 +9,32 @@ import Foundation
 import SwiftUI
 
 @Observable
-final class BankAccountFlowViewModel {
-    
-    enum LazyLoading {
-        case noninitialized
-        case initialized(BankAccountFlowViewModel)
-    }
-    
-    static private var lazyLoading: LazyLoading = .noninitialized
-    static var id = 1
+final class BankAccountFlowViewModel: BankAccountListnerProtocol {
     
     static var shared = BankAccountFlowViewModel()
     
     private(set) var bankAccount: BankAccount?
     
     let bankService = BankAccountsService.shared
-    let id: Int?
     
     private init() {
-        self.id = Self.id
+        BankAccountsService.subscribe(self)
         Task {
-            guard let id else { return }
-            bankAccount = try await bankService.getAccount(id: id)
+            bankAccount = try await bankService.getAccount()
         }
     }
     
     @MainActor
-    func fetchBankAccounts() async throws  {
-        guard let id else { return }
-        bankAccount = try await bankService.getAccount(id: id)
+    func updateBankAccounts() async throws  {
+        bankAccount = try await bankService.getAccount()
     }
     
     @MainActor
     func updateBankAccount(newValue: BankAccount) async throws {
-        guard let id else { return }
-        guard try await bankService.getAccount(id: id) != newValue else {
+        guard try await bankService.getAccount() != newValue else {
             return
         }
-        try await bankService.changeData(id: id, newBalance: newValue.balance, newCurrency: newValue.currency)
+        try await bankService.changeData(newBalance: newValue.balance, newCurrency: newValue.currency)
         self.bankAccount = newValue
     }
     

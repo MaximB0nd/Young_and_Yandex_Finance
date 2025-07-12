@@ -19,21 +19,25 @@ struct MyHistoryScreen: View {
             TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
         }
         .task {
-            await model.updateData(from: model.getStartDateFrom, to: model.getEndDateTo, sort: model.sortSelection)
+            await model.updateTransactions()
         }
         .onChange(of: model.sortSelection) {
             Task {
-                await model.updateData(from: model.getStartDateFrom, to: model.getEndDateTo, sort: model.sortSelection)
+                await model.updateTransactions()
             }
         }
         .onChange(of: model.dateTo) {
             Task {
-                await model.updateData(from: model.getStartDateFrom, to: model.getEndDateTo, sort: model.sortSelection)
+                await model.presaveDateTo()
+                await model.updateTransactions()
+                
             }
         }
         .onChange(of: model.dateFrom) {
             Task {
-                await model.updateData(from: model.getStartDateFrom, to: model.getEndDateTo, sort: model.sortSelection)
+                await model.presaveDateFrom()
+                await model.updateTransactions()
+                
             }
         }
     }

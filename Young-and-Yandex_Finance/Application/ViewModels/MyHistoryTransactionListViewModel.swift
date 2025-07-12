@@ -8,8 +8,8 @@
 import Foundation
 
 @Observable
-final class MyHistoryTransactionListViewModel {    
-    
+final class MyHistoryTransactionListViewModel: TransactionListnerProtocol {
+
     var dateFrom: Date = DateConverter.previousMonth(date: .now)
     var dateTo: Date = DateConverter.endOfDay(.now)
     var sortSelection: SortSelectionType = .none
@@ -31,24 +31,27 @@ final class MyHistoryTransactionListViewModel {
     
     init(direction: Direction) {
         self.direction = direction
+        TransactionsService.subscribe(listener: self)
     }
 
-    func sortByDate(_ transactions: [Transaction]) -> [Transaction] {
+    func sortByDate(_ transactions: [Transaction]) async -> [Transaction] {
         return transactions.sorted { $0.transactionDate > $1.transactionDate }
     }
     
-    func sortByAmount(_ transactions: [Transaction]) -> [Transaction] {
+    func sortByAmount(_ transactions: [Transaction]) async -> [Transaction] {
         return transactions.sorted { $0.amount > $1.amount }
     }
     
     func getTransactions(from date1: Date, to date2: Date, by direction: Direction, sortBy: SortSelectionType?) async {
-        var transactions = await transactionService.getTransactions(from: date1, to: date2).filter({$0.category.direction == direction})
+        // Получаем все транзакции за период и фильтруем только по нужному direction
+        var transactions = await transactionService.getTransactions(from: date1, to: date2)
+        transactions = transactions.filter { $0.category.direction == self.direction }
         if let sortBy = sortBy {
             switch sortBy {
             case .price:
-                transactions = sortByAmount(transactions)
+                transactions = await sortByAmount(transactions)
             case .date:
-                transactions = sortByDate(transactions)
+                transactions = await sortByDate(transactions)
             case .none:
                 break
             }
@@ -64,13 +67,29 @@ final class MyHistoryTransactionListViewModel {
         currencySymbol = transactions.count > 0 ? transactions[0].account.currencySymbol : ""
     }
     
-    func updateData(from date1: Date, to date2: Date, sort by: SortSelectionType?) async {
-        await getTransactions(from: date1, to: date2, by: direction, sortBy: by)
+    func updateTransactions() async {
+        await getTransactions(from: dateFrom, to: dateTo, by: direction, sortBy: sortSelection)
         await getSum()
         await getCurrencySymbol()
     }
     
-    static func presaveDate(date1: inout Date, date2: inout Date, closure: ((Date, Date) -> Bool)) {
-        DateConverter.checkDate(date1: &date1, date2: &date2, closure: closure)
+    func presaveDateTo() async {
+        let dateToStart = Calendar.current.startOfDay(for: dateTo)
+        let dateFromStart = Calendar.current.startOfDay(for: dateFrom)
+        
+        if dateToStart < dateFromStart {
+            dateFrom = DateConverter.startOfDay(dateToStart)
+        }
+        dateTo = DateConverter.endOfDay(dateToStart)
+    }
+    
+    func presaveDateFrom() async {
+        let dateToStart = Calendar.current.startOfDay(for: dateTo)
+        let dateFromStart = Calendar.current.startOfDay(for: dateFrom)
+        
+        if dateToStart < dateFromStart {
+            dateTo = DateConverter.endOfDay(dateFromStart)
+        }
+        dateFrom = DateConverter.startOfDay(dateFromStart)
     }
 }

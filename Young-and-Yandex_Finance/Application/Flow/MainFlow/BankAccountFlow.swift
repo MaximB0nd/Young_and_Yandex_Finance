@@ -27,7 +27,7 @@ struct BankAccountFlow: View {
                     .transition(.opacity)
                     .task {
                         do {
-                            try await model.fetchBankAccounts()
+                            try await model.updateBankAccounts()
                             mode = .state
                         } catch {
                             mode = .error
@@ -39,7 +39,7 @@ struct BankAccountFlow: View {
                     .transition(.opacity)
                     .refreshable {
                         Task {
-                            try await model.fetchBankAccounts()
+                            try await model.updateBankAccounts()
                         }
                     }
                     
@@ -52,7 +52,7 @@ struct BankAccountFlow: View {
                 ErrorScreen()
                     .refreshable {
                         Task {
-                            try await model.fetchBankAccounts()
+                            try await model.updateBankAccounts()
                         }
                     }
             }
@@ -60,7 +60,7 @@ struct BankAccountFlow: View {
         .task {
             mode = .loading
             do {
-                try await model.fetchBankAccounts()
+                try await model.updateBankAccounts()
                 mode = .state
             } catch {
                 print(error)

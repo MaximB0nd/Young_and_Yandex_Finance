@@ -24,10 +24,4 @@ final class DateConverter {
         let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: date) ?? date
         return Calendar.current.startOfDay(for: monthAgo)
     }
-    
-    static func checkDate(date1 d1: inout Date, date2 d2: inout Date, closure: (Date, Date) -> Bool) {
-        if !closure(d1, d2) {
-            d2 = d1
-        }
-    }
 }

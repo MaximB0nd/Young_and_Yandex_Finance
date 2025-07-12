@@ -10,23 +10,19 @@ import SwiftUI
 struct OutcomeScreen: View {
     
     @State var transactionService = TransactionsService.shared
-    @State var model = TodayTransactionListViewModel(direction: .outcome)
+    @State var model = TodayTransactionListViewModel.sharedOutcome
     
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            List {
-                TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
+        List {
+            TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
+        }
+        .task {
+            await model.updateTransactions()
+        }
+        .onChange(of: transactionService._transactions){
+            Task {
+                await model.updateTransactions()
             }
-            .task {
-                await model.updateData()
-            }
-            .onChange(of: transactionService._transactions){
-                Task {
-                    await model.updateData()
-                }
-            }
-            PlusButton(direction: .outcome)
-                .padding(26)
         }
     }
 }

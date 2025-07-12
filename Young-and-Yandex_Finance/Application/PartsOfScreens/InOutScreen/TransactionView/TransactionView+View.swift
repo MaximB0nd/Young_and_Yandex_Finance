@@ -8,6 +8,7 @@
 import SwiftUI
 
 extension TransactionView: View {
+    
     var body: some View {
         HStack(spacing: 21) {
             emoji

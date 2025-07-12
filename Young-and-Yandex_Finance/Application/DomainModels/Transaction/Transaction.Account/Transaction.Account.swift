@@ -21,6 +21,13 @@ extension Transaction {
             self.currency = currency
         }
         
+        init(bankAccount: BankAccount) {
+            self.id = bankAccount.id
+            self.balance = bankAccount.balance
+            self.name = bankAccount.name
+            self.currency = bankAccount.currency
+        }
+        
         var currencySymbol: String {
             switch currency {
             case "RUB":
