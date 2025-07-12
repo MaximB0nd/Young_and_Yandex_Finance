@@ -13,13 +13,13 @@ class AnaliticsViewController: UIViewController {
 
     private let direction: Direction
 
-    private let scrollView: UIScrollView = {
+    lazy private var scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         scroll.alwaysBounceVertical = true
         return scroll
     }()
-    private let contentStack: UIStackView = {
+    lazy private var contentStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 24
@@ -27,7 +27,7 @@ class AnaliticsViewController: UIViewController {
         return stack
     }()
 
-    private let cardView: UIView = {
+    lazy private var cardView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemBackground
         view.layer.cornerRadius = 16
@@ -38,14 +38,14 @@ class AnaliticsViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let periodStartLabel: UILabel = {
+    lazy private var periodStartLabel: UILabel = {
         let label = UILabel()
         label.text = "Период: начало"
         label.font = .systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let periodStartPicker: UIDatePicker = {
+    lazy private var periodStartPicker: UIDatePicker = {
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.preferredDatePickerStyle = .compact
@@ -55,14 +55,14 @@ class AnaliticsViewController: UIViewController {
         picker.clipsToBounds = true
         return picker
     }()
-    private let periodEndLabel: UILabel = {
+    lazy private var periodEndLabel: UILabel = {
         let label = UILabel()
         label.text = "Период: конец"
         label.font = .systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let periodEndPicker: UIDatePicker = {
+    lazy private var periodEndPicker: UIDatePicker = {
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.preferredDatePickerStyle = .compact
@@ -72,14 +72,14 @@ class AnaliticsViewController: UIViewController {
         picker.clipsToBounds = true
         return picker
     }()
-    private let sumLabel: UILabel = {
+    lazy private var sumLabel: UILabel = {
         let label = UILabel()
         label.text = "Сумма"
         label.font = .systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let sumValueLabel: UILabel = {
+    lazy private var sumValueLabel: UILabel = {
         let label = UILabel()
         label.text = "0 ₽"
         label.font = .systemFont(ofSize: 16)
@@ -87,26 +87,26 @@ class AnaliticsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let separator1: UIView = {
+    lazy private var separator1: UIView = {
         let view = UIView()
         view.backgroundColor = .separator
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let separator2: UIView = {
+    lazy private var separator2: UIView = {
         let view = UIView()
         view.backgroundColor = .separator
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let separator3: UIView = {
+    lazy private var separator3: UIView = {
         let view = UIView()
         view.backgroundColor = .separator
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    private let operationsCardView: UIView = {
+    lazy private var operationsCardView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemBackground
         view.layer.cornerRadius = 16
@@ -117,7 +117,7 @@ class AnaliticsViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let operationsLabel: UILabel = {
+    lazy private var operationsLabel: UILabel = {
         let label = UILabel()
         label.text = "ОПЕРАЦИИ"
         label.font = UIFont.systemFont(ofSize: 12)
@@ -125,8 +125,8 @@ class AnaliticsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let transactionsListView: TransactionsListUIView = {
-        let view = TransactionsListUIView(frame: .zero, selectedTransaction: .constant(nil))
+    lazy private var transactionsListView: TransactionsListUIView = {
+        let view = TransactionsListUIView(frame: .zero, selectedTransaction: $selectedTransaction)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
