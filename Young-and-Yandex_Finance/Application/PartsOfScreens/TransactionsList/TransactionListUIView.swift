@@ -40,7 +40,6 @@ class TransactionsListUIView: UIView, UITableViewDelegate, UITableViewDataSource
     }
     
     private func setupView() {
-        // Настройка таблицы
         tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.identifier)
         tableView.dataSource = self
         tableView.delegate = self
@@ -82,6 +81,7 @@ class TransactionsListUIView: UIView, UITableViewDelegate, UITableViewDataSource
         let transaction = transactions[indexPath.row]
         
         selectedTransaction = transaction
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

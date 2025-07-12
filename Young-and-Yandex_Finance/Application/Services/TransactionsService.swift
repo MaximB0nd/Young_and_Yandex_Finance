@@ -36,26 +36,24 @@ final class TransactionsService{
         _transactions = transactionFileCache.transactions
     }
     
-    func loadTransactions() {
-        Task {
-            try await Task.sleep(for: .seconds(1))
-            try transactionFileCache.load(paths: filePath)
-            _transactions = transactionFileCache.transactions
-        }
+    // Делаем loadTransactions асинхронным и возвращающим результат только после загрузки
+    func loadTransactions() async {
+        try? transactionFileCache.load(paths: filePath)
+        _transactions = transactionFileCache.transactions
     }
     
-    func getTransactions(direction: Direction) -> [Transaction] {
-        loadTransactions()
+    func getTransactions(direction: Direction) async -> [Transaction] {
+        await loadTransactions()
         return _transactions.filter({$0.category.direction == direction})
     }
     
     func getTransactions(from: Date, to: Date) async -> [Transaction] {
-        loadTransactions()
+        await loadTransactions()
         return _transactions.filter({$0.transactionDate >= from && $0.transactionDate <= to})
     }
     
     func createTransaction(account: Transaction.Account, category: Category, amount: Decimal, transactionDate: Date, comment: String? = nil) async throws {
-        loadTransactions()
+        await loadTransactions()
         let newId = (_transactions.map { $0.id }.max() ?? -1) + 1
         let newTransaction = Transaction(id: newId,
                                          account: account,
@@ -72,7 +70,7 @@ final class TransactionsService{
     }
     
     func editTransaction(id: Int, newCategory: Category? = nil, newAmount: Decimal? = nil, newTransactionDate: Date? = nil, newComment: String? = nil) async throws {
-        loadTransactions()
+        await loadTransactions()
         guard let index = _transactions.firstIndex(where: { $0.id == id}) else {
             throw TransactionError.notFound
         }
@@ -102,7 +100,7 @@ final class TransactionsService{
     }
     
     func deleteTransaction(id: Int) async throws {
-        loadTransactions()
+        await loadTransactions()
         guard let index = _transactions.firstIndex(where: { $0.id == id }) else {
             throw TransactionError.notFound
         }
