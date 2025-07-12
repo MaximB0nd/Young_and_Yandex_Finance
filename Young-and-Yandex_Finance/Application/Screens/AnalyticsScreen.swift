@@ -7,13 +7,11 @@
 
 import SwiftUI
 
-struct AnalyticsScreen: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        
-    }
-    
+struct AnalyticsScreenUIKit: UIViewControllerRepresentable {
+    @Binding var selectedTransaction: Transaction?
+    let direction: Direction
     func makeUIViewController(context: Context) -> AnaliticsViewController {
-        return AnaliticsViewController()
+        return AnaliticsViewController(direction: direction, transaction: $selectedTransaction)
     }
+    func updateUIViewController(_ uiViewController: AnaliticsViewController, context: Context) {}
 }
-
