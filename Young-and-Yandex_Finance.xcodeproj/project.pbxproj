@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A091FEB2E26C594008EA454 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0A091FEA2E26C594008EA454 /* .gitignore */; };
+		0A091FEC2E26C594008EA454 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0A091FEA2E26C594008EA454 /* .gitignore */; };
+		0A091FED2E26C594008EA454 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0A091FEA2E26C594008EA454 /* .gitignore */; };
+		0A091FEF2E26C6A4008EA454 /* Codes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A091FEE2E26C685008EA454 /* Codes.txt */; };
+		0A091FF02E26C6A4008EA454 /* Codes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A091FEE2E26C685008EA454 /* Codes.txt */; };
+		0A091FF12E26C6A4008EA454 /* Codes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A091FEE2E26C685008EA454 /* Codes.txt */; };
 		0ADDA6932E1EC38900C5557B /* FuzzySearch in Frameworks */ = {isa = PBXBuildFile; productRef = 0ADDA6922E1EC38900C5557B /* FuzzySearch */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +47,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A091FEA2E26C594008EA454 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		0A091FEE2E26C685008EA454 /* Codes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Codes.txt; sourceTree = "<group>"; };
 		0AB8C11F2DFADE8F00461B01 /* Young-and-Yandex_Finance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Young-and-Yandex_Finance.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB8C12C2DFADE9100461B01 /* Young-and-Yandex_FinanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Young-and-Yandex_FinanceTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB8C1362DFADE9100461B01 /* Young-and-Yandex_FinanceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Young-and-Yandex_FinanceUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +145,8 @@
 				0AB8C1392DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */,
 				0AC529C52E15E223009B1D80 /* Frameworks */,
 				0AB8C1202DFADE8F00461B01 /* Products */,
+				0A091FEA2E26C594008EA454 /* .gitignore */,
+				0A091FEE2E26C685008EA454 /* Codes.txt */,
 			);
 			sourceTree = "<group>";
 		};
@@ -284,6 +294,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A091FED2E26C594008EA454 /* .gitignore in Resources */,
+				0A091FF12E26C6A4008EA454 /* Codes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +303,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A091FEB2E26C594008EA454 /* .gitignore in Resources */,
+				0A091FEF2E26C6A4008EA454 /* Codes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +312,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A091FF02E26C6A4008EA454 /* Codes.txt in Resources */,
+				0A091FEC2E26C594008EA454 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
