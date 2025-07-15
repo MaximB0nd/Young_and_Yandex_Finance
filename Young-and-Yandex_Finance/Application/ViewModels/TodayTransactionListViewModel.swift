@@ -9,17 +9,20 @@ import Foundation
 import SwiftUI
 
 @Observable
-final class TodayTransactionListViewModel {
+final class TodayTransactionListViewModel: TransactionListnerProtocol {
     
     private(set) var transactions: [Transaction] = []
     private(set) var sum: Decimal = 0
     private(set) var currencySymbol: String = ""
-    private var direction: Direction
 
     var transactionService = TransactionsService.shared
+    let direction: Direction
     
-    init(direction: Direction) {
+    static var sharedIncome = TodayTransactionListViewModel(direction: .income)
+    static var sharedOutcome = TodayTransactionListViewModel(direction: .outcome)
+    private init(direction: Direction) {
         self.direction = direction
+        TransactionsService.subscribe(listener: self)
     }
 
     func getTransactions(by direction: Direction) async {
@@ -36,7 +39,7 @@ final class TodayTransactionListViewModel {
         currencySymbol = transactions.count > 0 ? transactions[0].account.currencySymbol : ""
     }
     
-    func updateData() async {
+    func updateTransactions() async {
         await getTransactions(by: direction)
         await getSum()
         await getCurrencySymbol()

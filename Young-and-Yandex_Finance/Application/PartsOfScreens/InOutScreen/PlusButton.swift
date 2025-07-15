@@ -9,6 +9,8 @@ import SwiftUI
 
 struct PlusButton: View {
     
+    @State var isPressed = false
+    
     let direction: Direction
     let transactionService = TransactionsService.shared
     
@@ -16,23 +18,7 @@ struct PlusButton: View {
     
     var body: some View {
         Button {
-            Task{
-                try! await transactionService.createTransaction(
-                account:
-                        .init(
-                            id: 1,
-                            name: "Max",
-                            balance: 1000,
-                            currency: "RUB"),
-                category:
-                        .init(
-                            id: 1,
-                            name: "Inding",
-                            emoji: "🐕",
-                            direction: direction),
-                amount: Decimal(Int.random(in: 1...10000)) + 0.7777777777,
-                transactionDate: .now)
-            }
+            isPressed.toggle()
         } label: {
             ZStack {
                 Circle()
@@ -45,5 +31,8 @@ struct PlusButton: View {
             }
         }
         .buttonStyle(PlainButtonStyle())
+        .fullScreenCover(isPresented: $isPressed) {
+            TransacionsEditCreateScreen(direction: direction)
+        }
     }
 }

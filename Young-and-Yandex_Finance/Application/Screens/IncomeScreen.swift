@@ -10,29 +10,23 @@ import SwiftUI
 struct IncomeScreen: View {
     
     @State var transactionService = TransactionsService.shared
-    @State var model = TodayTransactionListViewModel(direction: .income)
+    @State var model = TodayTransactionListViewModel.sharedIncome
     
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            List {
-                TransactionsListView(
-                    transactions: model.transactions,
-                    sum: model.sum,
-                    currencySymbol: model.currencySymbol
-                )
+        List {
+            TransactionsListView(
+                transactions: model.transactions,
+                sum: model.sum,
+                currencySymbol: model.currencySymbol
+            )
+        }
+        .task {
+            await model.updateTransactions()
+        }
+        .onChange(of: transactionService._transactions){
+            Task {
+                await model.updateTransactions()
             }
-            .task {
-                print("task")
-                await model.updateData()
-            }
-            .onChange(of: transactionService._transactions){
-                print("change")
-                Task {
-                    await model.updateData()
-                }
-            }
-            PlusButton(direction: .income)
-                .padding(26)
         }
     }
 }

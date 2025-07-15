@@ -7,8 +7,29 @@
 
 import Foundation
 
+fileprivate enum LazyLoading {
+    case noninitialized
+    case initialized(BankAccountsService)
+}
+
+fileprivate struct BankAccountListner {
+    weak var listener: BankAccountListnerProtocol?
+}
+
 @Observable
 final class BankAccountsService {
+    
+    private static var subscribers: [BankAccountListner] = []
+    
+    static func subscribe(_ listener: BankAccountListnerProtocol) {
+        subscribers.append(BankAccountListner(listener: listener))
+    }
+    
+    func notifySubscribers() async {
+        for subscriber in Self.subscribers {
+            try? await subscriber.listener?.updateBankAccounts()
+        }
+    }
     
     static let shared = BankAccountsService()
     
@@ -19,6 +40,13 @@ final class BankAccountsService {
     }
     
     private(set) var _accounts: [BankAccount]
+    
+    static private var lazyLoading: LazyLoading = .noninitialized
+    static var id = 1
+    
+    var id: Int {
+        Self.id
+    }
     
     // running init factory of accounts
     private init () {
@@ -39,15 +67,14 @@ final class BankAccountsService {
     }
     
     // get all account by id
-    func getAccount(id: Int) async throws -> BankAccount {
+    func getAccount() async throws -> BankAccount {
         guard let index = _accounts.firstIndex(where: { $0.id == id }) else {
             throw BankAccountError.notFound
         }
         return _accounts[index]
     }
     
-    @MainActor
-    func changeData(id: Int, newName: String? = nil, newBalance: Decimal? = nil, newCurrency: String? = nil) async throws {
+    func changeData(newName: String? = nil, newBalance: Decimal? = nil, newCurrency: String? = nil) async throws {
         guard let index = _accounts.firstIndex(where: {$0.id == id}) else {
             throw BankAccountError.notFound
         }
@@ -70,5 +97,8 @@ final class BankAccountsService {
         }
         
         if isChanged { _accounts[index].updatedAt = .now }
+        
+        await notifySubscribers()
+
     }
 }
