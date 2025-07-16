@@ -11,6 +11,9 @@ final class NetworkClient {
     internal static let baseURL = URL(string: "https://shmr-finance.ru/api/v1/")!
     internal static let session: URLSession = .shared
     
+    let account = AccountNetworkClient.self
+    let category = CategoryNetworkClient.self
+    
     // To start work you have to create a text filen with title "Codes.txt"
     // You should write in it your own token
     internal static var token: String? {

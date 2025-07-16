@@ -8,7 +8,7 @@
 import Foundation
 
 extension NetworkClient {
-    class category {
+    class CategoryNetworkClient {
         // get all categories
         static func request() async throws -> [Category] {
             let url = baseURL.appendingPathComponent("categories")
@@ -17,7 +17,7 @@ extension NetworkClient {
             
             let response = try await get(request)
             
-            return try toModel(data: response)
+            return try await toModel(data: response)
         }
     }
 }

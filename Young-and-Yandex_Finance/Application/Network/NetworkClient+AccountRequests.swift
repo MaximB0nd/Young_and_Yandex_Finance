@@ -9,7 +9,7 @@ import Foundation
 
 extension NetworkClient {
     
-    class account {
+    class AccountNetworkClient {
         // new account
         static func request(newAccount: BankAccountForRequest) async throws -> BankAccount {
             let url = baseURL.appendingPathComponent("accounts")
