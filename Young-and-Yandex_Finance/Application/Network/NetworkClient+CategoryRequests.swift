@@ -9,7 +9,7 @@ import Foundation
 
 extension NetworkClient {
     class CategoryNetworkClient {
-        // get all categories
+        /// Get all categories
         static func request() async throws -> [Category] {
             let url = baseURL.appendingPathComponent("categories")
             

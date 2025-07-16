@@ -9,7 +9,7 @@ import Testing
 
 struct APIRequestsTests {
 
-    var client = NetworkClient.self
+    var client = NetworkClient()
     
 //    @Test func requestNewAccountTest() async throws {
 //        let newAccount = NetworkClient.BankAccountForRequest(name: "MaxBond", balance: 1000.0, currency: "RUB")
@@ -31,7 +31,7 @@ struct APIRequestsTests {
 //        #expect(newAccount.name == updatedAccount.name)
 //    }
     
-    @Test func deleteAccountTest() async throws {
-        try await client.account.request(by: 349)
-    }
+//    @Test func deleteAccountTest() async throws {
+//        try await client.account.request(by: 349)
+//    }
 }

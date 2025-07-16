@@ -10,7 +10,7 @@ import Foundation
 extension NetworkClient {
     
     class AccountNetworkClient {
-        // new account
+        /// Create new account
         static func request(newAccount: BankAccountForRequest) async throws -> BankAccount {
             let url = baseURL.appendingPathComponent("accounts")
             let data = try await toData(model: newAccount)
@@ -23,7 +23,7 @@ extension NetworkClient {
             return try await toModel(data: response)
         }
         
-        // get all accounts
+        /// Get all accounts
         static func request() async throws -> [BankAccount] {
             let url = baseURL.appendingPathComponent("accounts")
             
@@ -34,7 +34,7 @@ extension NetworkClient {
             return try await toModel(data: response)
         }
         
-        // update account by id
+        /// Update account by id
         static func request(by id: Int, newAccount: BankAccountForRequest) async throws -> BankAccount {
             let url = baseURL.appendingPathComponent("accounts/\(id)")
             let data = try await toData(model: newAccount)
@@ -47,7 +47,7 @@ extension NetworkClient {
             return try await toModel(data: response)
         }
         
-        // delete account by id
+        /// Delete account by id
         static func request(by id: Int) async throws {
             let url = baseURL.appendingPathComponent( "accounts/\(id)")
             
