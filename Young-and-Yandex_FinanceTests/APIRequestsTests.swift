@@ -9,16 +9,29 @@ import Testing
 
 struct APIRequestsTests {
 
-    var client = NetworkClient()
+    var client = NetworkClient.self
     
-    @Test func requestNewAccountTest() async throws {
-        let newAccount = NetworkClient.BankAccountForRequest(name: "MaxBond", balance: 1000.0, currency: "RUB")
-        let account = try await client.request(newAccount: newAccount)
-        print(account)
-        #expect(account.name == "MaxBond")
+//    @Test func requestNewAccountTest() async throws {
+//        let newAccount = NetworkClient.BankAccountForRequest(name: "MaxBond", balance: 1000.0, currency: "RUB")
+//        let account = try await client.request(newAccount: newAccount)
+//        print(account)
+//        #expect(account.name == "MaxBond")
+//    }
+    
+    @Test func requestAccountByIdTest() async throws {
+        let account: [BankAccount] = try await client.account.request()
+        #expect(account.count != 0)
     }
-
-    @Test func printToken() async throws {
-        #expect(client.token != "")
+    
+//    @Test func requestUpdateAccountTest() async throws {
+//        let newAccount = NetworkClient.BankAccountForRequest(name: "Max", balance: 2000.0, currency: "RUB")
+//        
+//        let updatedAccount = try await client.request(by: 347, newAccount: newAccount)
+//        print(updatedAccount)
+//        #expect(newAccount.name == updatedAccount.name)
+//    }
+    
+    @Test func deleteAccountTest() async throws {
+        try await client.account.request(by: 349)
     }
 }

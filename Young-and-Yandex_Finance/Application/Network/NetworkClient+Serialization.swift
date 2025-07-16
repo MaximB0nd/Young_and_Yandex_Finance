@@ -8,14 +8,16 @@
 import Foundation
 
 extension NetworkClient {
-    
-    func toData(model: some Encodable) throws -> Data {
+
+    internal static func toData(model: some Encodable) async throws -> Data {
         try JSONSerialization.data(withJSONObject:  try JSONSerialization.jsonObject(with: try JSONEncoder().encode(model))
         )
     }
     
-    func toModel<T: Decodable>(data: Data) throws -> T {
+    internal static func toModel<T: Decodable>(data: Data) async throws -> T {
         try JSONDecoder().decode(T.self, from: data)
     }
+        
+    
 }
 
