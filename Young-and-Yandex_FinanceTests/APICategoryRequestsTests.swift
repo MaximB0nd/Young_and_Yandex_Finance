@@ -13,7 +13,6 @@ struct APICategoryRequestsTests {
 
     @Test func getAllCategories() async throws {
         let category = try await client.category.request()
-        print(category)
         #expect(category.count == 24)
     }
     

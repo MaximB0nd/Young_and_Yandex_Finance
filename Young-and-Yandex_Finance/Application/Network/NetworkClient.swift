@@ -13,6 +13,7 @@ final class NetworkClient {
     
     let account = AccountNetworkClient.self
     let category = CategoryNetworkClient.self
+    let transaction = TransactionNetworkClient.self
     
     // To start work you have to create a text filen with title "Codes.txt"
     // You should write in it your own token
