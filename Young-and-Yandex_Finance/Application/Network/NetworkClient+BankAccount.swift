@@ -8,7 +8,7 @@
 import Foundation
 
 extension NetworkClient {
-    struct BankAccountForRequest: Decodable {
+    struct BankAccountForRequest: Codable {
         let name: String
         let balance: Decimal
         let currency: String
