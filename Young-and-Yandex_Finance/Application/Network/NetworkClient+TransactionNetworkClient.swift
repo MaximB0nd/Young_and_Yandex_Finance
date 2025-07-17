@@ -20,7 +20,16 @@ extension NetworkClient {
             
             let responce = try await post(request)
             
-            return try await toModel(data: responce)
+            let responseModel: TransactionForResponse = try await toModel(data: responce)
+            var model = Transaction(from: responseModel)
+            
+            let account = try await AccountNetworkClient.request()
+            model.account = .init(bankAccount: account.first!)
+            
+            let categories = try await CategoryNetworkClient.request()
+            model.category = categories.first(where: {$0.id == responseModel.categoryId})!
+            
+            return model
         }
     }
 }

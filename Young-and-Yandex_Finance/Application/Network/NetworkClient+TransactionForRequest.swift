@@ -8,7 +8,7 @@
 import Foundation
 
 extension NetworkClient {
-    struct TransactionForRequest: Codable {
+    struct TransactionForRequest: Encodable {
         let accountId: Int
         let categoryId: Int
         let amount: Decimal

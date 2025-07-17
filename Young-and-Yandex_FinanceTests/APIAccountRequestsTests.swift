@@ -23,15 +23,15 @@ struct APIRequestsTests {
         #expect(account.count != 0)
     }
     
-//    @Test func requestUpdateAccountTest() async throws {
-//        let newAccount = NetworkClient.BankAccountForRequest(name: "Max", balance: 2000.0, currency: "RUB")
-//        
-//        let updatedAccount = try await client.request(by: 347, newAccount: newAccount)
-//        print(updatedAccount)
-//        #expect(newAccount.name == updatedAccount.name)
-//    }
+    @Test func requestUpdateAccountTest() async throws {
+        let newAccount = NetworkClient.BankAccountForRequest(name: "Max Bond", balance: 2000.0, currency: "RUB")
+        
+        let updatedAccount = try await client.account.request(by: 77, newAccount: newAccount)
+        print(updatedAccount)
+        #expect(newAccount.name == updatedAccount.name)
+    }
     
 //    @Test func deleteAccountTest() async throws {
-//        try await client.account.request(by: 349)
+//        try await client.account.request(by: 347)
 //    }
 }
