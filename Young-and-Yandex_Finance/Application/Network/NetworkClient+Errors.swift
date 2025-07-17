@@ -11,7 +11,7 @@ extension NetworkClient {
     enum Errors: Error {
         case invalidToken
         case serverError(code: Int)
-        
+        case unknownError
     }
 }
 

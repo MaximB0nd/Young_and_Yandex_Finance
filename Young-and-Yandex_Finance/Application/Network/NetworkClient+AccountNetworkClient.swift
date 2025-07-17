@@ -35,7 +35,7 @@ extension NetworkClient {
         }
         
         /// Update account by id
-        static func request(by id: Int, newAccount: BankAccountForRequest) async throws -> BankAccount {
+        static func request(newAccount: BankAccountForRequest, by id: Int) async throws -> BankAccount {
             let url = baseURL.appendingPathComponent("accounts/\(id)")
             let data = try await toData(model: newAccount)
             
