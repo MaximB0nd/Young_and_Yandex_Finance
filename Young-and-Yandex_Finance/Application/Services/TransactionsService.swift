@@ -26,6 +26,8 @@ final class TransactionsService{
     private(set) var _transactions: [Transaction]
     private let cacher: CacheSaver = TransactionsSwiftDataCache.shared
     
+    private let client = NetworkClient()
+    
     private init () {
         do {
             try cacher.load()
@@ -36,23 +38,35 @@ final class TransactionsService{
     }
     
     // Делаем loadTransactions асинхронным и возвращающим результат только после загрузки
-    func loadTransactions() async {
-        try? cacher.load()
-        _transactions = cacher.transactions
+    func loadTransactions() async throws {
+        do {
+            self._transactions = try await client.transaction.request(by: BankAccountsService.id)
+        } catch (let error) {
+            try? cacher.load()
+            _transactions = cacher.transactions
+            throw error
+        }
     }
     
-    func getTransactions(direction: Direction) async -> [Transaction] {
-        await loadTransactions()
-        return _transactions.filter({$0.category.direction == direction})
+    func getTransactions(from: Date, to: Date) async -> ResponceResult<[Transaction], Error> {
+        
+        var result = ResponceResult<[Transaction], Error>()
+        do {
+            try await loadTransactions()
+        } catch {
+            result.error = error
+        }
+    
+        result.success = self._transactions.filter({$0.transactionDate >= from && $0.transactionDate <= to})
+        
+        return result
+        
     }
     
-    func getTransactions(from: Date, to: Date) async -> [Transaction] {
-        await loadTransactions()
-        return _transactions.filter({$0.transactionDate >= from && $0.transactionDate <= to})
-    }
+    //MARK: - добавь реализацию с ошибками и сохранением в бэкап
     
-    func createTransaction(account: Transaction.Account, category: Category, amount: Decimal, transactionDate: Date, comment: String? = nil) async throws {
-        await loadTransactions()
+    func createTransaction(account: Transaction.Account, category: Category, amount: Decimal, transactionDate: Date, comment: String? = nil) async {
+        try? await loadTransactions()
         let newId = (_transactions.map { $0.id }.max() ?? -1) + 1
         let newTransaction = Transaction(id: newId,
                                          account: account,
@@ -64,12 +78,12 @@ final class TransactionsService{
                                          updatedAt: .now)
         self._transactions.append(newTransaction)
         cacher.add(newTransaction)
-        try cacher.save()
+        try? cacher.save()
         await notifySubscribers()
     }
     
     func editTransaction(id: Int, newCategory: Category? = nil, newAmount: Decimal? = nil, newTransactionDate: Date? = nil, newComment: String? = nil) async throws {
-        await loadTransactions()
+        try await loadTransactions()
         guard let index = _transactions.firstIndex(where: { $0.id == id}) else {
             throw TransactionError.notFound
         }
@@ -99,7 +113,7 @@ final class TransactionsService{
     }
     
     func deleteTransaction(id: Int) async throws {
-        await loadTransactions()
+        try await loadTransactions()
         guard let index = _transactions.firstIndex(where: { $0.id == id }) else {
             throw TransactionError.notFound
         }

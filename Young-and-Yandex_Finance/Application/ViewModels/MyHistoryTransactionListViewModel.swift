@@ -19,6 +19,9 @@ final class MyHistoryTransactionListViewModel: TransactionListnerProtocol {
     private(set) var currencySymbol: String = ""
     private var direction: Direction
     
+    var status: ShowStatus = .loading
+    var errorLabelShown: Bool = false
+    
     var transactionService = TransactionsService.shared
     
     var getStartDateFrom: Date {
@@ -44,8 +47,14 @@ final class MyHistoryTransactionListViewModel: TransactionListnerProtocol {
     
     func getTransactions(from date1: Date, to date2: Date, by direction: Direction, sortBy: SortSelectionType?) async {
         // Получаем все транзакции за период и фильтруем только по нужному direction
-        var transactions = await transactionService.getTransactions(from: date1, to: date2)
-        transactions = transactions.filter { $0.category.direction == self.direction }
+        
+        var result = await transactionService.getTransactions(from: date1, to: date2)
+        
+        var transactions = result.success!.filter { $0.category.direction == self.direction }
+        
+        self.status = .done(error: result.error)
+        self.errorLabelShown = result.error != nil
+        
         if let sortBy = sortBy {
             switch sortBy {
             case .price:
