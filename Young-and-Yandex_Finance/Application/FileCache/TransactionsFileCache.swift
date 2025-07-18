@@ -7,16 +7,18 @@
 
 import Foundation
 
-class TransactionsFileCache {
+class TransactionsFileCache: CacheSaver {
     
-    static var shared = TransactionsFileCache()
+    static var shared: CacheSaver = TransactionsFileCache()
     
     private enum FileCacheErrors: Error {
         case fileNotFound
         case decodingError(String)
     }
     
-    private var _transactions: [Transaction] = []
+    private let fileName = "Y&Y_Finance-transactions.json"
+    
+    internal var _transactions: [Transaction] = []
     
     // getter for private var _transactions
     var transactions: [Transaction] {
@@ -27,15 +29,18 @@ class TransactionsFileCache {
     func add(_ transaction: Transaction) {
         guard !_transactions.contains(where: { $0.id == transaction.id }) else { return }
         _transactions.append(transaction)
+        try? save()
     }
     
     // func to delete a transaction in _transactions by id
     func delete(id: Int) {
         _transactions.removeAll(where: { $0.id == id })
+        try? save()
     }
     
     // func to save all transactions in Json file by url
-    func save(fileName: String) throws {
+    func save() throws {
+        
         let directoryURL = FileManager.default.temporaryDirectory
         let fileURL = directoryURL.appendingPathComponent(fileName)
         let jsonDatas = _transactions.map { $0.jsonObject }
@@ -48,7 +53,8 @@ class TransactionsFileCache {
     }
     
     // func to load all transaction from Json files by urls
-    func load(paths: String...) throws {
+    func load() throws {
+        let paths = [fileName]
         let directoryURL = FileManager.default.temporaryDirectory
         for path in paths {
             let fileURL = directoryURL.appendingPathComponent(path)

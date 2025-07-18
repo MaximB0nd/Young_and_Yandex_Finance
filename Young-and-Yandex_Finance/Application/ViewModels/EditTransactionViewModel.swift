@@ -52,8 +52,6 @@ class EditTransactionViewModel: TransactionUpdater {
         } else {
             isError = true
         }
-        
-        print(errors)
     }
     
     func onChangeAmountText() {

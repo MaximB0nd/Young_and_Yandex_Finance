@@ -24,22 +24,21 @@ final class TransactionsService{
     static var shared = TransactionsService()
     
     private(set) var _transactions: [Transaction]
-    private let transactionFileCache = TransactionsFileCache.shared
-    private let filePath = "Y&Y_Finance-transactions.json"
+    private let cacher: CacheSaver = TransactionsSwiftDataCache.shared
     
     private init () {
         do {
-            try transactionFileCache.load(paths: filePath)
+            try cacher.load()
         } catch {
             _transactions = []
         }
-        _transactions = transactionFileCache.transactions
+        _transactions = cacher.transactions
     }
     
     // Делаем loadTransactions асинхронным и возвращающим результат только после загрузки
     func loadTransactions() async {
-        try? transactionFileCache.load(paths: filePath)
-        _transactions = transactionFileCache.transactions
+        try? cacher.load()
+        _transactions = cacher.transactions
     }
     
     func getTransactions(direction: Direction) async -> [Transaction] {
@@ -64,8 +63,8 @@ final class TransactionsService{
                                          createdAt: .now,
                                          updatedAt: .now)
         self._transactions.append(newTransaction)
-        transactionFileCache.add(newTransaction)
-        try transactionFileCache.save(fileName: filePath)
+        cacher.add(newTransaction)
+        try cacher.save()
         await notifySubscribers()
     }
     
@@ -85,7 +84,7 @@ final class TransactionsService{
             _transactions[index].transactionDate = newTransactionDate
         }
         if let newComment = newComment {
-            if newComment=="" {
+            if newComment == "" {
                 _transactions[index].comment=nil
             } else {
                 _transactions[index].comment = newComment
@@ -93,9 +92,9 @@ final class TransactionsService{
         }
         _transactions[index].updatedAt = Date.now
         
-        transactionFileCache.delete(id: id)
-        transactionFileCache.add(_transactions[index])
-        try transactionFileCache.save(fileName: filePath)
+        cacher.delete(id: id)
+        cacher.add(_transactions[index])
+        try cacher.save()
         await notifySubscribers()
     }
     
@@ -105,8 +104,8 @@ final class TransactionsService{
             throw TransactionError.notFound
         }
         _transactions.remove(at: index)
-        transactionFileCache.delete(id: id)
-        try transactionFileCache.save(fileName: filePath)
+        cacher.delete(id: id)
+        try cacher.save()
         await notifySubscribers()
     }
     

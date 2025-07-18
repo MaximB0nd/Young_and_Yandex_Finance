@@ -11,8 +11,9 @@ import Foundation
 final class CategoriesService {
     
     static let shared = CategoriesService()
-    
     private var _categories: [Category]
+    
+    var client = NetworkClient()
     
     private init () {
         
@@ -22,7 +23,6 @@ final class CategoriesService {
             Category(id: 3, name: "Дивиденды", emoji: "📈", direction: .income),
             Category(id: 4, name: "Подарки", emoji: "🎁", direction: .income),
             Category(id: 5, name: "Возврат долга", emoji: "↩️", direction: .income),
-            
             Category(id: 6, name: "Аренда квартиры", emoji: "🏠", direction: .outcome),
             Category(id: 7, name: "Продукты", emoji: "🛒", direction: .outcome),
             Category(id: 8, name: "Транспорт", emoji: "🚗", direction: .outcome),
