@@ -22,15 +22,16 @@ struct CategoryPicker: View {
                 Text("Не выбрано")
                     .tag(Optional<Category>.none)
                 
-                ForEach(allCategories) { category in
-                    Text(category.name)
+                ForEach(allCategories as [Category?], id: \.self) { category in
+                    Text(category?.name ?? "")
                         .tag(category)
                 }
             }
         }
         .onAppear() {
             Task {
-                self.allCategories = await CategoriesService.shared.getByDirection(direction)
+                self.allCategories = await CategoriesService.shared.getByDirection(direction).success ?? []
+                
             }
         }
     }

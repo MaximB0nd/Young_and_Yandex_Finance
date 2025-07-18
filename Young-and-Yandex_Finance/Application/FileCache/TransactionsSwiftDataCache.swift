@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 
-class TransactionsSwiftDataCache: CacheSaver {
+final class TransactionsSwiftDataCache: CacheSaver {
     
     static var shared: any CacheSaver = TransactionsSwiftDataCache()
     
