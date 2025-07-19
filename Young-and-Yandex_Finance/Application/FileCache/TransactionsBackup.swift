@@ -15,20 +15,21 @@ class TransactionsBackup {
     
     static let shared = TransactionsBackup()
     
-    var transactions: [TransactionBackupSwiftDataModel] = []
+    var transactions: [TransactionDataBackupModel] = []
     
-    let client = NetworkClient()
-    
-    init() {
-        let container = try! ModelContainer(for: TransactionBackupSwiftDataModel.self)
+    private init() {
+        let container = try! ModelContainer(for: TransactionDataBackupModel.self)
         self.modelContainer = container
         self.context = ModelContext(container)
+        Task {
+            try? await load()
+        }
     }
     
     /// Add backup by transaction and action
     @MainActor
     func add(_ transaction: Transaction, action: Actions) async {
-        let model = TransactionBackupSwiftDataModel(transaction: transaction, action: action)
+        let model = TransactionDataBackupModel(transaction: transaction, action: action)
         context.insert(model)
         try? await self.save()
     }
@@ -36,7 +37,7 @@ class TransactionsBackup {
     /// Delete backup by transaction and action
     @MainActor
     func delete(_ transaction: Transaction, action: Actions) async {
-        let model = TransactionBackupSwiftDataModel(transaction: transaction, action: action)
+        let model = TransactionDataBackupModel(transaction: transaction, action: action)
         context.delete(model)
         try? await self.save()
     }
@@ -44,13 +45,13 @@ class TransactionsBackup {
     /// Load all backups
     @MainActor
     private func load() async throws {
-        let descriptor = FetchDescriptor<TransactionBackupSwiftDataModel>()
+        let descriptor = FetchDescriptor<TransactionDataBackupModel>()
         self.transactions = try context.fetch(descriptor)
     }
     
     /// Return all backups
     @MainActor
-    func getBackups() async -> [TransactionBackupSwiftDataModel] {
+    func getBackups() async -> [TransactionDataBackupModel] {
         try? await load()
         return self.transactions
     }

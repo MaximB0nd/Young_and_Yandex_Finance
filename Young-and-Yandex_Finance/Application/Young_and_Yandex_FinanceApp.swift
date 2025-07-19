@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Young_and_Yandex_FinanceApp: App {
+    
     var body: some Scene {
         WindowGroup {
             ApplicationFlow()

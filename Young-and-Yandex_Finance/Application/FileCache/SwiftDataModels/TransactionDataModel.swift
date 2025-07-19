@@ -9,10 +9,13 @@ import Foundation
 import SwiftData
 
 @Model
-final class TransactionSwiftDataModel {
+final class TransactionDataModel {
     var id: Int
-    var account: AccountSwiftDataModel
-    var category: CategorySwiftDataModel
+    
+    var account: AccountDataModel
+    
+    var category: CategoryDataModel
+    
     var amount: Decimal
     var transactionDate: Date
     var comment: String?
@@ -51,7 +54,7 @@ final class TransactionSwiftDataModel {
 }
 
 @Model
-final class CategorySwiftDataModel {
+final class CategoryDataModel {
     var id: Int
     var name: String
     var emoji: String
@@ -66,7 +69,7 @@ final class CategorySwiftDataModel {
 }
 
 @Model
-final class AccountSwiftDataModel {
+final class AccountDataModel {
     var id: Int
     var name: String
     var balance: Decimal

@@ -17,11 +17,11 @@ final class TransactionsSwiftDataCache: CacheSaver {
     let context: ModelContext
     
     init() {
-        let container = try! ModelContainer(for: TransactionSwiftDataModel.self)
+        let container = try! ModelContainer(for: TransactionDataModel.self)
         self.modelContainer = container
         self.context = ModelContext(container)
         Task {
-            try await load()
+            try? await load()
         }
     }
     
@@ -33,23 +33,31 @@ final class TransactionsSwiftDataCache: CacheSaver {
     
     @MainActor
     func add(_ transaction: Transaction) async {
-        let model = TransactionSwiftDataModel(transaction: transaction)
+        let model = TransactionDataModel(transaction: transaction)
         context.insert(model)
         try? context.save()
-        try? load()
+        try? await load()
     }
     
     @MainActor
     func delete(id: Int) async {
-        let predicate = #Predicate<TransactionSwiftDataModel> { $0.id == id }
-        try? context.delete(model: TransactionSwiftDataModel.self, where: predicate)
+        let predicate = #Predicate<TransactionDataModel> { $0.id == id }
+        try? context.delete(model: TransactionDataModel.self, where: predicate)
         try? context.save()
-        try? load()
+        try? await load()
     }
     
     @MainActor
-    private func load() throws {
-        let descriptor = FetchDescriptor<TransactionSwiftDataModel>()
+    func load() async throws {
+        let descriptor = FetchDescriptor<TransactionDataModel>()
         self._transactions = try context.fetch(descriptor).map(\.transaction)
+    }
+    
+    @MainActor
+    func sync(_ transactions: [Transaction]) async {
+        try? context.delete(model: TransactionDataModel.self)
+        for transaction in transactions {
+            await add(transaction)
+        }
     }
 }

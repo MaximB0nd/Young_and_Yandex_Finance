@@ -11,12 +11,17 @@ protocol CacheSaver {
     
     static var shared: CacheSaver { get }
     
-    // getter for private var _transactions
+    /// Getter for private var _transactions
     var transactions: [Transaction] { get }
     
-    // func to add a new transaction in _transactions (must have unique id)
+    /// Add a new transaction in _transactions (must have unique id)
     func add(_ transaction: Transaction) async
     
-    // func to delete a transaction in _transactions by id
+    /// Delete a transaction in _transactions by id
     func delete(id: Int) async
+    
+    /// Rewrite all transactions in memory
+    func sync(_ transactions: [Transaction]) async
+    
+    func load() async throws
 }

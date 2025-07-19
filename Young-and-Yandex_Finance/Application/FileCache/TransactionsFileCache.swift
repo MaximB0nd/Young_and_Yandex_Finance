@@ -56,7 +56,7 @@ class TransactionsFileCache: CacheSaver {
     
     /// Load all transaction from Json files by urls
     @MainActor
-    private func load() async throws {
+    func load() async throws {
         let paths = [fileName]
         let directoryURL = FileManager.default.temporaryDirectory
         for path in paths {
@@ -78,5 +78,11 @@ class TransactionsFileCache: CacheSaver {
                 }
             }  
         }
+    }
+    
+    @MainActor
+    func sync(_ transactions: [Transaction]) async {
+        _transactions = transactions
+        try? await save()
     }
 }

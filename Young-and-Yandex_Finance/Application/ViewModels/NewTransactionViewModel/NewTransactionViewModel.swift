@@ -73,12 +73,18 @@ final class NewTransactionViewModel: TransactionUpdater {
         
         do {
             if errors.isEmpty {
-                await TransactionsService.shared.createTransaction(
-                    account: account!,
-                    category: category!,
-                    amount: amount!,
-                    transactionDate: transactionDate,
-                    comment: comment)
+                do {
+                    try await TransactionsService.shared.createTransaction(
+                        account: account!,
+                        category: category!,
+                        amount: amount!,
+                        transactionDate: transactionDate,
+                        comment: comment)
+                } catch {
+                    errors = [error.localizedDescription]
+                    isError = true
+                }
+                
             } else {
                 isError = true
             }
