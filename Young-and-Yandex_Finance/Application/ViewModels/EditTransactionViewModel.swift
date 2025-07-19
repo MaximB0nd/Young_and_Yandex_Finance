@@ -66,6 +66,7 @@ class EditTransactionViewModel: TransactionUpdater {
         Task {
             do {
                 try await service.deleteTransaction(id: id)
+                
             } catch {
                 errors.append("Не удалось удалить транзакцию")
                 isError = true

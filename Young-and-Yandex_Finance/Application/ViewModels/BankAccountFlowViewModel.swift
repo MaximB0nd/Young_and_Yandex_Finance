@@ -18,7 +18,6 @@ final class BankAccountFlowViewModel: BankAccountListnerProtocol {
     let bankService = BankAccountsService.shared
     
     var status: ShowStatus = .loading
-    var errorLabelShown: Bool = false
     
     private init() {
         BankAccountsService.subscribe(self)
@@ -32,14 +31,12 @@ final class BankAccountFlowViewModel: BankAccountListnerProtocol {
         let result = try await bankService.getAccount()
         self.bankAccount = result.success
         
-        status = .done(error: result.error)
-        errorLabelShown = result.error != nil
+        status = result.error == nil ? .loaded : .error
     }
     
     @MainActor
     func updateBankAccount(newValue: BankAccount) async throws {
-        let result = try await bankService.getAccount()
-        guard result.success != newValue else {
+        guard try await bankService.getAccount().success != newValue else {
             return
         }
         try await bankService.changeData(newBalance: newValue.balance, newCurrency: newValue.currency)

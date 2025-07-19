@@ -12,7 +12,6 @@ import SwiftUI
 final class TodayTransactionListViewModel: TransactionListnerProtocol {
     
     var status: ShowStatus = .loading
-    var errorLabelShown: Bool = false
     
     private(set) var transactions: [Transaction] = []
     private(set) var sum: Decimal = 0
@@ -34,8 +33,7 @@ final class TodayTransactionListViewModel: TransactionListnerProtocol {
         let transactions = await transactionService.getTransactions(from: today, to: endOfDay)
         self.transactions = transactions.success!.filter({$0.category.direction == direction})
         
-        self.status = .done(error: transactions.error)
-        self.errorLabelShown = transactions.error != nil
+        self.status = transactions.error == nil ? .loaded : .error
         
     }
     

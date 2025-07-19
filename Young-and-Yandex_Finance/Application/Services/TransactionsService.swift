@@ -23,103 +23,188 @@ final class TransactionsService{
     
     static var shared = TransactionsService()
     
-    private(set) var _transactions: [Transaction]
-    private let cacher: CacheSaver = TransactionsSwiftDataCache.shared
+    private(set) var _transactions: [Transaction] = []
+    private let cacher: CacheSaver = TransactionsFileCache.shared
     
     private let client = NetworkClient()
+    private let backup = TransactionsBackup.shared
+    var error: Error?
     
     private init () {
-        do {
-            try cacher.load()
-        } catch {
-            _transactions = []
+        Task {
+            await loadTransactions()
         }
-        _transactions = cacher.transactions
     }
     
     // Делаем loadTransactions асинхронным и возвращающим результат только после загрузки
-    func loadTransactions() async throws {
+    func loadTransactions() async -> [Transaction] {
+        await tryRequestToClient()
         do {
             self._transactions = try await client.transaction.request(by: BankAccountsService.id)
+            try cacher.rewrite(self._transactions)
+            return _transactions
         } catch (let error) {
             try? cacher.load()
             _transactions = cacher.transactions
-            throw error
+            
+            ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
+            
+            let noSyncedTransactions = await backup.getAllNotSynced()
+            
+            let merged = await mergeBackup(with: noSyncedTransactions)
+            
+            return merged
         }
+    }
+    
+    func tryRequestToClient() async {
+        for transaction in await backup.getAllNotSynced() {
+            switch transaction.action {
+            case .create:
+                do {
+                    let newTransaction = try await client.transaction.request(newTransaction: .init(from: transaction.transaction.transaction))
+                    
+                    self._transactions.append(newTransaction)
+                    self.cacher.add(newTransaction)
+                    try self.cacher.save()
+                    
+                    backup.delete(transaction.transaction.transaction, action: transaction.action)
+                    
+                } catch {}
+            case .update:
+                do {
+                    let newEdit = try await client.transaction.request(newTransaction: .init(from: transaction.transaction.transaction), by: transaction.transaction.transaction.id)
+                    
+                    self._transactions.removeAll {$0.id == newEdit.id}
+                    self._transactions.append(newEdit)
+                    self.cacher.delete(id: newEdit.id)
+                    self.cacher.add(newEdit)
+                    try self.cacher.save()
+                    
+                    backup.delete(transaction.transaction.transaction, action: transaction.action)
+                   
+                    
+                } catch {}
+                
+            case .delete:
+                do {
+                    let _: Void = try await client.transaction.request(by: transaction.transaction.id)
+                    
+                    self._transactions.removeAll {$0.id == transaction.transaction.transaction.id }
+                    self.cacher.delete(id: transaction.transaction.transaction.id)
+                    try self.cacher.save()
+                    
+                    backup.delete(transaction.transaction.transaction, action: transaction.action)
+                    
+                } catch {}
+            }
+        }
+    }
+    
+    func mergeBackup(with transactions: [TransactionBackupSwiftDataModel]) async -> [Transaction] {
+        
+        var allTransactions = _transactions
+        
+        for transaction in transactions {
+            switch transaction.action {
+            case .create:
+                allTransactions.append(transaction.transaction.transaction)
+            case .delete:
+                allTransactions.removeAll { $0.id == transaction.transaction.transaction.id }
+            case .update:
+                allTransactions.removeAll { $0.id == transaction.transaction.transaction.id }
+                allTransactions.append(transaction.transaction.transaction)
+            }
+        }
+        return allTransactions
     }
     
     func getTransactions(from: Date, to: Date) async -> ResponceResult<[Transaction], Error> {
         
         var result = ResponceResult<[Transaction], Error>()
-        do {
-            try await loadTransactions()
-        } catch {
-            result.error = error
-        }
+        let allTransactions = await loadTransactions()
     
-        result.success = self._transactions.filter({$0.transactionDate >= from && $0.transactionDate <= to})
+        result.success = allTransactions.filter({$0.transactionDate >= from && $0.transactionDate <= to})
         
         return result
-        
     }
     
-    //MARK: - добавь реализацию с ошибками и сохранением в бэкап
     
     func createTransaction(account: Transaction.Account, category: Category, amount: Decimal, transactionDate: Date, comment: String? = nil) async {
-        try? await loadTransactions()
-        let newId = (_transactions.map { $0.id }.max() ?? -1) + 1
-        let newTransaction = Transaction(id: newId,
-                                         account: account,
-                                         category: category,
-                                         amount: amount,
-                                         transactionDate: transactionDate,
-                                         comment: comment == "" ? nil : comment,
-                                         createdAt: .now,
-                                         updatedAt: .now)
-        self._transactions.append(newTransaction)
-        cacher.add(newTransaction)
-        try? cacher.save()
+        do {
+            let newTransaction = try await client.transaction.request(newTransaction: .init(accountId: account.id, categoryId: category.id, amount: amount, transactionDate: transactionDate, comment: comment))
+            
+            self._transactions.append(newTransaction)
+            self.cacher.add(newTransaction)
+            try self.cacher.save()
+            
+        } catch {
+            let allTransactions = await loadTransactions()
+            let newId = (allTransactions.map(\.id).max() ?? -1) + 1
+            backup.add(Transaction(id: newId, account: account, category: category, amount: amount, transactionDate: transactionDate, comment: comment, createdAt: Date(), updatedAt: Date()), action: .create)
+        }
+        
         await notifySubscribers()
     }
     
     func editTransaction(id: Int, newCategory: Category? = nil, newAmount: Decimal? = nil, newTransactionDate: Date? = nil, newComment: String? = nil) async throws {
-        try await loadTransactions()
-        guard let index = _transactions.firstIndex(where: { $0.id == id}) else {
-            throw TransactionError.notFound
-        }
-        guard newAmount != nil || newTransactionDate != nil || newCategory != nil || newCategory != nil || newComment != nil else { return }
-        if let newCategory = newCategory {
-            _transactions[index].category = newCategory
-        }
-        if let newAmount = newAmount {
-            _transactions[index].amount = newAmount
-        }
-        if let newTransactionDate = newTransactionDate {
-            _transactions[index].transactionDate = newTransactionDate
-        }
-        if let newComment = newComment {
-            if newComment == "" {
-                _transactions[index].comment=nil
-            } else {
-                _transactions[index].comment = newComment
+    
+        do {
+            guard let index = _transactions.firstIndex(where: { $0.id == id}) else {
+                throw TransactionError.notFound
             }
+            let newEdit = try await client.transaction.request(newTransaction:
+                    .init(accountId: _transactions[index].account.id,
+                          categoryId: newCategory?.id ?? _transactions[index].category.id,
+                          amount: newAmount ?? _transactions[index].amount,
+                          transactionDate: newTransactionDate ?? _transactions[index].transactionDate,
+                          comment: newComment ?? _transactions[index].comment),
+                        by: id)
+            self.cacher.delete(id: _transactions[index].id)
+            self._transactions[index] = newEdit
+            self.cacher.add(newEdit)
+            try self.cacher.save()
+            
+        } catch {
+            let allTransactions = await loadTransactions()
+            guard let index = allTransactions.firstIndex(where: { $0.id == id }) else {
+                throw TransactionError.notFound
+            }
+            
+            let updated = Transaction(
+                id: id,
+                account: allTransactions[index].account,
+                category: newCategory ?? allTransactions[index].category,
+                amount: newAmount ?? allTransactions[index].amount,
+                transactionDate: newTransactionDate ?? allTransactions[index].transactionDate,
+                createdAt: allTransactions[index].createdAt,
+                updatedAt: Date())
+            
+            backup.add(updated, action: .update)
         }
-        _transactions[index].updatedAt = Date.now
         
-        cacher.delete(id: id)
-        cacher.add(_transactions[index])
-        try cacher.save()
         await notifySubscribers()
     }
     
     func deleteTransaction(id: Int) async throws {
-        try await loadTransactions()
-        guard let index = _transactions.firstIndex(where: { $0.id == id }) else {
-            throw TransactionError.notFound
+        
+        do {
+            guard let index = _transactions.firstIndex(where: { $0.id == id }) else {
+                throw TransactionError.notFound
+            }
+            let _: Void = try await client.transaction.request(by: _transactions[index].id)
+            self.cacher.delete(id: _transactions[index].id)
+            self._transactions.remove(at: index)
+            try self.cacher.save()
+            
+        } catch {
+            let allTransactions = await loadTransactions()
+            guard let index = allTransactions.firstIndex(where: { $0.id == id }) else {
+                throw TransactionError.notFound
+            }
+            backup.add(_transactions[index] , action: .delete)
         }
-        _transactions.remove(at: index)
-        cacher.delete(id: id)
-        try cacher.save()
+        
         await notifySubscribers()
     }
     

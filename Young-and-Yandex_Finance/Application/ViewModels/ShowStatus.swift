@@ -9,5 +9,6 @@ import Foundation
 
 enum ShowStatus {
     case loading
-    case done(error: Error?)
+    case loaded
+    case error
 }

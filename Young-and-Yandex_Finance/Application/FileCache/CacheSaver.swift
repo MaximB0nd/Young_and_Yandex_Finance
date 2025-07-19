@@ -24,4 +24,6 @@ protocol CacheSaver {
     func load() throws
     
     func save() throws
+    
+    func rewrite(_ transactions: [Transaction]) throws 
 }

@@ -13,6 +13,8 @@ class TransactionsBackup {
     let modelContainer: ModelContainer
     let context: ModelContext
     
+    static let shared = TransactionsBackup()
+    
     var transactions: [TransactionBackupSwiftDataModel] = []
     
     let client = NetworkClient()
@@ -40,8 +42,8 @@ class TransactionsBackup {
         self.transactions = try context.fetch(descriptor)
     }
     
-    func tryRequestToClient(){
-    
+    func getAllNotSynced() async -> [TransactionBackupSwiftDataModel] {
+        return transactions
     }
     
     func save() throws {

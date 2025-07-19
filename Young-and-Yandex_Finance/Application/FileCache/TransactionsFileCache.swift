@@ -38,6 +38,11 @@ class TransactionsFileCache: CacheSaver {
         try? save()
     }
     
+    func rewrite(_ transactions: [Transaction]) throws {
+        _transactions = transactions
+        try save()
+    }
+    
     // func to save all transactions in Json file by url
     func save() throws {
         

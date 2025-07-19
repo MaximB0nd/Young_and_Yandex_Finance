@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftData
-
+import SwiftUI
 
 final class TransactionsSwiftDataCache: CacheSaver {
     
@@ -32,7 +32,7 @@ final class TransactionsSwiftDataCache: CacheSaver {
     func add(_ transaction: Transaction) {
         let model = TransactionSwiftDataModel(transaction: transaction)
         context.insert(model)
-        try? context.save()
+        try? save()
     }
     
     func delete(id: Int) {
@@ -48,5 +48,14 @@ final class TransactionsSwiftDataCache: CacheSaver {
     
     func save() throws {
         try context.save()
+    }
+    
+    func rewrite(_ transactions: [Transaction]) throws {
+        self._transactions = transactions
+        try context.delete(model: TransactionSwiftDataModel.self)
+        for transaction in transactions {
+            add(transaction)
+        }
+        try save()
     }
 }

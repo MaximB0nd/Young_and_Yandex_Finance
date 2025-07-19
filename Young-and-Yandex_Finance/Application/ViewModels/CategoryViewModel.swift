@@ -16,7 +16,6 @@ final class CategoryViewModel: Sendable {
     let categotyService = CategoriesService.shared
     
     var status: ShowStatus = .loading
-    var errorLabelShown: Bool = false
     
     init() {
         Task {
@@ -29,8 +28,7 @@ final class CategoryViewModel: Sendable {
         let result = await categotyService.getAll()
         
         categories = result.success ?? []
-        status = .done(error: result.error)
-        errorLabelShown = result.error != nil
+        status = result.error == nil ? .loaded : .error
         return categories
     }
     
