@@ -15,15 +15,20 @@ final class CategoryViewModel: Sendable {
     var categories: [Category] = []
     let categotyService = CategoriesService.shared
     
+    var status: ShowStatus = .loading
+    
     init() {
         Task {
-            categories = await categotyService.getByDirection(.income)
+            await getCategories()
         }
     }
     
     @discardableResult
     func getCategories() async -> [Category] {
-        categories = await categotyService.getAll()
+        let result = await categotyService.getAll()
+        
+        categories = result.success ?? []
+        status = result.error == nil ? .loaded : .error
         return categories
     }
     

@@ -34,7 +34,9 @@ final class NewTransactionViewModel: TransactionUpdater {
     init(direction : Direction) {
         self.direction = direction
         Task {
-            if let account = try? await BankAccountsService.shared.getAccount() {
+            let result = try await BankAccountsService.shared.getAccount()
+            
+            if let account = result.success {
                 self.account = Transaction.Account(bankAccount: account)
             }
         }
@@ -45,10 +47,17 @@ final class NewTransactionViewModel: TransactionUpdater {
         
         errors = []
         
-        if let account = try? await BankAccountsService.shared.getAccount() {
-            self.account = Transaction.Account(bankAccount: account)
-        }
-        else {
+        do {
+            let result = try await BankAccountsService.shared.getAccount()
+            if let account = result.success {
+                self.account = Transaction.Account(bankAccount: account)
+            }
+            else {
+                errors.append("Не удалось получить счет")
+                isError = true
+                return
+            }
+        } catch {
             errors.append("Не удалось получить счет")
             isError = true
             return
@@ -64,7 +73,7 @@ final class NewTransactionViewModel: TransactionUpdater {
         
         do {
             if errors.isEmpty {
-                try await TransactionsService.shared.createTransaction(
+                await TransactionsService.shared.createTransaction(
                     account: account!,
                     category: category!,
                     amount: amount!,

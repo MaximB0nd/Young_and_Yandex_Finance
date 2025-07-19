@@ -17,21 +17,26 @@ final class BankAccountFlowViewModel: BankAccountListnerProtocol {
     
     let bankService = BankAccountsService.shared
     
+    var status: ShowStatus = .loading
+    
     private init() {
         BankAccountsService.subscribe(self)
         Task {
-            bankAccount = try await bankService.getAccount()
+            try await updateBankAccounts()
         }
     }
     
     @MainActor
     func updateBankAccounts() async throws  {
-        bankAccount = try await bankService.getAccount()
+        let result = try await bankService.getAccount()
+        self.bankAccount = result.success
+        
+        status = result.error == nil ? .loaded : .error
     }
     
     @MainActor
     func updateBankAccount(newValue: BankAccount) async throws {
-        guard try await bankService.getAccount() != newValue else {
+        guard try await bankService.getAccount().success != newValue else {
             return
         }
         try await bankService.changeData(newBalance: newValue.balance, newCurrency: newValue.currency)

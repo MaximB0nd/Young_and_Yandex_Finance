@@ -65,15 +65,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0AB8C11E2DFADE8F00461B01"
-            BuildableName = "Young-and-Yandex_Finance.app"
-            BlueprintName = "Young-and-Yandex_Finance"
-            ReferencedContainer = "container:Young-and-Yandex_Finance.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

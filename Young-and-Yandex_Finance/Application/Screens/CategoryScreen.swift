@@ -14,7 +14,15 @@ struct CategoryScreen: View {
     
     var body: some View {
         VStack (spacing: 0){
-            CategoryList(searchText: $searchText, categories: model.categories)
+            switch model.status {
+            case .loading:
+                ProgressView()
+            case .loaded:
+                CategoryList(searchText: $searchText, categories: model.categories)
+            case .error:
+                ErrorScreen()
+            }
+            
         }
         .task {
             await model.onSearchTextChanged(searchText)

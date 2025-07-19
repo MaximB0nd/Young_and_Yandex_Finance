@@ -9,7 +9,7 @@ import Foundation
 
 struct Transaction: Identifiable {
     let id: Int
-    let account: Transaction.Account
+    var account: Transaction.Account
     var category: Category
     var amount: Decimal
     var transactionDate: Date
@@ -26,5 +26,16 @@ struct Transaction: Identifiable {
         self.comment = comment
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+    }
+    
+    init(from transaction: NetworkClient.TransactionForResponse) {
+        self.id = transaction.id
+        self.account = .init(id: transaction.accountId, name: "", balance: 0, currency: "")
+        self.category = .init(id: transaction.accountId, name: "", emoji: "@", direction: .income)
+        self.amount = transaction.amount
+        self.comment = transaction.comment
+        self.transactionDate = transaction.transactionDate
+        self.createdAt = transaction.createdAt
+        self.updatedAt = transaction.updatedAt
     }
 }

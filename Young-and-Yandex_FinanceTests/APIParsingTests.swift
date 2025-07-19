@@ -12,15 +12,28 @@ import Foundation
 
 struct APIParsingTests {
     
-    let token = ""    //  <-  your token
+    var token: String? {
+        guard let url =  Bundle.main.url(forResource: "Codes", withExtension: "txt") else {
+            return nil
+        }
+        do {
+            var token = try String(contentsOf: url, encoding: .utf8)
+            if token.contains("\n") {
+                token.remove(at: token.firstIndex(of: "\n")!)
+            }
+            return token
+        } catch {
+            return nil
+        }
+    }
 
     @Test func testAPIGet() throws {
-        if token == "" {
+        guard let token = self.token else {
             Issue.record("Не указан токен")
             return
         }
         
-        guard let url = URL(string: "https://shmr-finance.ru/api/v1/transactions/1")  else { return }
+        guard let url = URL(string: "https://shmr-finance.ru/api/v1/transactions/3")  else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -30,7 +43,11 @@ struct APIParsingTests {
             do {
                 let json = try JSONSerialization.jsonObject(with: data!)
                 let transaction = Transaction.parse(jsonObject: json)
-                #expect(transaction != nil)
+                guard let transaction = transaction else {
+                    Issue.record( "Не удалось распарсить JSON")
+                    return
+                }
+                
             } catch {
                 print("Ошибка парсинга")
             }

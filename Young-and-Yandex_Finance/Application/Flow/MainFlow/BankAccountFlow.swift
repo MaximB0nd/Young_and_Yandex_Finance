@@ -63,7 +63,6 @@ struct BankAccountFlow: View {
                 try await model.updateBankAccounts()
                 mode = .state
             } catch {
-                print(error)
                 mode = .error
             }
         }
