@@ -19,7 +19,6 @@ final class TransactionBackupSwiftDataModel {
     @Attribute(.unique)
     var id = UUID()
     
-    @Relationship(deleteRule: .cascade)
     var transaction: TransactionSwiftDataModel
     
     var action: Actions

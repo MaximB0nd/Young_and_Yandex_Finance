@@ -20,32 +20,29 @@ class TransactionsFileCache: CacheSaver {
     
     internal var _transactions: [Transaction] = []
     
-    // getter for private var _transactions
+    /// Getter for private var _transactions
     var transactions: [Transaction] {
         _transactions
     }
     
-    // func to add a new transaction in _transactions (must have unique id)
-    func add(_ transaction: Transaction) {
+    /// Add a new transaction in transactions (must have unique id)
+    @MainActor
+    func add(_ transaction: Transaction) async {
         guard !_transactions.contains(where: { $0.id == transaction.id }) else { return }
         _transactions.append(transaction)
-        try? save()
+        try? await save()
     }
     
-    // func to delete a transaction in _transactions by id
-    func delete(id: Int) {
+    /// Delete a transaction in transactions by id
+    @MainActor
+    func delete(id: Int) async {
         _transactions.removeAll(where: { $0.id == id })
-        try? save()
+        try? await save()
     }
     
-    func rewrite(_ transactions: [Transaction]) throws {
-        _transactions = transactions
-        try save()
-    }
-    
-    // func to save all transactions in Json file by url
-    func save() throws {
-        
+    /// Save all transactions in Json file by url
+    @MainActor
+    private func save() async throws {
         let directoryURL = FileManager.default.temporaryDirectory
         let fileURL = directoryURL.appendingPathComponent(fileName)
         let jsonDatas = _transactions.map { $0.jsonObject }
@@ -57,8 +54,9 @@ class TransactionsFileCache: CacheSaver {
         }
     }
     
-    // func to load all transaction from Json files by urls
-    func load() throws {
+    /// Load all transaction from Json files by urls
+    @MainActor
+    private func load() async throws {
         let paths = [fileName]
         let directoryURL = FileManager.default.temporaryDirectory
         for path in paths {
@@ -68,7 +66,7 @@ class TransactionsFileCache: CacheSaver {
                 let transactions = try JSONDecoder().decode([Transaction].self, from: data)
                 for transaction in transactions {
                     if !_transactions.contains(where: { $0.id == transaction.id}) {
-                        add(transaction)
+                        await add(transaction)
                     }
                 }
             } catch {

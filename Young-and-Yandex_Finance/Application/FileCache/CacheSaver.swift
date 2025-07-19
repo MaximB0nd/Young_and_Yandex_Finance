@@ -15,15 +15,8 @@ protocol CacheSaver {
     var transactions: [Transaction] { get }
     
     // func to add a new transaction in _transactions (must have unique id)
-    func add(_ transaction: Transaction)
+    func add(_ transaction: Transaction) async
     
     // func to delete a transaction in _transactions by id
-    func delete(id: Int)
-    
-    // func to load all transaction from Json files by urls
-    func load() throws
-    
-    func save() throws
-    
-    func rewrite(_ transactions: [Transaction]) throws 
+    func delete(id: Int) async
 }

@@ -25,29 +25,40 @@ class TransactionsBackup {
         self.context = ModelContext(container)
     }
     
-    func add(_ transaction: Transaction, action: Actions) {
+    /// Add backup by transaction and action
+    @MainActor
+    func add(_ transaction: Transaction, action: Actions) async {
         let model = TransactionBackupSwiftDataModel(transaction: transaction, action: action)
         context.insert(model)
-        try? context.save()
+        try? await self.save()
     }
     
-    func delete(_ transaction: Transaction, action: Actions) {
+    /// Delete backup by transaction and action
+    @MainActor
+    func delete(_ transaction: Transaction, action: Actions) async {
         let model = TransactionBackupSwiftDataModel(transaction: transaction, action: action)
         context.delete(model)
-        try? context.save()
+        try? await self.save()
     }
     
-    func load() throws {
+    /// Load all backups
+    @MainActor
+    private func load() async throws {
         let descriptor = FetchDescriptor<TransactionBackupSwiftDataModel>()
         self.transactions = try context.fetch(descriptor)
     }
     
-    func getAllNotSynced() async -> [TransactionBackupSwiftDataModel] {
-        return transactions
+    /// Return all backups
+    @MainActor
+    func getBackups() async -> [TransactionBackupSwiftDataModel] {
+        try? await load()
+        return self.transactions
     }
     
-    func save() throws {
+    /// Save all changes to DB
+    @MainActor
+    private func save() async throws {
         try context.save()
-        try load()
+        try await load()
     }
 }

@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-final class TransactionsSwiftDataCache: CacheSaver {
+final class TransactionsSwiftDataCache: CacheSaver {    
     
     static var shared: any CacheSaver = TransactionsSwiftDataCache()
     
@@ -20,7 +20,9 @@ final class TransactionsSwiftDataCache: CacheSaver {
         let container = try! ModelContainer(for: TransactionSwiftDataModel.self)
         self.modelContainer = container
         self.context = ModelContext(container)
-        try? load()
+        Task {
+            try await load()
+        }
     }
     
     var _transactions: [Transaction] = []
@@ -29,33 +31,25 @@ final class TransactionsSwiftDataCache: CacheSaver {
         _transactions
     }
     
-    func add(_ transaction: Transaction) {
+    @MainActor
+    func add(_ transaction: Transaction) async {
         let model = TransactionSwiftDataModel(transaction: transaction)
         context.insert(model)
-        try? save()
+        try? context.save()
+        try? load()
     }
     
-    func delete(id: Int) {
+    @MainActor
+    func delete(id: Int) async {
         let predicate = #Predicate<TransactionSwiftDataModel> { $0.id == id }
         try? context.delete(model: TransactionSwiftDataModel.self, where: predicate)
-        try? save()
+        try? context.save()
+        try? load()
     }
     
-    func load() throws {
+    @MainActor
+    private func load() throws {
         let descriptor = FetchDescriptor<TransactionSwiftDataModel>()
         self._transactions = try context.fetch(descriptor).map(\.transaction)
-    }
-    
-    func save() throws {
-        try context.save()
-    }
-    
-    func rewrite(_ transactions: [Transaction]) throws {
-        self._transactions = transactions
-        try context.delete(model: TransactionSwiftDataModel.self)
-        for transaction in transactions {
-            add(transaction)
-        }
-        try save()
     }
 }
