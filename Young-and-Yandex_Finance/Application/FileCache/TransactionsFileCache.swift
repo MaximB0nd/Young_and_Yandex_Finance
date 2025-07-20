@@ -26,7 +26,6 @@ class TransactionsFileCache: CacheSaver {
     }
     
     /// Add a new transaction in transactions (must have unique id)
-    @MainActor
     func add(_ transaction: Transaction) async {
         guard !_transactions.contains(where: { $0.id == transaction.id }) else { return }
         _transactions.append(transaction)
@@ -34,14 +33,12 @@ class TransactionsFileCache: CacheSaver {
     }
     
     /// Delete a transaction in transactions by id
-    @MainActor
     func delete(id: Int) async {
         _transactions.removeAll(where: { $0.id == id })
         try? await save()
     }
     
     /// Save all transactions in Json file by url
-    @MainActor
     private func save() async throws {
         let directoryURL = FileManager.default.temporaryDirectory
         let fileURL = directoryURL.appendingPathComponent(fileName)
@@ -55,7 +52,6 @@ class TransactionsFileCache: CacheSaver {
     }
     
     /// Load all transaction from Json files by urls
-    @MainActor
     func load() async throws {
         let paths = [fileName]
         let directoryURL = FileManager.default.temporaryDirectory
@@ -80,7 +76,6 @@ class TransactionsFileCache: CacheSaver {
         }
     }
     
-    @MainActor
     func sync(_ transactions: [Transaction]) async {
         _transactions = transactions
         try? await save()

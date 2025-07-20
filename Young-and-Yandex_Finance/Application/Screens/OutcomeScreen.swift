@@ -19,11 +19,6 @@ struct OutcomeScreen: View {
         .task {
             await model.updateTransactions()
         }
-        .onChange(of: transactionService._transactions){
-            Task {
-                await model.updateTransactions()
-            }
-        }
     }
 }
 

@@ -21,9 +21,6 @@ class TransactionsBackup {
         let container = try! ModelContainer(for: TransactionDataBackupModel.self)
         self.modelContainer = container
         self.context = ModelContext(container)
-        Task {
-            try? await load()
-        }
     }
     
     /// Add backup by transaction and action
@@ -51,15 +48,19 @@ class TransactionsBackup {
     
     /// Return all backups
     @MainActor
-    func getBackups() async -> [TransactionDataBackupModel] {
-        try? await load()
+    func getBackups() -> [TransactionDataBackupModel] {
         return self.transactions
+    }
+
+    @MainActor
+    func reloadBackups() async {
+        let descriptor = FetchDescriptor<TransactionDataBackupModel>()
+        self.transactions = (try? context.fetch(descriptor)) ?? []
     }
     
     /// Save all changes to DB
     @MainActor
     private func save() async throws {
         try context.save()
-        try await load()
     }
 }

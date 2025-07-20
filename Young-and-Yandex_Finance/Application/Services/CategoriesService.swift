@@ -7,19 +7,14 @@
 
 import Foundation
 
-@Observable
-final class CategoriesService {
+actor CategoriesService {
     
     static let shared = CategoriesService()
     private var _categories: [Category] = []
     
     var client = NetworkClient()
     
-    private init () {
-        Task {
-            _categories = try await client.category.request()
-        }
-    }
+    private init () {}
     
     func load() async throws {
         _categories = try await client.category.request()

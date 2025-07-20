@@ -16,8 +16,7 @@ fileprivate struct BankAccountListner {
     weak var listener: BankAccountListnerProtocol?
 }
 
-@Observable
-final class BankAccountsService {
+actor BankAccountsService {
     
     private static var subscribers: [BankAccountListner] = []
     

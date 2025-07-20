@@ -3,26 +3,24 @@
 //  Young-and-Yandex_Finance
 //
 //  Created by Максим Бондарев on 17.07.2025.
-//
+
 
 import Foundation
 import SwiftData
 import SwiftUI
 
-final class TransactionsSwiftDataCache: CacheSaver {    
+final class TransactionsSwiftDataCache: CacheSaver {
     
-    static var shared: any CacheSaver = TransactionsSwiftDataCache()
+    static var shared: CacheSaver = TransactionsSwiftDataCache()
     
     let modelContainer: ModelContainer
     let context: ModelContext
     
     init() {
-        let container = try! ModelContainer(for: TransactionDataModel.self)
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try! ModelContainer(for: TransactionDataModel.self, configurations: config)
         self.modelContainer = container
         self.context = ModelContext(container)
-        Task {
-            try? await load()
-        }
     }
     
     var _transactions: [Transaction] = []
@@ -31,7 +29,6 @@ final class TransactionsSwiftDataCache: CacheSaver {
         _transactions
     }
     
-    @MainActor
     func add(_ transaction: Transaction) async {
         let model = TransactionDataModel(transaction: transaction)
         context.insert(model)
@@ -39,7 +36,6 @@ final class TransactionsSwiftDataCache: CacheSaver {
         try? await load()
     }
     
-    @MainActor
     func delete(id: Int) async {
         let predicate = #Predicate<TransactionDataModel> { $0.id == id }
         try? context.delete(model: TransactionDataModel.self, where: predicate)
@@ -47,15 +43,16 @@ final class TransactionsSwiftDataCache: CacheSaver {
         try? await load()
     }
     
-    @MainActor
     func load() async throws {
         let descriptor = FetchDescriptor<TransactionDataModel>()
         self._transactions = try context.fetch(descriptor).map(\.transaction)
     }
     
-    @MainActor
     func sync(_ transactions: [Transaction]) async {
-        try? context.delete(model: TransactionDataModel.self)
+        
+        print("\n\n\n\n\n-----sync-----\n\n\n\n\n")
+        
+        try! context.delete(model: TransactionDataModel.self)
         for transaction in transactions {
             await add(transaction)
         }

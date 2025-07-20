@@ -10,23 +10,55 @@ import SwiftData
 
 @Model
 final class TransactionDataModel {
+    @Attribute(.unique)
     var id: Int
     
-    var account: AccountDataModel
+    var categoryId: Int
+    var categoryName: String
+    var categoryEmoji: String
+    var categoryDirection: Direction
     
-    var category: CategoryDataModel
+    var accountId: Int
+    var accountName: String
+    var accountBalance: Double
+    var accountCurrency: String
     
-    var amount: Decimal
+    var amount: Double
     var transactionDate: Date
     var comment: String?
     var createdAt: Date
     var updatedAt: Date
     
+    init() {
+        self.id = 0
+        self.categoryId = 0
+        self.categoryName = ""
+        self.categoryEmoji = ""
+        self.categoryDirection = .income
+        self.accountId = 0
+        self.accountName = ""
+        self.accountBalance = 0
+        self.accountCurrency = ""
+        self.amount = 0
+        self.transactionDate = Date()
+        self.createdAt = Date()
+        self.updatedAt = Date()
+    }
+    
     init(transaction: Transaction) {
         self.id = transaction.id
-        self.account = .init(account: transaction.account)
-        self.category = .init(category: transaction.category)
-        self.amount = transaction.amount
+        
+        self.accountId = transaction.account.id
+        self.accountName = transaction.account.name
+        self.accountBalance = (transaction.account.balance as NSNumber).doubleValue
+        self.accountCurrency = transaction.account.currency
+        
+        self.categoryId = transaction.category.id
+        self.categoryName = transaction.category.name
+        self.categoryEmoji = String(transaction.category.emoji)
+        self.categoryDirection = transaction.category.direction
+        
+        self.amount = (transaction.amount as NSNumber).doubleValue
         self.transactionDate = transaction.transactionDate
         self.comment = transaction.comment
         self.createdAt = transaction.createdAt
@@ -37,48 +69,18 @@ final class TransactionDataModel {
         Transaction(
             id: id,
             account: .init(
-                id: account.id,
-                name: account.name,
-                balance: account.balance,
-                currency: account.currency),
+                id: accountId,
+                name: accountName,
+                balance: Decimal(accountBalance),
+                currency: accountCurrency),
             category: .init(
-                id: category.id,
-                name: category.name,
-                emoji: category.emoji.first!,
-                direction: category.direction),
-            amount: amount,
+                id: categoryId,
+                name: categoryName,
+                emoji: categoryEmoji.first ?? "?",
+                direction: categoryDirection),
+            amount: Decimal(amount),
             transactionDate: transactionDate,
             createdAt: createdAt,
             updatedAt: updatedAt)
-    }
-}
-
-@Model
-final class CategoryDataModel {
-    var id: Int
-    var name: String
-    var emoji: String
-    var direction: Direction
-    
-    init(category: Category) {
-        self.id = category.id
-        self.name = category.name
-        self.emoji = String(category.emoji)
-        self.direction = category.direction
-    }
-}
-
-@Model
-final class AccountDataModel {
-    var id: Int
-    var name: String
-    var balance: Decimal
-    var currency: String
-    
-    init(account: Transaction.Account) {
-        self.id = account.id
-        self.name = account.name
-        self.balance = account.balance
-        self.currency = account.currency
     }
 }

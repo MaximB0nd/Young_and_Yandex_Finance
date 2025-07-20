@@ -11,7 +11,7 @@ struct TransactionListner {
     weak var listner: TransactionListnerProtocol?
 }
 
-actor TransactionsService{
+actor TransactionsService {
     
     private static var _subscribers: [TransactionListner] = []
     
@@ -30,11 +30,7 @@ actor TransactionsService{
     
     var errorLoad: Error?
         
-    private init () {
-        Task {
-            await loadTransactions()
-        }
-    }
+    private init () {}
     
     /// Load transactions from server / localy
     private func loadTransactions() async {
@@ -42,7 +38,6 @@ actor TransactionsService{
             // Internet
             await self.tryRequestToClient()
             _transactions = try await client.transaction.request(by: BankAccountsService.id)
-            print(_transactions)
             await self.cacher.sync(_transactions)
             self.errorLoad = nil
         } catch {
@@ -58,8 +53,9 @@ actor TransactionsService{
     
     @MainActor
     private func tryRequestToClient() async {
-        let backups = await backup.getBackups()
-        for backup in backups {
+        await backup.reloadBackups()
+        let Allbackups = await backup.getBackups()
+        for backup in Allbackups {
             switch backup.action {
             case .create:
                
@@ -90,17 +86,18 @@ actor TransactionsService{
         
     /// Merge self.transactions and backups
     private func mergeWithBackup() async {
+        await backup.reloadBackups()
         let Allbackups = await backup.getBackups()
-        let backups = [Allbackups.filter {$0.action == .create}, Allbackups.filter {$0.action == .update}, Allbackups.filter {$0.action == .delete}.sorted {$0.id > $1.id}]
+        let backups = [Allbackups.filter {$0.action == .create}, Allbackups.filter {$0.action == .update}.sorted {$0.id > $1.id}, Allbackups.filter {$0.action == .delete}.sorted {$0.id > $1.id}]
         for backupList in backups {
             for backup in backupList {
                 switch backup.action {
                 case .create:
                     self._transactions.append(backup.transaction)
                 case .delete:
-                    self._transactions.remove(at: _transactions.firstIndex{ $0.id == backup.transaction.id }!)
+                    self._transactions.remove(at: _transactions.firstIndex{ $0.id == backup.id }!)
                 case .update:
-                    self._transactions.remove(at: _transactions.firstIndex{ $0.id == backup.transaction.id }!)
+                    self._transactions.remove(at: _transactions.firstIndex{ $0.id == backup.id }!)
                     self._transactions.append(backup.transaction)
                 }
             }

@@ -19,11 +19,18 @@ final class TransactionDataBackupModel {
     @Attribute(.unique)
     var idOfAction = UUID()
     
+    @Attribute(.unique)
     var id: Int
     
-    var account: AccountDataModel
- 
-    var category: CategoryDataModel
+    var categoryId: Int
+    var categoryName: String
+    var categoryEmoji: String
+    var categoryDirection: Direction
+    
+    var accountId: Int
+    var accountName: String
+    var accountBalance: Decimal
+    var accountCurrency: String
     
     var amount: Decimal
     var transactionDate: Date
@@ -35,13 +42,23 @@ final class TransactionDataBackupModel {
     
     init(transaction: Transaction, action: Actions) {
         self.id = transaction.id
-        self.account = .init(account: transaction.account)
-        self.category = .init(category: transaction.category)
+        
+        self.accountId = transaction.account.id
+        self.accountName = transaction.account.name
+        self.accountBalance = transaction.account.balance
+        self.accountCurrency = transaction.account.currency
+        
+        self.categoryId = transaction.category.id
+        self.categoryName = transaction.category.name
+        self.categoryEmoji = String(transaction.category.emoji)
+        self.categoryDirection = transaction.category.direction
+        
         self.amount = transaction.amount
         self.transactionDate = transaction.transactionDate
         self.comment = transaction.comment
         self.createdAt = transaction.createdAt
         self.updatedAt = transaction.updatedAt
+        
         self.action = action
     }
     
@@ -49,15 +66,15 @@ final class TransactionDataBackupModel {
         Transaction(
             id: id,
             account: .init(
-                id: account.id,
-                name: account.name,
-                balance: account.balance,
-                currency: account.currency),
+                id: accountId,
+                name: accountName,
+                balance: accountBalance,
+                currency: accountCurrency),
             category: .init(
-                id: category.id,
-                name: category.name,
-                emoji: category.emoji.first!,
-                direction: category.direction),
+                id: categoryId,
+                name: categoryName,
+                emoji: categoryEmoji.first!,
+                direction: categoryDirection),
             amount: amount,
             transactionDate: transactionDate,
             createdAt: createdAt,
@@ -65,31 +82,3 @@ final class TransactionDataBackupModel {
     }
 }
 
-@Model
-final class CategoryDataBackupModel {
-    var id: Int
-    var name: String
-    var emoji: String
-    var direction: Direction
-    init(category: Category) {
-        self.id = category.id
-        self.name = category.name
-        self.emoji = String(category.emoji)
-        self.direction = category.direction
-    }
-}
-
-@Model
-final class AccountDataBackupModel {
-    var id: Int
-    var name: String
-    var balance: Decimal
-    var currency: String
-    
-    init(account: Transaction.Account) {
-        self.id = account.id
-        self.name = account.name
-        self.balance = account.balance
-        self.currency = account.currency
-    }
-}
