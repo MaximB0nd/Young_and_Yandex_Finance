@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-class TransactionsBackup {
+actor TransactionsBackup {
     
     let modelContainer: ModelContainer
     let context: ModelContext
@@ -18,13 +18,14 @@ class TransactionsBackup {
     var transactions: [TransactionDataBackupModel] = []
     
     private init() {
+        
         let container = try! ModelContainer(for: TransactionDataBackupModel.self)
         self.modelContainer = container
         self.context = ModelContext(container)
+        
     }
     
     /// Add backup by transaction and action
-    @MainActor
     func add(_ transaction: Transaction, action: Actions) async {
         let model = TransactionDataBackupModel(transaction: transaction, action: action)
         context.insert(model)
@@ -32,34 +33,29 @@ class TransactionsBackup {
     }
     
     /// Delete backup by transaction and action
-    @MainActor
-    func delete(_ transaction: Transaction, action: Actions) async {
-        let model = TransactionDataBackupModel(transaction: transaction, action: action)
-        context.delete(model)
+    func delete(by id: UUID) async {
+        let predicate = #Predicate<TransactionDataBackupModel> {$0.idOfAction == id}
+        try? context.delete(model: TransactionDataBackupModel.self, where: predicate)
         try? await self.save()
     }
     
     /// Load all backups
-    @MainActor
     private func load() async throws {
         let descriptor = FetchDescriptor<TransactionDataBackupModel>()
         self.transactions = try context.fetch(descriptor)
     }
     
     /// Return all backups
-    @MainActor
     func getBackups() -> [TransactionDataBackupModel] {
         return self.transactions
     }
 
-    @MainActor
     func reloadBackups() async {
         let descriptor = FetchDescriptor<TransactionDataBackupModel>()
-        self.transactions = (try? context.fetch(descriptor)) ?? []
+        self.transactions = (try? context.fetch(descriptor))?.sorted(by: {$0.dateOfAction > $1.dateOfAction}) ?? []
     }
     
     /// Save all changes to DB
-    @MainActor
     private func save() async throws {
         try context.save()
     }

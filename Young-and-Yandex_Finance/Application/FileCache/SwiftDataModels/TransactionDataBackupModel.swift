@@ -1,5 +1,5 @@
 //
-//  TransactionSwiftDataBackupModel.swift
+//  TransactionDataBackupModel.swift
 //  Young-and-Yandex_Finance
 //
 //  Created by Максим Бондарев on 19.07.2025.
@@ -18,6 +18,7 @@ enum Actions: Codable {
 final class TransactionDataBackupModel {
     @Attribute(.unique)
     var idOfAction = UUID()
+    var dateOfAction = Date()
     
     @Attribute(.unique)
     var id: Int

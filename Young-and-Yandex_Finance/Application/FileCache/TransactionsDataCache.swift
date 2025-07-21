@@ -7,20 +7,26 @@
 
 import Foundation
 import SwiftData
-import SwiftUI
 
-final class TransactionsSwiftDataCache: CacheSaver {
+actor TransactionsDataCache: @preconcurrency CacheSaver {
     
-    static var shared: CacheSaver = TransactionsSwiftDataCache()
+    static var shared: CacheSaver = TransactionsDataCache()
     
     let modelContainer: ModelContainer
     let context: ModelContext
     
-    init() {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try! ModelContainer(for: TransactionDataModel.self, configurations: config)
-        self.modelContainer = container
-        self.context = ModelContext(container)
+    private init() {
+        do {
+            let schema = Schema([TransactionDataModel.self])
+            let config = ModelConfiguration("TransactionDataModel", schema: schema)
+            let container = try ModelContainer(for: schema, configurations: config)
+            
+            self.modelContainer = container
+            self.context = ModelContext(container)
+            
+        } catch {
+            fatalError("Failed to create ModelContainer: \(error)")
+        }
     }
     
     var _transactions: [Transaction] = []
@@ -33,14 +39,12 @@ final class TransactionsSwiftDataCache: CacheSaver {
         let model = TransactionDataModel(transaction: transaction)
         context.insert(model)
         try? context.save()
-        try? await load()
     }
     
     func delete(id: Int) async {
         let predicate = #Predicate<TransactionDataModel> { $0.id == id }
         try? context.delete(model: TransactionDataModel.self, where: predicate)
         try? context.save()
-        try? await load()
     }
     
     func load() async throws {
@@ -50,11 +54,16 @@ final class TransactionsSwiftDataCache: CacheSaver {
     
     func sync(_ transactions: [Transaction]) async {
         
-        print("\n\n\n\n\n-----sync-----\n\n\n\n\n")
+        do {
+            let descriptor = FetchDescriptor<TransactionDataModel>()
+            let models = try context.fetch(descriptor)
+            models.forEach { context.delete($0) }
+        } catch {}
         
-        try! context.delete(model: TransactionDataModel.self)
-        for transaction in transactions {
-            await add(transaction)
+        transactions.forEach {
+            context.insert(TransactionDataModel(transaction: $0))
         }
+        
+        try? context.save()
     }
 }

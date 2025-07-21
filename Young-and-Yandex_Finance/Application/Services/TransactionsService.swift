@@ -24,7 +24,7 @@ actor TransactionsService {
     
     private(set) var _transactions: [Transaction] = []
     
-    private let cacher: CacheSaver = TransactionsSwiftDataCache.shared
+    private let cacher: CacheSaver = TransactionsDataCache.shared
     private let client = NetworkClient()
     private let backup = TransactionsBackup.shared
     
@@ -61,7 +61,7 @@ actor TransactionsService {
                
                 do {
                     let _ = try await client.transaction.request(newTransaction: .init(from: backup.transaction))
-                    await self.backup.delete(backup.transaction, action: backup.action)
+                    await self.backup.delete(by: backup.idOfAction)
                 } catch {}
                 
                 
@@ -69,7 +69,7 @@ actor TransactionsService {
                 
                 do {
                     let _: Void = try await client.transaction.request(by: backup.transaction.id)
-                    await self.backup.delete(backup.transaction, action: backup.action)
+                    await self.backup.delete(by: backup.idOfAction)
                 } catch {}
                 
                 
@@ -78,7 +78,7 @@ actor TransactionsService {
                     let _ = try await client.transaction.request(
                         newTransaction: .init(from: backup.transaction),
                         by: backup.transaction.id)
-                    await self.backup.delete(backup.transaction, action: backup.action)
+                    await self.backup.delete(by: backup.idOfAction)
                 } catch {}
             }
         }

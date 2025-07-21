@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 final class BankAccountModel {
+    
     var id: Int
     var userId: Int
     var name: String
