@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ErrorScreen: View {
     var body: some View {
-        Text("Error")
+        Text("Что-то пошло не так...")
     }
 }
 

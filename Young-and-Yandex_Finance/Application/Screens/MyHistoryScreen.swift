@@ -16,7 +16,16 @@ struct MyHistoryScreen: View {
         List{
             DateIntervalPicker(dateFrom: $model.dateFrom, dateTo: $model.dateTo)
             SortSelection(selection: $model.sortSelection)
-            TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
+            switch model.status {
+            case .loading:
+                ProgressView()
+            case .loaded:
+                TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
+            case .error:
+                ErrorScreen()
+                    
+            }
+            
         }
         .task {
             await model.updateTransactions()
@@ -38,6 +47,11 @@ struct MyHistoryScreen: View {
                 await model.presaveDateFrom()
                 await model.updateTransactions()
                 
+            }
+        }
+        .refreshable {
+            Task {
+                await model.updateTransactions()
             }
         }
     }

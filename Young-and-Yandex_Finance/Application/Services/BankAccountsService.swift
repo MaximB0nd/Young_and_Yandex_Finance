@@ -65,8 +65,6 @@ actor BankAccountsService {
     // get all account by id
     func getAccount() async throws -> ResponceResult<BankAccount, Error> {
         
-        try await load()
-        
         var result = ResponceResult<BankAccount, Error>()
         do {
             try await load()

@@ -22,7 +22,6 @@ struct CategoryScreen: View {
             case .error:
                 ErrorScreen()
             }
-            
         }
         .task {
             await model.onSearchTextChanged(searchText)
