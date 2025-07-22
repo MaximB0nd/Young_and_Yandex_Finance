@@ -16,6 +16,7 @@ struct OutcomeFlow: View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing) {
                 OutcomeScreen()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .navigationTitle(LocalizedStringKey("Расходы сегодня"))
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {

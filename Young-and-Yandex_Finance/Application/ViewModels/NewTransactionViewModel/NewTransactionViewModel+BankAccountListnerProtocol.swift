@@ -9,7 +9,7 @@ import Foundation
 
 extension NewTransactionViewModel: BankAccountListnerProtocol {
     func updateBankAccounts() async throws {
-        let result = try await BankAccountsService.shared.getAccount()
+        let result = await BankAccountsService.shared.getAccount()
         if result.error != nil {
             throw result.error!
         }

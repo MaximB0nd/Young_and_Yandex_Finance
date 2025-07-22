@@ -25,7 +25,6 @@ struct OutcomeScreen: View {
                 }
             case .loading:
                 ProgressView()
-            
             }
         }
         .task {

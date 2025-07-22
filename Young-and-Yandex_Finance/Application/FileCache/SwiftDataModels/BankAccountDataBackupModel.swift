@@ -1,17 +1,20 @@
 //
-//  BankAccountDataModel.swift
+//  BankAccountDataBackupModel.swift
 //  Young-and-Yandex_Finance
 //
-//  Created by Максим Бондарев on 20.07.2025.
+//  Created by Максим Бондарев on 22.07.2025.
 //
 
 import Foundation
 import SwiftData
 
 @Model
-final class BankAccountDataModel {
+final class BankAccountDataBackupModel {
     
     @Attribute(.unique)
+    var idOfAction = UUID()
+    var dateOfAction = Date()
+    
     var id: Int
     var userId: Int
     var name: String
@@ -20,7 +23,7 @@ final class BankAccountDataModel {
     var createdAt: Date
     var updatedAt: Date
     
-    init(from bankAccount: BankAccount){
+    init(from bankAccount: BankAccount) {
         self.id = bankAccount.id
         self.userId = bankAccount.userId
         self.name = bankAccount.name

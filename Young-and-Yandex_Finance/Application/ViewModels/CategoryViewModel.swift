@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-final class CategoryViewModel: Sendable {
+final class CategoryViewModel {
     
     static let shared = CategoryViewModel()
     

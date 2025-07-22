@@ -9,7 +9,7 @@ import Foundation
 
 final class NetworkClient {
     internal static let baseURL = URL(string: "https://shmr-finance.ru/api/v1/")!
-    internal static let session: URLSession = .shared
+    internal static let session = URLSession.shared
     
     let account = AccountNetworkClient.self
     let category = CategoryNetworkClient.self

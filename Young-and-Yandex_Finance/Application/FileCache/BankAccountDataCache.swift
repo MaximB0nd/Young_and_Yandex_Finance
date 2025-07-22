@@ -8,14 +8,16 @@
 import Foundation
 import SwiftData
 
-actor BankAccountSwiftDataCache {
-    static var shared = BankAccountSwiftDataCache()
+actor BankAccountDataCache {
+    static var shared = BankAccountDataCache()
     
-    let modelContainer: ModelContainer
-    let context: ModelContext
+    private let modelContainer: ModelContainer
+    private let context: ModelContext
     
-    init() {
-        let container = try! ModelContainer(for: BankAccountDataModel.self)
+    private init() {
+        let schema = Schema([BankAccountDataModel.self])
+        let config = ModelConfiguration("BankAccounts", schema: schema)
+        let container = try! ModelContainer(for: schema, configurations: config)
         self.modelContainer = container
         self.context = ModelContext(container)
     }

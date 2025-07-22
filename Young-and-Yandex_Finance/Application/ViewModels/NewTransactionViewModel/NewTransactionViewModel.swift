@@ -28,13 +28,15 @@ final class NewTransactionViewModel: TransactionUpdater {
         errors.joined(separator: "\n")
     }
     var isError = false
+    var status: ShowStatus = .loading
+    
     
     var amountText: String = ""
     
     init(direction : Direction) {
         self.direction = direction
         Task {
-            let result = try await BankAccountsService.shared.getAccount()
+            let result = await BankAccountsService.shared.getAccount()
             
             if let account = result.success {
                 self.account = Transaction.Account(bankAccount: account)
@@ -46,22 +48,17 @@ final class NewTransactionViewModel: TransactionUpdater {
     func doneTransaction() async {
         
         errors = []
-        
-        do {
-            let result = try await BankAccountsService.shared.getAccount()
-            if let account = result.success {
-                self.account = Transaction.Account(bankAccount: account)
-            }
-            else {
-                errors.append("Не удалось получить счет")
-                isError = true
-                return
-            }
-        } catch {
+   
+        let result = await BankAccountsService.shared.getAccount()
+        if let account = result.success {
+            self.account = Transaction.Account(bankAccount: account)
+        }
+        else {
             errors.append("Не удалось получить счет")
             isError = true
             return
         }
+        
         
         if let _ = category {} else {
             errors.append("Выберите категорию")
@@ -71,27 +68,24 @@ final class NewTransactionViewModel: TransactionUpdater {
             errors.append("Введите сумму")
         }
         
-        do {
-            if errors.isEmpty {
-                do {
-                    try await TransactionsService.shared.createTransaction(
-                        account: account!,
-                        category: category!,
-                        amount: amount!,
-                        transactionDate: transactionDate,
-                        comment: comment)
-                } catch {
-                    errors = [error.localizedDescription]
-                    isError = true
-                }
-                
-            } else {
+        
+        if errors.isEmpty {
+            do {
+                try await TransactionsService.shared.createTransaction(
+                    account: account!,
+                    category: category!,
+                    amount: amount!,
+                    transactionDate: transactionDate,
+                    comment: comment)
+            } catch {
+                errors = [error.localizedDescription]
                 isError = true
             }
-        } catch {
-            errors = ["Не удалось создать транзакцию"]
+            
+        } else {
             isError = true
         }
+        
         
     }
     

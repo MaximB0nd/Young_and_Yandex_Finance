@@ -24,7 +24,6 @@ actor TransactionsDataCache: @preconcurrency CacheSaver {
             self.modelContainer = container
             self.context = ModelContext(container)
             
-            try? context.fetch(FetchDescriptor<TransactionDataModel>())
         } catch {
             fatalError("Failed to create ModelContainer: \(error)")
         }

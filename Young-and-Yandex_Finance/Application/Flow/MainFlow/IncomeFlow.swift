@@ -14,6 +14,7 @@ struct IncomeFlow: View {
             NavigationStack {
                 ZStack(alignment: .bottomTrailing) {
                     IncomeScreen()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .navigationTitle("Доходы сегодня")
                         .toolbar {
                             ToolbarItem(placement: .topBarTrailing) {
@@ -22,6 +23,7 @@ struct IncomeFlow: View {
                         }
                     BottomToolsIncomeFlow()
                 }
+                
             }
     }
     

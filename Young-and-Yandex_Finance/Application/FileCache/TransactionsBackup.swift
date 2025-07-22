@@ -52,7 +52,7 @@ actor TransactionsBackup {
 
     func reloadBackups() async {
         let descriptor = FetchDescriptor<TransactionDataBackupModel>()
-        self.transactions = (try? context.fetch(descriptor))?.sorted(by: {$0.dateOfAction > $1.dateOfAction}) ?? []
+        self.transactions = (try? context.fetch(descriptor))?.sorted(by: {$0.dateOfAction < $1.dateOfAction}) ?? []
     }
     
     /// Save all changes to DB
