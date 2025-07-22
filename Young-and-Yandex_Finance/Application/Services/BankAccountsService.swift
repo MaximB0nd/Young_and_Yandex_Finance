@@ -81,20 +81,12 @@ actor BankAccountsService {
         let allBackups = await backup.getBackups()
 
         for backup in allBackups {
-            switch backup.action {
-            case .localUpdate:
-                do {
-                    let _ = try await client.account.request()
-                    await self.backup.delete(by: backup.idOfAction)
-                } catch {
-                    
-                }
-            case .remoteUpdate:
-                do {
-                    let _ = try await client.account.request(newAccount: .init(from: backup.bankAccount), by: backup.id)
-                    await self.backup.delete(by: backup.idOfAction)
-                } catch {}
-            } 
+            
+            do {
+                let _ = try await client.account.request(newAccount: .init(from: backup.bankAccount), by: backup.id)
+                await self.backup.delete(by: backup.idOfAction)
+            } catch {}
+            
         }
     }
     
@@ -126,7 +118,7 @@ actor BankAccountsService {
         return result
     }
     
-    func changeData(newName: String? = nil, newBalance: Decimal? = nil, newCurrency: String? = nil, action: BankAccountAction = .remoteUpdate) async throws {
+    func changeData(newName: String? = nil, newBalance: Decimal? = nil, newCurrency: String? = nil) async throws {
         
         do {
             // Internet
@@ -160,7 +152,7 @@ actor BankAccountsService {
                 createdAt: _accounts[index].createdAt,
                 updatedAt: Date())
             
-            await self.backup.add(updatedAccount, action: action)
+            await self.backup.add(updatedAccount)
             
         }
         

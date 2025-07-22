@@ -154,7 +154,7 @@ actor TransactionsService {
             )
             await self.backup.add(newTransaction, action: .create)
             let account = await BankAccountsService.shared.getAccount()
-            try await BankAccountsService.shared.changeData(newBalance: account.success!.balance + (category.direction == .income ? amount : -amount), action: .localUpdate)
+            try await BankAccountsService.shared.changeData(newBalance: account.success!.balance + (category.direction == .income ? amount : -amount))
         }
         await notifySubscribers()
     }
@@ -192,9 +192,10 @@ actor TransactionsService {
                 updatedAt: Date())
             
             await self.backup.add(updatedTransaction, action: .update)
-            if let amount = newAmount {
+            if var amount = newAmount {
+                amount -= _transactions[index].amount
                 let account = await BankAccountsService.shared.getAccount()
-                try await BankAccountsService.shared.changeData(newBalance: account.success!.balance + (updatedTransaction.category.direction == .income ? amount : -amount), action: .localUpdate)
+                try await BankAccountsService.shared.changeData(newBalance: account.success!.balance + (updatedTransaction.category.direction == .income ? amount : -amount))
             }
         }
         await notifySubscribers()

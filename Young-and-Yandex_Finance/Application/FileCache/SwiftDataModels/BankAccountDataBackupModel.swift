@@ -8,11 +8,6 @@
 import Foundation
 import SwiftData
 
-enum BankAccountAction: Codable {
-    case localUpdate
-    case remoteUpdate
-}
-
 @Model
 final class BankAccountDataBackupModel {
     
@@ -28,9 +23,7 @@ final class BankAccountDataBackupModel {
     var createdAt: Date
     var updatedAt: Date
     
-    var action: BankAccountAction
-    
-    init(from bankAccount: BankAccount, action: BankAccountAction) {
+    init(from bankAccount: BankAccount) {
         self.id = bankAccount.id
         self.userId = bankAccount.userId
         self.name = bankAccount.name
@@ -38,7 +31,6 @@ final class BankAccountDataBackupModel {
         self.currency = bankAccount.currency
         self.createdAt = bankAccount.createdAt
         self.updatedAt = bankAccount.updatedAt
-        self.action = action
     }
     
     var bankAccount: BankAccount {
