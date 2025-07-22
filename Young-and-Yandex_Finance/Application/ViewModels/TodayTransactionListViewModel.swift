@@ -31,7 +31,7 @@ final class TodayTransactionListViewModel: TransactionListnerProtocol {
         let today = DateConverter.startOfDay(.now)
         let endOfDay = DateConverter.endOfDay(.now)
         let transactions = await transactionService.getTransactions(from: today, to: endOfDay)
-        self.transactions = transactions.success!.filter({$0.category.direction == direction})
+        self.transactions = transactions.filter({$0.category.direction == direction})
         
         self.status = .loaded 
         

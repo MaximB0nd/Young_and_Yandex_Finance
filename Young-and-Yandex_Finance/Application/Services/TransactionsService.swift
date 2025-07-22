@@ -27,8 +27,6 @@ actor TransactionsService {
     private let cacher: CacheSaver = TransactionsDataCache.shared
     private let client = NetworkClient()
     private let backup = TransactionsBackup.shared
-    
-    var errorLoad: Error?
         
     private init () {}
     
@@ -41,7 +39,6 @@ actor TransactionsService {
         do {
             _transactions = try await client.transaction.request(by: BankAccountsService.id)
             await self.cacher.sync(_transactions)
-            self.errorLoad = nil
         } catch {
             switch error {
             case URLError.cancelled:
@@ -52,7 +49,6 @@ actor TransactionsService {
                 self._transactions = self.cacher.transactions
                 await self.mergeWithBackup()
                 ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
-                self.errorLoad = error
             }
         }
         
@@ -111,16 +107,10 @@ actor TransactionsService {
     }
     
     /// Return all transactions from dateFROM to dateTO
-    func getTransactions(from: Date, to: Date) async -> ResponceResult<[Transaction], Error> {
+    func getTransactions(from: Date, to: Date) async -> [Transaction] {
         await loadTransactions()
         
-        var result = ResponceResult<[Transaction], Error>()
-        result.success = _transactions.filter({$0.transactionDate >= from && $0.transactionDate <= to})
-        
-        result.error = self.errorLoad
-        
-        return result
-        
+        return _transactions.filter({$0.transactionDate >= from && $0.transactionDate <= to})
     }
     
     /// Creates a new transaction and saves it on server / localy
@@ -152,9 +142,9 @@ actor TransactionsService {
                 createdAt: Date(),
                 updatedAt: Date()
             )
-            await self.backup.add(newTransaction, action: .create)
-            let account = await BankAccountsService.shared.getAccount()
-            try await BankAccountsService.shared.changeData(newBalance: account.success!.balance + (category.direction == .income ? amount : -amount))
+            await self.backup.add(newTransaction, action: TransactionAction.create)
+            let account = try await BankAccountsService.shared.getAccount()
+            try await BankAccountsService.shared.changeData(newBalance: account.balance + (category.direction == .income ? amount : -amount))
         }
         await notifySubscribers()
     }
@@ -194,8 +184,8 @@ actor TransactionsService {
             await self.backup.add(updatedTransaction, action: .update)
             if var amount = newAmount {
                 amount -= _transactions[index].amount
-                let account = await BankAccountsService.shared.getAccount()
-                try await BankAccountsService.shared.changeData(newBalance: account.success!.balance + (updatedTransaction.category.direction == .income ? amount : -amount))
+                let account = try await BankAccountsService.shared.getAccount()
+                try await BankAccountsService.shared.changeData(newBalance: account.balance + (updatedTransaction.category.direction == .income ? amount : -amount))
             }
         }
         await notifySubscribers()

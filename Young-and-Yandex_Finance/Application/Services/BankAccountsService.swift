@@ -39,8 +39,6 @@ actor BankAccountsService {
     let cacher = BankAccountDataCache.shared
     let backup = BankAccountBackup.shared
     
-    var errorLoad: Error?
-    
     static var id = 77
     
     var id: Int {
@@ -59,7 +57,6 @@ actor BankAccountsService {
         do {
             self._accounts = try await client.account.request()
             await cacher.sync(_accounts)
-            self.errorLoad = nil
         } catch {
             switch error {
             case URLError.cancelled:
@@ -70,7 +67,6 @@ actor BankAccountsService {
                 self._accounts = await self.cacher.accounts
                 await self.mergeWithBackup()
                 ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
-                self.errorLoad = error
             }
         }
     
@@ -102,20 +98,15 @@ actor BankAccountsService {
     }
     
     // get all account by id
-    func getAccount() async -> ResponceResult<BankAccount, Error> {
+    func getAccount() async throws-> BankAccount {
         
-        var result = ResponceResult<BankAccount, Error>()
         await self.load()
         
         guard let index = _accounts.firstIndex(where: { $0.id == id }) else {
-            result.error = BankAccountError.notFound
-            return result
+            throw BankAccountError.notFound
         }
         
-        result.success = _accounts[index]
-        result.error = self.errorLoad
-        
-        return result
+        return _accounts[index]
     }
     
     func changeData(newName: String? = nil, newBalance: Decimal? = nil, newCurrency: String? = nil) async throws {
