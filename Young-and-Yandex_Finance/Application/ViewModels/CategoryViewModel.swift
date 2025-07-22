@@ -17,7 +17,7 @@ final class CategoryViewModel {
     
     var status: ShowStatus = .loading
     
-    init() {
+    private init() {
         Task {
             await getCategories()
         }
@@ -27,7 +27,7 @@ final class CategoryViewModel {
     func getCategories() async -> [Category] {
         let result = await categotyService.getAll()
         
-        categories = result.success ?? []
+        categories = result
         status = .loaded
         return categories
     }

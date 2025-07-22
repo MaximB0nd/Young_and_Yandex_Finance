@@ -13,37 +13,37 @@ actor CategoriesService {
     private var _categories: [Category] = []
     
     var client = NetworkClient()
+    let cacher = CategoryDataCache.shared
     
     private init () {}
     
-    func load() async throws {
-        _categories = try await client.category.request()
+    func loadCategories() async {
+        do {
+            // Internet
+            _categories = try await client.category.request()
+            await cacher.sync(_categories)
+        } catch {
+            switch error {
+            case URLError.cancelled:
+                break
+            default:
+                // Local
+                try? await self.cacher.load()
+                _categories = await self.cacher.categories
+                ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
+            }
+        }
+        
     }
     
-    func getAll() async -> ResponceResult<[Category], Error> {
-        var result = ResponceResult<[Category], Error>()
-        
-        do {
-            try await load()
-        } catch {
-            result.error = error
-        }
-        result.success = _categories
-        
-        return result
+    func getAll() async -> [Category] {
+        await loadCategories()
+        return _categories
     }
     
-    func getByDirection(_ direction: Direction) async -> ResponceResult<[Category], Error> {
-        var result = ResponceResult<[Category], Error>()
-        
-        do {
-            try await load()
-        } catch {
-            result.error = error
-        }
-        result.success = _categories.filter({ $0.direction == direction })
-        
-        return result
+    func getByDirection(_ direction: Direction) async -> [Category] {
+        await loadCategories()
+        return  _categories.filter({ $0.direction == direction })
     }
 }
 

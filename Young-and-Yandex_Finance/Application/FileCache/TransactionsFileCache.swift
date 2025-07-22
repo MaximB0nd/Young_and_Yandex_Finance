@@ -7,7 +7,7 @@
 
 import Foundation
 
-class TransactionsFileCache: CacheSaver {
+actor TransactionsFileCache: @preconcurrency CacheSaver {
     
     static var shared: CacheSaver = TransactionsFileCache()
     

@@ -30,8 +30,7 @@ struct CategoryPicker: View {
         }
         .onAppear() {
             Task {
-                self.allCategories = await CategoriesService.shared.getByDirection(direction).success ?? []
-                
+                self.allCategories = await CategoriesService.shared.getByDirection(direction)
             }
         }
     }
