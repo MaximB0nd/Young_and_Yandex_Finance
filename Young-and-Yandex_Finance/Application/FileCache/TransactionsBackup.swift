@@ -26,7 +26,7 @@ actor TransactionsBackup {
     }
     
     /// Add backup by transaction and action
-    func add(_ transaction: Transaction, action: Actions) async {
+    func add(_ transaction: Transaction, action: TransactionAction) async {
         let model = TransactionDataBackupModel(transaction: transaction, action: action)
         context.insert(model)
         try? await self.save()

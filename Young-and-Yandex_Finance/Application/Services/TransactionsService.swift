@@ -141,6 +141,7 @@ actor TransactionsService {
             let newTransaction = try await client.transaction.request(newTransaction: requestModel)
             await self.cacher.add(newTransaction)
             
+            
         } catch {
             // Local
             let newTransactionId = (self._transactions.map(\.id).max() ?? -1) + 1
@@ -155,6 +156,8 @@ actor TransactionsService {
                 updatedAt: Date()
             )
             await self.backup.add(newTransaction, action: .create)
+            let account = await BankAccountsService.shared.getAccount()
+            try await BankAccountsService.shared.changeData(newBalance: account.success!.balance + (category.direction == .income ? amount : -amount), action: .localUpdate)
         }
         await notifySubscribers()
     }

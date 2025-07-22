@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-enum Actions: Codable {
+enum TransactionAction: Codable {
     case create
     case update
     case delete
@@ -39,9 +39,9 @@ final class TransactionDataBackupModel {
     var createdAt: Date
     var updatedAt: Date
     
-    var action: Actions
+    var action: TransactionAction
     
-    init(transaction: Transaction, action: Actions) {
+    init(transaction: Transaction, action: TransactionAction) {
         self.id = transaction.id
         
         self.accountId = transaction.account.id

@@ -27,8 +27,8 @@ actor BankAccountBackup {
     }
     
     /// Add backup by bankAccount and action
-    func add(_ backAccount: BankAccount) async {
-        let model = BankAccountDataBackupModel(from: backAccount)
+    func add(_ backAccount: BankAccount, action: BankAccountAction) async {
+        let model = BankAccountDataBackupModel(from: backAccount, action: action)
         context.insert(model)
         try? await self.save()
     }
