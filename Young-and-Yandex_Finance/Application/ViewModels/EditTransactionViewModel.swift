@@ -11,6 +11,8 @@ import SwiftUI
 @Observable
 class EditTransactionViewModel: TransactionUpdater {
     
+    var alreadyPressed = false
+    
     var service = TransactionsService.shared
     
     let id: Int
@@ -27,6 +29,10 @@ class EditTransactionViewModel: TransactionUpdater {
     }
     
     func doneTransaction() async {
+        
+        guard alreadyPressed == false else { return }
+        
+        alreadyPressed = true
         
         errors = []
         
@@ -52,6 +58,8 @@ class EditTransactionViewModel: TransactionUpdater {
         } else {
             isError = true
         }
+        
+        alreadyPressed = false
     }
     
     func onChangeAmountText() {

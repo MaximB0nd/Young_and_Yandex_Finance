@@ -15,6 +15,8 @@ fileprivate enum NewTransactionError: Error {
 @Observable
 final class NewTransactionViewModel: TransactionUpdater {
     
+    var alreadyPressed = false
+    
     var account: Transaction.Account?
     let service = TransactionsService.shared
     let direction: Direction
@@ -45,6 +47,10 @@ final class NewTransactionViewModel: TransactionUpdater {
     
     func doneTransaction() async {
         
+        guard alreadyPressed == false else { return }
+        
+        alreadyPressed = true
+        
         errors = []
    
         do {
@@ -56,7 +62,6 @@ final class NewTransactionViewModel: TransactionUpdater {
             return
         }
         
-        
         if let _ = category {} else {
             errors.append("Выберите категорию")
         }
@@ -64,7 +69,6 @@ final class NewTransactionViewModel: TransactionUpdater {
         if amountText == "" {
             errors.append("Введите сумму")
         }
-        
         
         if errors.isEmpty {
             do {
@@ -83,6 +87,7 @@ final class NewTransactionViewModel: TransactionUpdater {
             isError = true
         }
         
+        alreadyPressed = false
         
     }
     

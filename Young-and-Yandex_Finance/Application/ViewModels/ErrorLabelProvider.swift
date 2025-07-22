@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 @Observable
 final class ErrorLabelProvider {
@@ -17,6 +18,8 @@ final class ErrorLabelProvider {
     
     func showErrorLabel(with text: String) {
         errorLabelText = text
-        isErrorLabelVisible = true
+        withAnimation() {
+            isErrorLabelVisible = true
+        }
     }
 }

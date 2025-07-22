@@ -206,6 +206,8 @@ actor TransactionsService {
                 throw TransactionError.notFound
             }
             await self.backup.add(_transactions[index], action: .delete)
+            let account = try await BankAccountsService.shared.getAccount()
+            try await BankAccountsService.shared.changeData(newBalance: account.balance + (_transactions[index].category.direction == .income ? -_transactions[index].amount : _transactions[index].amount))
         }
         await notifySubscribers()
     }
