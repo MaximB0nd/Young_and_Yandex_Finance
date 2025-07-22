@@ -18,12 +18,13 @@ actor TransactionsDataCache: @preconcurrency CacheSaver {
     private init() {
         do {
             let schema = Schema([TransactionDataModel.self])
-            let config = ModelConfiguration("TransactionDataModel", schema: schema)
+            let config = ModelConfiguration("Transactions", schema: schema)
             let container = try ModelContainer(for: schema, configurations: config)
             
             self.modelContainer = container
             self.context = ModelContext(container)
             
+            try? context.fetch(FetchDescriptor<TransactionDataModel>())
         } catch {
             fatalError("Failed to create ModelContainer: \(error)")
         }
@@ -38,7 +39,7 @@ actor TransactionsDataCache: @preconcurrency CacheSaver {
     func add(_ transaction: Transaction) async {
         let model = TransactionDataModel(transaction: transaction)
         context.insert(model)
-        try? context.save()
+        try! context.save()
     }
     
     func delete(id: Int) async {
@@ -50,10 +51,10 @@ actor TransactionsDataCache: @preconcurrency CacheSaver {
     func load() async throws {
         let descriptor = FetchDescriptor<TransactionDataModel>()
         self._transactions = try context.fetch(descriptor).map(\.transaction)
+        print(transactions)
     }
     
     func sync(_ transactions: [Transaction]) async {
-        
         do {
             let descriptor = FetchDescriptor<TransactionDataModel>()
             let models = try context.fetch(descriptor)

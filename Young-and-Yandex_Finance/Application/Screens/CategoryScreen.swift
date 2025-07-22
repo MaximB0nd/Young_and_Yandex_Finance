@@ -19,8 +19,6 @@ struct CategoryScreen: View {
                 ProgressView()
             case .loaded:
                 CategoryList(searchText: $searchText, categories: model.categories)
-            case .error:
-                ErrorScreen()
             }
         }
         .task {

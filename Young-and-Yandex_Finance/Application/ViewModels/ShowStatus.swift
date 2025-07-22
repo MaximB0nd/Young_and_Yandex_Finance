@@ -10,5 +10,4 @@ import Foundation
 enum ShowStatus {
     case loading
     case loaded
-    case error
 }

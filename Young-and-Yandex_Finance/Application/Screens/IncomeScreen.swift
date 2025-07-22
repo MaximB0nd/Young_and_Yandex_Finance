@@ -25,9 +25,6 @@ struct IncomeScreen: View {
                 }
             case .loading:
                 ProgressView()
-            
-            case .error:
-                ErrorScreen()
             }
         }
         .task {

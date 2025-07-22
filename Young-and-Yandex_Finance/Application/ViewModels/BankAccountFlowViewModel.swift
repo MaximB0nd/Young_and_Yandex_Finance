@@ -31,7 +31,7 @@ final class BankAccountFlowViewModel: BankAccountListnerProtocol {
         let result = try await bankService.getAccount()
         self.bankAccount = result.success
         
-        status = result.error == nil ? .loaded : .error
+        status = .loaded
     }
     
     @MainActor

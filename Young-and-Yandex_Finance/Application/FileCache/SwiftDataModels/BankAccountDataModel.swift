@@ -1,5 +1,5 @@
 //
-//  BankAccountModel.swift
+//  BankAccountDataModel.swift
 //  Young-and-Yandex_Finance
 //
 //  Created by Максим Бондарев on 20.07.2025.
@@ -9,8 +9,9 @@ import Foundation
 import SwiftData
 
 @Model
-final class BankAccountModel {
+final class BankAccountDataModel {
     
+    @Attribute(.unique)
     var id: Int
     var userId: Int
     var name: String
@@ -18,16 +19,6 @@ final class BankAccountModel {
     var currency: String
     var createdAt: Date
     var updatedAt: Date
-    
-    init(id: Int, userId: Int, name: String, balance: Decimal, currency: String, createdAt: Date, updatedAt: Date) {
-        self.id = id
-        self.userId = userId
-        self.name = name
-        self.balance = balance
-        self.currency = currency
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
-    }
     
     init(from bankAccount: BankAccount){
         self.id = bankAccount.id

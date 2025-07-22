@@ -51,7 +51,7 @@ final class MyHistoryTransactionListViewModel: TransactionListnerProtocol {
         
         var transactions = result.success!.filter { $0.category.direction == self.direction }
         
-        self.status = result.error == nil ? .loaded : .error
+        self.status = .loaded
         
         if let sortBy = sortBy {
             switch sortBy {

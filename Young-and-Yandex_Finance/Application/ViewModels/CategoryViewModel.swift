@@ -28,7 +28,7 @@ final class CategoryViewModel: Sendable {
         let result = await categotyService.getAll()
         
         categories = result.success ?? []
-        status = result.error == nil ? .loaded : .error
+        status = .loaded
         return categories
     }
     

@@ -21,8 +21,7 @@ struct MyHistoryScreen: View {
                 ProgressView()
             case .loaded:
                 TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
-            case .error:
-                ErrorScreen()
+            
                     
             }
             

@@ -33,7 +33,7 @@ final class TodayTransactionListViewModel: TransactionListnerProtocol {
         let transactions = await transactionService.getTransactions(from: today, to: endOfDay)
         self.transactions = transactions.success!.filter({$0.category.direction == direction})
         
-        self.status = transactions.error == nil ? .loaded : .error
+        self.status = .loaded 
         
     }
     
