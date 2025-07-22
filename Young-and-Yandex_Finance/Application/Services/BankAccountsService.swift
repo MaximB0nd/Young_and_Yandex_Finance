@@ -51,34 +51,32 @@ actor BankAccountsService {
     private init () {}
     
     private func load() async {
+        
+        // Internet
+        await TransactionsService.shared.tryRequestToClient()
+        await tryRequestToClient()
+
         do {
-            // Internet
-            await tryRequestToClient()
-            do {
-                self._accounts = try await client.account.request()
-                await cacher.sync(_accounts)
-                self.errorLoad = nil
-            } catch {
-                switch error {
-                case URLError.cancelled:
-                    break
-                default:
-                    throw error
-                }
-            }
-            
+            self._accounts = try await client.account.request()
+            await cacher.sync(_accounts)
+            self.errorLoad = nil
         } catch {
-            // Local
-            try? await self.cacher.load()
-            self._accounts = await self.cacher.accounts
-            await self.mergeWithBackup()
-            ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
-            self.errorLoad = error
+            switch error {
+            case URLError.cancelled:
+                break
+            default:
+                // Local
+                try? await self.cacher.load()
+                self._accounts = await self.cacher.accounts
+                await self.mergeWithBackup()
+                ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
+                self.errorLoad = error
+            }
         }
     
     }
     
-    private func tryRequestToClient() async {
+    func tryRequestToClient() async {
         await backup.reloadBackups()
         let allBackups = await backup.getBackups()
 

@@ -34,35 +34,32 @@ actor TransactionsService {
     
     /// Load transactions from server / localy
     private func loadTransactions() async {
-        do {
-            // Internet
-            await self.tryRequestToClient()
-            do {
-                _transactions = try await client.transaction.request(by: BankAccountsService.id)
-                await self.cacher.sync(_transactions)
-                self.errorLoad = nil
-            } catch {
-                switch error {
-                case URLError.cancelled:
-                    break
-                default:
-                    throw error
-                }
-            }
-            
-        } catch {
-            // Local
-            try? await self.cacher.load()
-            self._transactions = self.cacher.transactions
-            await self.mergeWithBackup()
-            ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
-            self.errorLoad = error
+    
+        // Internet
+        await self.tryRequestToClient()
         
+        do {
+            _transactions = try await client.transaction.request(by: BankAccountsService.id)
+            await self.cacher.sync(_transactions)
+            self.errorLoad = nil
+        } catch {
+            switch error {
+            case URLError.cancelled:
+                break
+            default:
+                // Local
+                try? await self.cacher.load()
+                self._transactions = self.cacher.transactions
+                await self.mergeWithBackup()
+                ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
+                self.errorLoad = error
+            }
         }
+        
     }
     
     
-    private func tryRequestToClient() async {
+    func tryRequestToClient() async {
         await backup.reloadBackups()
         let allbackups = await backup.getBackups()
         for backup in allbackups {
@@ -195,6 +192,10 @@ actor TransactionsService {
                 updatedAt: Date())
             
             await self.backup.add(updatedTransaction, action: .update)
+            if let amount = newAmount {
+                let account = await BankAccountsService.shared.getAccount()
+                try await BankAccountsService.shared.changeData(newBalance: account.success!.balance + (updatedTransaction.category.direction == .income ? amount : -amount), action: .localUpdate)
+            }
         }
         await notifySubscribers()
     }

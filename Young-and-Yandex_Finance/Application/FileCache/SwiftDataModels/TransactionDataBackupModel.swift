@@ -20,7 +20,6 @@ final class TransactionDataBackupModel {
     var idOfAction = UUID()
     var dateOfAction = Date()
     
-    @Attribute(.unique)
     var id: Int
     
     var categoryId: Int
