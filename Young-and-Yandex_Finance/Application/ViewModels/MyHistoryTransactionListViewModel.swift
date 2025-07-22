@@ -46,7 +46,6 @@ final class MyHistoryTransactionListViewModel: TransactionListnerProtocol {
     
     func getTransactions(from date1: Date, to date2: Date, by direction: Direction, sortBy: SortSelectionType?) async {
         // Получаем все транзакции за период и фильтруем только по нужному direction
-        
         let result = await transactionService.getTransactions(from: date1, to: date2)
         
         var transactions = result.success!.filter { $0.category.direction == self.direction }

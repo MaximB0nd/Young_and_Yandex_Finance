@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-class BankAccountSwiftDataCache {
+actor BankAccountSwiftDataCache {
     static var shared = BankAccountSwiftDataCache()
     
     let modelContainer: ModelContainer
@@ -20,26 +20,40 @@ class BankAccountSwiftDataCache {
         self.context = ModelContext(container)
     }
     
-    private var _accounts: [Transaction] = []
+    private var _accounts: [BankAccount] = []
     
-    var accounts: [Transaction] {
+    var accounts: [BankAccount] {
         _accounts
     }
     
-    func add(_ transaction: Transaction) async {
-        
+    func add(_ backAccount: BankAccount) async {
+        let model = BankAccountDataModel(from: backAccount)
+        context.insert(model)
+        try? context.save()
     }
     
     func delete(id: Int) async {
-        
+        let predicate = #Predicate<BankAccountDataModel> {$0.id == id}
+        try? context.delete(model: BankAccountDataModel.self, where: predicate)
+        try? context.save()
     }
     
     func load() async throws {
-        
+        let descriptor = FetchDescriptor<BankAccountDataModel>()
+        self._accounts = try! self.context.fetch(descriptor).map(\.bankAccount)
     }
     
-    func sync(_ transactions: [Transaction]) async {
+    func sync(_ bankAccounts: [BankAccount]) async {
+        do {
+            let descriptor = FetchDescriptor<BankAccountDataModel>()
+            let models = try self.context.fetch(descriptor)
+            models.forEach { context.delete($0) }
+        } catch {}
         
+        bankAccounts.forEach {
+            context.insert(BankAccountDataModel(from: $0))
+        }
         
+        try? context.save()
     }
 }

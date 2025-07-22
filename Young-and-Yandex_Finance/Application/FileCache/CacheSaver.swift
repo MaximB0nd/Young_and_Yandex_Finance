@@ -23,5 +23,6 @@ protocol CacheSaver {
     /// Rewrite all transactions in memory
     func sync(_ transactions: [Transaction]) async
     
+    /// Read all transactions from memory
     func load() async throws
 }

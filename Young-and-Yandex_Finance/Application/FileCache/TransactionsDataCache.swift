@@ -51,7 +51,6 @@ actor TransactionsDataCache: @preconcurrency CacheSaver {
     func load() async throws {
         let descriptor = FetchDescriptor<TransactionDataModel>()
         self._transactions = try context.fetch(descriptor).map(\.transaction)
-        print(transactions)
     }
     
     func sync(_ transactions: [Transaction]) async {
