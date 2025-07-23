@@ -36,7 +36,37 @@ actor TransactionsService {
     private let client = NetworkClient()
     private let backup = TransactionsBackup.shared
         
-    private init () {}
+    private init () {
+        loadCache()
+    }
+    
+    private func loadCache() {
+        Task {
+            let cachers = [TransactionsDataCache.shared, TransactionsCoreCache.shared, TransactionsFileCache.shared]
+            var transaction = [Transaction]()
+            
+            try? await cachers[0].load()
+            if  !cachers[0].transactions.isEmpty {
+                self.cacher = cachers[0]
+                self.cacheType = .swiftData
+            } else {
+                try? await cachers[1].load()
+                if  !cachers[1].transactions.isEmpty {
+                    self.cacher = cachers[1]
+                    self.cacheType = .coreData
+                }
+                else {
+                    try? await cachers[2].load()
+                    if  !cachers[2].transactions.isEmpty {
+                        self.cacher = cachers[2]
+                        self.cacheType = .files
+                    }
+                }
+            }
+            print("now cache type is \(self.cacheType) \(self.cacher)")
+            await loadTransactions()
+        }
+    }
     
     /// Load transactions from server / localy
     private func loadTransactions() async {
