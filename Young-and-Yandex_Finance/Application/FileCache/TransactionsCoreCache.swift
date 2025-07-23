@@ -33,6 +33,28 @@ actor TransactionsCoreCache: @preconcurrency CacheSaver {
         try? await save()
     }
     
+    func clearAllTransactions() async {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "TransactionCoreModel")
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        batchDeleteRequest.resultType = .resultTypeObjectIDs
+        
+        do {
+            let result = try context.execute(batchDeleteRequest) as? NSBatchDeleteResult
+            guard let objectIDs = result?.result as? [NSManagedObjectID] else { return }
+            
+            let changes = [NSDeletedObjectsKey: objectIDs]
+            NSManagedObjectContext.mergeChanges(
+                fromRemoteContextSave: changes,
+                into: [context]
+            )
+            
+            transactions = []
+            
+            try await save()
+            
+        } catch {}
+    }
+    
     func delete(id: Int) async {
         do {
             let fetchRequest: NSFetchRequest<TransactionCoreModel> = TransactionCoreModel.fetchRequest()
@@ -48,21 +70,12 @@ actor TransactionsCoreCache: @preconcurrency CacheSaver {
     }
     
     func sync(_ transactions: [Transaction]) async {
-        do {
-            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = TransactionCoreModel.fetchRequest()
-            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-            deleteRequest.resultType = .resultTypeObjectIDs
-            
-            let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
-            guard let objectIDs = result?.result as? [NSManagedObjectID] else { return }
-            
-            let changes = [NSDeletedObjectsKey: objectIDs]
-            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
-            
-            transactions.forEach { createModel($0) }
-            
-            try? await save()
-        } catch {}
+        await clearAllTransactions()
+        
+        transactions.forEach { createModel($0) }
+        
+        try? await save()
+
     }
     
     func load() async throws {

@@ -24,7 +24,7 @@ actor TransactionsService {
     
     private(set) var _transactions: [Transaction] = []
     
-    private let cacher: CacheSaver = TransactionCoreCacher.shared
+    private let cacher: CacheSaver = TransactionsCoreCache.shared
     private let client = NetworkClient()
     private let backup = TransactionsBackup.shared
         
@@ -48,7 +48,6 @@ actor TransactionsService {
                 NoInternetProvider.shared.Off()
                 // Local
                 try? await self.cacher.load()
-                print(cacher.transactions)
                 self._transactions = self.cacher.transactions
                 await self.mergeWithBackup()
                 ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
