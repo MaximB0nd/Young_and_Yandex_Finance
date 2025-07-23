@@ -63,7 +63,6 @@ actor TransactionsService {
                     }
                 }
             }
-            print("now cache type is \(self.cacheType) \(self.cacher)")
             await loadTransactions()
         }
     }
