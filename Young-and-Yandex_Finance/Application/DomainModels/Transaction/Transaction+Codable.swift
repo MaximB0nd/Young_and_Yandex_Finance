@@ -34,7 +34,9 @@ extension Transaction: Codable {
         self.category = try container.decode(Category.self, forKey: .category)
         let amount = try container.decode(String.self, forKey: .amount)
         self.amount = Decimal(string: amount)!
-        self.comment = try container.decode(String?.self, forKey: .comment)
+        
+        let comment = try container.decode(String?.self, forKey: .comment)
+        self.comment = comment != "" ? comment : nil
         
         let transactionDate = try container.decode(String.self, forKey: .transactionDate)
         let createdAt = try container.decode(String.self, forKey: .createdAt)

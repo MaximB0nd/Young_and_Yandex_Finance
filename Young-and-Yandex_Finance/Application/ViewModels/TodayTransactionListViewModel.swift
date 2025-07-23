@@ -11,6 +11,8 @@ import SwiftUI
 @Observable
 final class TodayTransactionListViewModel: TransactionListnerProtocol {
     
+    var status: ShowStatus = .loading
+    
     private(set) var transactions: [Transaction] = []
     private(set) var sum: Decimal = 0
     private(set) var currencySymbol: String = ""
@@ -28,7 +30,11 @@ final class TodayTransactionListViewModel: TransactionListnerProtocol {
     func getTransactions(by direction: Direction) async {
         let today = DateConverter.startOfDay(.now)
         let endOfDay = DateConverter.endOfDay(.now)
-        self.transactions = await transactionService.getTransactions(from: today, to: endOfDay).filter({$0.category.direction == direction})
+        let transactions = await transactionService.getTransactions(from: today, to: endOfDay)
+        self.transactions = transactions.filter({$0.category.direction == direction})
+        
+        self.status = .loaded 
+        
     }
     
     func getSum() async {

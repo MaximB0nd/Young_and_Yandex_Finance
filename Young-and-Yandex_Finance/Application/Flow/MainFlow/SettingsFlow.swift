@@ -9,6 +9,9 @@ import SwiftUI
 
 struct SettingsFlow: View {
     var body: some View {
-        Text("Some settings")
+        NavigationStack {
+            SettingsScreen()
+                .navigationTitle(Text("Настройки"))
+        }
     }
 }

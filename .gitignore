@@ -1,36 +1,29 @@
-# Основные настройки Xcode
 .DS_Store
 *.xcuserstate
 *.xcuserdatad
 UserInterfaceState.xcuserstate
 
-# Билды и производные данные
 build/
 DerivedData/
 
-# Настройки проекта
 *.xccheckout
 *.xcscmblueprint
 *.moved-aside
 
-# Плейсхолдеры для пакетных менеджеров
-Pods/ # Для CocoaPods (раскомментировать если используется)
-Carthage/ # Для Carthage (раскомментировать если используется)
-.swiftpm/ # Для Swift Package Manager
+Pods/
+Carthage/
+.swiftpm/
 
-# Файлы модулей
 *.hmap
 *.ipa
 *.dSYM.zip
 *.dSYM
 
-# Fastlane
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 
-# Резервные копии и временные файлы
 *.backup
 *.pbxuser
 !default.pbxuser
@@ -39,3 +32,5 @@ fastlane/test_output
 *.mode2v3
 !default.mode2v3
 *.perspectivev3
+
+Codes.txt

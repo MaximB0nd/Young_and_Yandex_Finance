@@ -7,17 +7,11 @@
 
 import Foundation
 
-fileprivate enum LazyLoading {
-    case noninitialized
-    case initialized(BankAccountsService)
-}
-
 fileprivate struct BankAccountListner {
     weak var listener: BankAccountListnerProtocol?
 }
 
-@Observable
-final class BankAccountsService {
+actor BankAccountsService {
     
     private static var subscribers: [BankAccountListner] = []
     
@@ -39,64 +33,121 @@ final class BankAccountsService {
         case enotherError(code: Int, message: String)
     }
     
-    private(set) var _accounts: [BankAccount]
+    private var _accounts: [BankAccount] = []
     
-    static private var lazyLoading: LazyLoading = .noninitialized
-    static var id = 1
+    let client = NetworkClient()
+    let cacher = BankAccountDataCache.shared
+    let backup = BankAccountBackup.shared
+    
+    static var id = 77
     
     var id: Int {
         Self.id
     }
     
     // running init factory of accounts
-    private init () {
-        var accounts = [BankAccount]()
-        for i in 1...10 {
-            accounts.append(
-                .init(
-                    id: i,
-                    userId: i,
-                    name: "Max",
-                    balance: Decimal(0),
-                    currency: i % 2 == 0 ? "USD" : "RUB",
-                    createdAt: Date.now,
-                    updatedAt: Date.now)
-            )
+    private init () {}
+    
+    private func loadAccounts() async {
+        
+        // Internet
+        await TransactionsService.shared.tryRequestToClient()
+        await tryRequestToClient()
+
+        do {
+            self._accounts = try await client.account.request()
+            await cacher.sync(_accounts)
+            NoInternetProvider.shared.On()
+        } catch {
+            switch error {
+            case URLError.cancelled:
+                break
+            default:
+                // Local
+                NoInternetProvider.shared.Off()
+                try? await self.cacher.load()
+                self._accounts = await self.cacher.accounts
+                await self.mergeWithBackup()
+                ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
+            }
         }
-        _accounts = accounts
+    
+    }
+    
+    func tryRequestToClient() async {
+        await backup.reloadBackups()
+        let allBackups = await backup.getBackups()
+
+        for backup in allBackups {
+            
+            do {
+                let _ = try await client.account.request(newAccount: .init(from: backup.bankAccount), by: backup.id)
+                await self.backup.delete(by: backup.idOfAction)
+            } catch {}
+            
+        }
+    }
+    
+    private func mergeWithBackup() async {
+        await backup.reloadBackups()
+        
+        let allBackups = await backup.getBackups()
+        for backup in allBackups {
+            self._accounts.remove(at: _accounts.firstIndex(where: {$0.id == backup.id})!)
+            self._accounts.append(backup.bankAccount)
+        }
+        
     }
     
     // get all account by id
-    func getAccount() async throws -> BankAccount {
+    func getAccount() async throws-> BankAccount {
+        
+        await self.loadAccounts()
+        
         guard let index = _accounts.firstIndex(where: { $0.id == id }) else {
             throw BankAccountError.notFound
         }
+        
         return _accounts[index]
     }
     
     func changeData(newName: String? = nil, newBalance: Decimal? = nil, newCurrency: String? = nil) async throws {
-        guard let index = _accounts.firstIndex(where: {$0.id == id}) else {
-            throw BankAccountError.notFound
+        
+        do {
+            // Internet
+            guard let index = _accounts.firstIndex(where: {$0.id == id}) else {
+                throw BankAccountError.notFound
+            }
+            
+            let requestModel = NetworkClient.BankAccountForRequest(
+                name: newName ?? _accounts[index].name,
+                balance: newBalance ?? _accounts[index].balance,
+                currency: newCurrency ?? _accounts[index].currency)
+            
+            let updatedAccount = try await client.account.request(newAccount: requestModel, by: id)
+            
+            await self.cacher.delete(id: updatedAccount.id)
+            await self.cacher.add(updatedAccount)
+            
+        } catch {
+            // Local
+            
+            guard let index = _accounts.firstIndex(of: _accounts.first(where: {$0.id == id})!) else {
+                throw BankAccountError.notFound
+            }
+            
+            let updatedAccount = BankAccount(
+                id: _accounts[index].id,
+                userId: _accounts[index].userId,
+                name: newName ?? _accounts[index].name,
+                balance: newBalance ?? _accounts[index].balance,
+                currency: newCurrency ?? _accounts[index].currency,
+                createdAt: _accounts[index].createdAt,
+                updatedAt: Date())
+            
+            await self.backup.add(updatedAccount)
+            
         }
-        
-        var isChanged = false
-        
-        if let newName = newName, _accounts[index].name != newName {
-            isChanged = true
-            _accounts[index].name = newName
-        }
-        
-        if let newBalance = newBalance, _accounts[index].balance != newBalance {
-            isChanged = true
-            _accounts[index].balance = newBalance
-        }
-        
-        if let newCurrency = newCurrency, _accounts[index].currency != newCurrency {
-            isChanged = true
-            _accounts[index].currency = newCurrency
-        }
-        
-        if isChanged { _accounts[index].updatedAt = .now }
         
         await notifySubscribers()
 

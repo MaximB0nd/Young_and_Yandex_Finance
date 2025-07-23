@@ -15,6 +15,8 @@ fileprivate enum NewTransactionError: Error {
 @Observable
 final class NewTransactionViewModel: TransactionUpdater {
     
+    var alreadyPressed = false
+    
     var account: Transaction.Account?
     let service = TransactionsService.shared
     let direction: Direction
@@ -28,27 +30,33 @@ final class NewTransactionViewModel: TransactionUpdater {
         errors.joined(separator: "\n")
     }
     var isError = false
+    var status: ShowStatus = .loading
+    
     
     var amountText: String = ""
     
     init(direction : Direction) {
         self.direction = direction
         Task {
-            if let account = try? await BankAccountsService.shared.getAccount() {
-                self.account = Transaction.Account(bankAccount: account)
-            }
+            let account = try await BankAccountsService.shared.getAccount()
+            
+            self.account = Transaction.Account(bankAccount: account)
         }
         BankAccountsService.subscribe(self)
     }
     
     func doneTransaction() async {
         
-        errors = []
+        guard alreadyPressed == false else { return }
         
-        if let account = try? await BankAccountsService.shared.getAccount() {
+        alreadyPressed = true
+        
+        errors = []
+   
+        do {
+            let account = try await BankAccountsService.shared.getAccount()
             self.account = Transaction.Account(bankAccount: account)
-        }
-        else {
+        } catch {
             errors.append("Не удалось получить счет")
             isError = true
             return
@@ -62,21 +70,24 @@ final class NewTransactionViewModel: TransactionUpdater {
             errors.append("Введите сумму")
         }
         
-        do {
-            if errors.isEmpty {
+        if errors.isEmpty {
+            do {
                 try await TransactionsService.shared.createTransaction(
                     account: account!,
                     category: category!,
                     amount: amount!,
                     transactionDate: transactionDate,
                     comment: comment)
-            } else {
+            } catch {
+                errors = [error.localizedDescription]
                 isError = true
             }
-        } catch {
-            errors = ["Не удалось создать транзакцию"]
+            
+        } else {
             isError = true
         }
+        
+        alreadyPressed = false
         
     }
     

@@ -18,40 +18,54 @@ enum TabBarFlow: Hashable {
 struct MainFlow: View {
     
     @State var selection: TabBarFlow = .account
+    @State var noInternetProvider = NoInternetProvider.shared
     
     var body: some View {
-        TabView(selection: $selection) {
-            
-            Tab(value: .outcome) {
-                OutcomeFlow()
-            } label: {
-                outcomeTabItem
+        ZStack(alignment: .topLeading){
+            TabView(selection: $selection) {
+                
+                Tab(value: .outcome) {
+                    OutcomeFlow()
+                } label: {
+                    outcomeTabItem
+                }
+                
+                Tab(value: .income) {
+                    IncomeFlow()
+                } label: {
+                    incomeTabItem
+                }
+                
+                Tab(value: .account) {
+                    BankAccountFlow()
+                } label: {
+                    accountTabItem
+                }
+                
+                Tab(value: .articles) {
+                    CategoryFlow()
+                } label: {
+                    articleTabItem
+                }
+                
+                Tab(value: .settings) {
+                    SettingsFlow()
+                } label: {
+                    settingsTabItem
+                }
             }
-            
-            Tab(value: .income) {
-                IncomeFlow()
-            } label: {
-                incomeTabItem
-            }
-            
-            Tab(value: .account) {
-                BankAccountFlow()
-            } label: {
-                accountTabItem
-            }
-            
-            Tab(value: .articles) {
-                CategoryFlow()
-            } label: {
-                articleTabItem
-            }
-            
-            Tab(value: .settings) {
-                SettingsFlow()
-            } label: {
-                settingsTabItem
+            if noInternetProvider.noInternet {
+                noInternetLabel
+                    .offset(y: -10)
+                    .transition(.opacity)
             }
         }
+    }
+    
+    var noInternetLabel: some View {
+        Text("      Нет соединения")
+            .font(.system(size: 12))
+            .foregroundStyle(.red)
     }
     
     var incomeTabItem: some View {

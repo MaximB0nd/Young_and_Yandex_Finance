@@ -7,35 +7,39 @@
 
 import Foundation
 
-class TransactionsFileCache {
+actor TransactionsFileCache: @preconcurrency CacheSaver {
     
-    static var shared = TransactionsFileCache()
+    static var shared: CacheSaver = TransactionsFileCache()
     
     private enum FileCacheErrors: Error {
         case fileNotFound
         case decodingError(String)
     }
     
-    private var _transactions: [Transaction] = []
+    private let fileName = "Y&Y_Finance-transactions.json"
     
-    // getter for private var _transactions
+    internal var _transactions: [Transaction] = []
+    
+    /// Getter for private var _transactions
     var transactions: [Transaction] {
         _transactions
     }
     
-    // func to add a new transaction in _transactions (must have unique id)
-    func add(_ transaction: Transaction) {
+    /// Add a new transaction in transactions (must have unique id)
+    func add(_ transaction: Transaction) async {
         guard !_transactions.contains(where: { $0.id == transaction.id }) else { return }
         _transactions.append(transaction)
+        try? await save()
     }
     
-    // func to delete a transaction in _transactions by id
-    func delete(id: Int) {
+    /// Delete a transaction in transactions by id
+    func delete(id: Int) async {
         _transactions.removeAll(where: { $0.id == id })
+        try? await save()
     }
     
-    // func to save all transactions in Json file by url
-    func save(fileName: String) throws {
+    /// Save all transactions in Json file by url
+    private func save() async throws {
         let directoryURL = FileManager.default.temporaryDirectory
         let fileURL = directoryURL.appendingPathComponent(fileName)
         let jsonDatas = _transactions.map { $0.jsonObject }
@@ -47,8 +51,9 @@ class TransactionsFileCache {
         }
     }
     
-    // func to load all transaction from Json files by urls
-    func load(paths: String...) throws {
+    /// Load all transaction from Json files by urls
+    func load() async throws {
+        let paths = [fileName]
         let directoryURL = FileManager.default.temporaryDirectory
         for path in paths {
             let fileURL = directoryURL.appendingPathComponent(path)
@@ -57,7 +62,7 @@ class TransactionsFileCache {
                 let transactions = try JSONDecoder().decode([Transaction].self, from: data)
                 for transaction in transactions {
                     if !_transactions.contains(where: { $0.id == transaction.id}) {
-                        add(transaction)
+                        await add(transaction)
                     }
                 }
             } catch {
@@ -69,5 +74,18 @@ class TransactionsFileCache {
                 }
             }  
         }
+    }
+    
+    func sync(_ transactions: [Transaction]) async {
+        _transactions = transactions
+        try? await save()
+    }
+    
+    func getAndClearCache() async -> [Transaction] {
+        try? await load()
+        let transactions = _transactions
+        self._transactions = []
+        try? await save()
+        return transactions
     }
 }

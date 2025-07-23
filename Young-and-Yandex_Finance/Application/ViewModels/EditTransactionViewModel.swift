@@ -11,6 +11,8 @@ import SwiftUI
 @Observable
 class EditTransactionViewModel: TransactionUpdater {
     
+    var alreadyPressed = false
+    
     var service = TransactionsService.shared
     
     let id: Int
@@ -27,6 +29,10 @@ class EditTransactionViewModel: TransactionUpdater {
     }
     
     func doneTransaction() async {
+        
+        guard alreadyPressed == false else { return }
+        
+        alreadyPressed = true
         
         errors = []
         
@@ -53,7 +59,7 @@ class EditTransactionViewModel: TransactionUpdater {
             isError = true
         }
         
-        print(errors)
+        alreadyPressed = false
     }
     
     func onChangeAmountText() {
@@ -68,6 +74,7 @@ class EditTransactionViewModel: TransactionUpdater {
         Task {
             do {
                 try await service.deleteTransaction(id: id)
+                
             } catch {
                 errors.append("Не удалось удалить транзакцию")
                 isError = true

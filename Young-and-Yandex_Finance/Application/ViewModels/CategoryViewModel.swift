@@ -8,22 +8,27 @@
 import Foundation
 
 @Observable
-final class CategoryViewModel: Sendable {
+final class CategoryViewModel {
     
     static let shared = CategoryViewModel()
     
     var categories: [Category] = []
     let categotyService = CategoriesService.shared
     
-    init() {
+    var status: ShowStatus = .loading
+    
+    private init() {
         Task {
-            categories = await categotyService.getByDirection(.income)
+            await getCategories()
         }
     }
     
     @discardableResult
     func getCategories() async -> [Category] {
-        categories = await categotyService.getAll()
+        let result = await categotyService.getAll()
+        
+        categories = result
+        status = .loaded
         return categories
     }
     

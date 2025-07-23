@@ -13,13 +13,24 @@ struct OutcomeScreen: View {
     @State var model = TodayTransactionListViewModel.sharedOutcome
     
     var body: some View {
-        List {
-            TransactionsListView(transactions: model.transactions, sum: model.sum, currencySymbol: model.currencySymbol)
+        Group {
+            switch model.status {
+            case .loaded:
+                List {
+                    TransactionsListView(
+                        transactions: model.transactions,
+                        sum: model.sum,
+                        currencySymbol: model.currencySymbol
+                    )
+                }
+            case .loading:
+                ProgressView()
+            }
         }
         .task {
             await model.updateTransactions()
         }
-        .onChange(of: transactionService._transactions){
+        .refreshable {
             Task {
                 await model.updateTransactions()
             }
