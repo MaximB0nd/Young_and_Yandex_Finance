@@ -11,6 +11,12 @@ struct TransactionListner {
     weak var listner: TransactionListnerProtocol?
 }
 
+enum TransactionServiceCacheType {
+    case files
+    case coreData
+    case swiftData
+}
+
 actor TransactionsService {
     
     private static var _subscribers: [TransactionListner] = []
@@ -24,7 +30,9 @@ actor TransactionsService {
     
     private(set) var _transactions: [Transaction] = []
     
-    private let cacher: CacheSaver = TransactionsCoreCache.shared
+    private var cacher: CacheSaver = TransactionsDataCache.shared
+    private var cacheType: TransactionServiceCacheType = .swiftData
+    
     private let client = NetworkClient()
     private let backup = TransactionsBackup.shared
         
@@ -56,7 +64,26 @@ actor TransactionsService {
         
     }
     
+    /// Migrate memory type to new
+    func migrateToNewCacheType(_ cacheType: TransactionServiceCacheType) async {
+        guard self.cacheType != cacheType else { return }
+        
+        let transactions = await self.cacher.getAndClearCache()
+        
+        switch cacheType {
+        case .swiftData:
+            self.cacher = TransactionsDataCache.shared
+        case .files:
+            self.cacher = TransactionsFileCache.shared
+        case .coreData:
+            self.cacher = TransactionsCoreCache.shared
+        }
+            
+        await self.cacher.sync(transactions)
+        self.cacheType = cacheType
+    }
     
+    /// Trying to request local changes from backup to server
     func tryRequestToClient() async {
         await backup.reloadBackups()
         let allbackups = await backup.getBackups()

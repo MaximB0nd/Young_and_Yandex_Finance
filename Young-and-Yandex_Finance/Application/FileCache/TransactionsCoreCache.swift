@@ -139,4 +139,11 @@ actor TransactionsCoreCache: @preconcurrency CacheSaver {
         
         return transaction
     }
+    
+    func getAndClearCache() async -> [Transaction] {
+        try? await load()
+        let transactions = self.transactions
+        await clearAllTransactions()
+        return transactions
+    }
 }

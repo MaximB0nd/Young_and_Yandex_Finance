@@ -65,4 +65,20 @@ actor TransactionsDataCache: @preconcurrency CacheSaver {
         
         try? context.save()
     }
+    
+    func getAndClearCache() async -> [Transaction] {
+        try? await load()
+        let transactions = self._transactions
+        self._transactions = []
+        
+        do {
+            let descriptor = FetchDescriptor<TransactionDataModel>()
+            let models = try context.fetch(descriptor)
+            models.forEach { context.delete($0) }
+        } catch {}
+        
+        try? context.save()
+        
+        return transactions
+    }
 }

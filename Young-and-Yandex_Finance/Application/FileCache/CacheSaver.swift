@@ -25,4 +25,6 @@ protocol CacheSaver {
     
     /// Read all transactions from memory
     func load() async throws
+    
+    func getAndClearCache() async -> [Transaction]
 }

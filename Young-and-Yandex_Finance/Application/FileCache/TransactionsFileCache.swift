@@ -80,4 +80,12 @@ actor TransactionsFileCache: @preconcurrency CacheSaver {
         _transactions = transactions
         try? await save()
     }
+    
+    func getAndClearCache() async -> [Transaction] {
+        try? await load()
+        let transactions = _transactions
+        self._transactions = []
+        try? await save()
+        return transactions
+    }
 }

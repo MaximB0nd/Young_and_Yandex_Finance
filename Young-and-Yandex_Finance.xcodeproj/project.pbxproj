@@ -58,6 +58,10 @@
 		0AB8C1782DFB298F00461B01 /* Exceptions for "Young-and-Yandex_Finance" folder in "Young-and-Yandex_FinanceUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Application/PartsOfScreens/SettingsScreen/EditMemoryTypeSelectionList.swift,
+				Application/PartsOfScreens/SettingsScreen/MemorySettingListItem.swift,
+				Application/PartsOfScreens/SettingsScreen/SettingListItem.swift,
+				Application/Screens/SettingsScreen.swift,
 				Application/Services/TransactionsService.swift,
 			);
 			target = 0AB8C1352DFADE9100461B01 /* Young-and-Yandex_FinanceUITests */;
