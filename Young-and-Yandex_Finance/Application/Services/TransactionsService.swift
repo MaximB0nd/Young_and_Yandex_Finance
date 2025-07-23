@@ -24,7 +24,7 @@ actor TransactionsService {
     
     private(set) var _transactions: [Transaction] = []
     
-    private let cacher: CacheSaver = TransactionsDataCache.shared
+    private let cacher: CacheSaver = TransactionCoreCacher.shared
     private let client = NetworkClient()
     private let backup = TransactionsBackup.shared
         
@@ -39,13 +39,16 @@ actor TransactionsService {
         do {
             _transactions = try await client.transaction.request(by: BankAccountsService.id)
             await self.cacher.sync(_transactions)
+            NoInternetProvider.shared.On()
         } catch {
             switch error {
             case URLError.cancelled:
                 break
             default:
+                NoInternetProvider.shared.Off()
                 // Local
                 try? await self.cacher.load()
+                print(cacher.transactions)
                 self._transactions = self.cacher.transactions
                 await self.mergeWithBackup()
                 ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
@@ -97,9 +100,9 @@ actor TransactionsService {
             case .create:
                 self._transactions.append(backup.transaction)
             case .delete:
-                self._transactions.remove(at: _transactions.firstIndex{ $0.id == backup.id }!)
+                self._transactions.removeAll { $0.id == backup.id }
             case .update:
-                self._transactions.remove(at: _transactions.firstIndex{ $0.id == backup.id }!)
+                self._transactions.removeAll { $0.id == backup.id }
                 self._transactions.append(backup.transaction)
             }
             

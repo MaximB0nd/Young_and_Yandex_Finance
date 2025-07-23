@@ -48,7 +48,7 @@ actor BankAccountsService {
     // running init factory of accounts
     private init () {}
     
-    private func load() async {
+    private func loadAccounts() async {
         
         // Internet
         await TransactionsService.shared.tryRequestToClient()
@@ -57,12 +57,14 @@ actor BankAccountsService {
         do {
             self._accounts = try await client.account.request()
             await cacher.sync(_accounts)
+            NoInternetProvider.shared.On()
         } catch {
             switch error {
             case URLError.cancelled:
                 break
             default:
                 // Local
+                NoInternetProvider.shared.Off()
                 try? await self.cacher.load()
                 self._accounts = await self.cacher.accounts
                 await self.mergeWithBackup()
@@ -100,7 +102,7 @@ actor BankAccountsService {
     // get all account by id
     func getAccount() async throws-> BankAccount {
         
-        await self.load()
+        await self.loadAccounts()
         
         guard let index = _accounts.firstIndex(where: { $0.id == id }) else {
             throw BankAccountError.notFound

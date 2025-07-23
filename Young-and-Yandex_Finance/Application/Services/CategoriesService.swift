@@ -22,12 +22,14 @@ actor CategoriesService {
             // Internet
             _categories = try await client.category.request()
             await cacher.sync(_categories)
+            NoInternetProvider.shared.On()
         } catch {
             switch error {
             case URLError.cancelled:
                 break
             default:
                 // Local
+                NoInternetProvider.shared.Off()
                 try? await self.cacher.load()
                 _categories = await self.cacher.categories
                 ErrorLabelProvider.shared.showErrorLabel(with: error.localizedDescription)
