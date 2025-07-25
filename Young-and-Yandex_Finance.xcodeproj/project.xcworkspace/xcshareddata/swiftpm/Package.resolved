@@ -1,5 +1,5 @@
 {
-  "originHash" : "4a9d229501fa4f9c92df0fdc5815a55f4e9fcb05acaba2eb245a4c32a246fd89",
+  "originHash" : "e43f4d481afaa55de45c8b1b4679ca001e31a5e753a7eae6978576acae94c0f7",
   "pins" : [
     {
       "identity" : "fuzzysearch",
@@ -11,12 +11,12 @@
       }
     },
     {
-      "identity" : "utilities",
+      "identity" : "utilitiesspm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MaximB0nd/Utilities",
+      "location" : "https://github.com/MaximB0nd/UtilitiesSPM",
       "state" : {
         "branch" : "main",
-        "revision" : "18710f88239a717ae64f14fb885c418c7fb9871b"
+        "revision" : "5644c778bef614acaf991aeacc3b0f4c86b70aac"
       }
     }
   ],

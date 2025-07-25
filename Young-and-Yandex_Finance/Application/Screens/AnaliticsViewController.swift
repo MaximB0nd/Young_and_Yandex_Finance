@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PieChart
 
 class AnaliticsViewController: UIViewController, TransactionListnerProtocol {
     
@@ -135,7 +136,13 @@ class AnaliticsViewController: UIViewController, TransactionListnerProtocol {
 
     private var viewModel: MyHistoryTransactionListViewModel
 
-    private let sortLabel: UILabel = {
+    private let pieChartView: PieChartView = {
+        let view = PieChartView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private var sortLabel: UILabel = {
         let label = UILabel()
         label.text = "Сортировка"
         label.font = UIFont.systemFont(ofSize: 18)
@@ -174,12 +181,17 @@ class AnaliticsViewController: UIViewController, TransactionListnerProtocol {
         setupSortMenu()
         loadDataAndUpdateUI()
     }
+    
     private func setupLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentStack)
- 
+
         contentStack.addArrangedSubview(cardView)
-   
+        
+        // Добавляем pieChartView после cardView, но перед operationsCardView
+        contentStack.addArrangedSubview(pieChartView)
+        pieChartView.heightAnchor.constraint(equalToConstant: 220).isActive = true
+        
         contentStack.addArrangedSubview(operationsCardView)
         cardView.addSubview(periodStartLabel)
         cardView.addSubview(periodStartPicker)
@@ -341,16 +353,24 @@ class AnaliticsViewController: UIViewController, TransactionListnerProtocol {
         periodEndPicker.date = endOfDay
         loadDataAndUpdateUI()
     }
+    private func updatePieChart() {
+        // Группируем транзакции по категориям
+        let grouped = Dictionary(grouping: viewModel.transactions, by: { $0.category.name })
+        let entities = grouped.map { (key, value) in
+            Entity(value: value.reduce(0) { $0 + $1.amount }, label: key)
+        }.sorted { $0.value > $1.value }
+        pieChartView.entities = entities
+    }
     private func loadDataAndUpdateUI() {
         Task {
             await viewModel.updateTransactions()
             DispatchQueue.main.async {
                 self.sumValueLabel.text = "\(self.viewModel.sum.formatted()) \(self.viewModel.currencySymbol)"
                 self.transactionsListView.setTransactions(self.viewModel.transactions)
-
                 let count = self.viewModel.transactions.count
                 let height = CGFloat(count) * 56.0
                 self.transactionsListViewHeightConstraint?.constant = height
+                self.updatePieChart()
                 self.view.layoutIfNeeded()
             }
         }
@@ -364,6 +384,7 @@ class AnaliticsViewController: UIViewController, TransactionListnerProtocol {
             let count = self.viewModel.transactions.count
             let height = CGFloat(count) * 56.0
             self.transactionsListViewHeightConstraint?.constant = height
+            self.updatePieChart()
             self.view.layoutIfNeeded()
         }
     }
