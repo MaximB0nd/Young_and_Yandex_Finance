@@ -13,6 +13,7 @@
 		0A091FEF2E26C6A4008EA454 /* Codes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A091FEE2E26C685008EA454 /* Codes.txt */; };
 		0A091FF02E26C6A4008EA454 /* Codes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A091FEE2E26C685008EA454 /* Codes.txt */; };
 		0A091FF12E26C6A4008EA454 /* Codes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A091FEE2E26C685008EA454 /* Codes.txt */; };
+		0A972FF82E341EE600E33232 /* PieChart in Frameworks */ = {isa = PBXBuildFile; productRef = 0A972FF72E341EE600E33232 /* PieChart */; };
 		0AB65CE12E2CDD180041F18F /* FuzzySearch in Frameworks */ = {isa = PBXBuildFile; productRef = 0AB65CE02E2CDD180041F18F /* FuzzySearch */; };
 /* End PBXBuildFile section */
 
@@ -120,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A972FF82E341EE600E33232 /* PieChart in Frameworks */,
 				0AB65CE12E2CDD180041F18F /* FuzzySearch in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -193,6 +195,7 @@
 			name = "Young-and-Yandex_Finance";
 			packageProductDependencies = (
 				0AB65CE02E2CDD180041F18F /* FuzzySearch */,
+				0A972FF72E341EE600E33232 /* PieChart */,
 			);
 			productName = "Young-and-Yandex_Finance";
 			productReference = 0AB8C11F2DFADE8F00461B01 /* Young-and-Yandex_Finance.app */;
@@ -280,6 +283,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				0AB65CDF2E2CDD180041F18F /* XCRemoteSwiftPackageReference "FuzzySearch" */,
+				0A972FF62E341EE600E33232 /* XCRemoteSwiftPackageReference "Utilities" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0AB8C1202DFADE8F00461B01 /* Products */;
@@ -654,6 +658,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0A972FF62E341EE600E33232 /* XCRemoteSwiftPackageReference "Utilities" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MaximB0nd/Utilities";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		0AB65CDF2E2CDD180041F18F /* XCRemoteSwiftPackageReference "FuzzySearch" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MaximB0nd/FuzzySearch";
@@ -665,6 +677,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0A972FF72E341EE600E33232 /* PieChart */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A972FF62E341EE600E33232 /* XCRemoteSwiftPackageReference "Utilities" */;
+			productName = PieChart;
+		};
 		0AB65CE02E2CDD180041F18F /* FuzzySearch */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0AB65CDF2E2CDD180041F18F /* XCRemoteSwiftPackageReference "FuzzySearch" */;

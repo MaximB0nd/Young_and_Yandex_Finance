@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class AnaliticsViewController: UIViewController {
+class AnaliticsViewController: UIViewController, TransactionListnerProtocol {
     
     @Binding var selectedTransaction: Transaction?
 
@@ -158,8 +158,8 @@ class AnaliticsViewController: UIViewController {
         self._selectedTransaction = transaction
         self.direction = direction
         self.viewModel = MyHistoryTransactionListViewModel(direction: direction)
-        
         super.init(nibName: nil, bundle: nil)
+        TransactionsService.subscribe(listener: self)
     }
     required init?(coder: NSCoder) {
         fatalError()
@@ -353,6 +353,18 @@ class AnaliticsViewController: UIViewController {
                 self.transactionsListViewHeightConstraint?.constant = height
                 self.view.layoutIfNeeded()
             }
+        }
+    }
+
+    func updateTransactions() async {
+        await viewModel.updateTransactions()
+        DispatchQueue.main.async {
+            self.sumValueLabel.text = "\(self.viewModel.sum.formatted()) \(self.viewModel.currencySymbol)"
+            self.transactionsListView.setTransactions(self.viewModel.transactions)
+            let count = self.viewModel.transactions.count
+            let height = CGFloat(count) * 56.0
+            self.transactionsListViewHeightConstraint?.constant = height
+            self.view.layoutIfNeeded()
         }
     }
 }
