@@ -12,6 +12,7 @@ struct StateBankAccountScreen: View {
     @State var model = BankAccountFlowViewModel.shared
     
     var body: some View {
+        
         List {
             Section {
                 BankBalance(balance: model.bankAccount?.balance ?? 0, currency: model.bankAccount?.currencySymbol ?? "")
@@ -22,9 +23,25 @@ struct StateBankAccountScreen: View {
                 BankCurrency(currency: model.bankAccount?.currencySymbol ?? "")
             }
             .listRowBackground(Color.lightAccent)
+            
+            BankBalanceHistoryPeriodPicher(selectedPeriod: $model.selectedHistotyPeriod)
+            
+           
+            BankBalanceHistoryChart(data: $model.balanceHistory)
+                .frame(height: 250)
+            
+            
+                
                 
         }
         .listSectionSpacing(16)
+        
+        .onChange(of: model.selectedHistotyPeriod) {
+            Task {
+                await model.updateBalanceHistory()
+            }
+        }
+        
     }
     
 }

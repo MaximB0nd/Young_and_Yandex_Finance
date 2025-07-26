@@ -43,7 +43,6 @@ actor TransactionsService {
     private func loadCache() {
         Task {
             let cachers = [TransactionsDataCache.shared, TransactionsCoreCache.shared, TransactionsFileCache.shared]
-            var transaction = [Transaction]()
             
             try? await cachers[0].load()
             if  !cachers[0].transactions.isEmpty {

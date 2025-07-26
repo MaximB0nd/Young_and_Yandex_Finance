@@ -153,45 +153,84 @@ actor BankAccountsService {
 
     }
     
-    enum getBalancesPeriod {
-        case month
-        case twoYears
+    enum getBalancesPeriod: String, Equatable, CaseIterable {
+        case month = "Последний месяц"
+        case twoYears = "Последние 2 года"
     }
     
-    func getAllBalances(period: getBalancesPeriod) async -> [Decimal] {
+    func getAllBalances(period: getBalancesPeriod) async -> [(date: Date, balance: Decimal)] {
+        let calendar = Calendar.current
+        let today = Date()
         
-        var result = [Decimal]()
+        let todayStart = calendar.startOfDay(for: today)
+        let todayEnd = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: today)!
         
-        do {
-            let now = Date()
+        switch period {
+        case .month:
             
-            switch period {
-                case .month:
-                var transactions = try await client.transaction.request(
-                    by: self.id,
-                    from: DateConverter.endOfDay(now),
-                    to: DateConverter.startOfDay((DateConverter.previousMonth(date: now))))
-                
-                transactions.sort { $0.transactionDate > $1.transactionDate}
-                
-                let dayAmount = transactions
-                
-                break
-            case .twoYears:
-
-                let twoYearsAgo = Calendar.current.date(byAdding: .year, value: -2, to: now)!
-                
-                var transactions = try await client.transaction.request(
-                    by: self.id,
-                    from: now,
-                    to: twoYearsAgo)
-                
-                break
+            guard let startDate = calendar.date(byAdding: .day, value: -29, to: todayStart) else {
+                return []
             }
             
-        } catch {}
-        
-        
-        return result
+            let transactions = await TransactionsService.shared.getTransactions(
+                from: startDate,
+                to: todayEnd
+            )
+            
+            var balanceDict = [Date: Decimal]()
+            for dayOffset in 0..<30 {
+                let date = calendar.date(byAdding: .day, value: -dayOffset, to: today)!
+                let startOfDay = calendar.startOfDay(for: date)
+                balanceDict[startOfDay] = 0
+            }
+            
+            for transaction in transactions {
+                let dateStart = calendar.startOfDay(for: transaction.transactionDate)
+                if balanceDict[dateStart] != nil {
+                    let amount = transaction.category.direction == .income ? transaction.amount : -transaction.amount
+                    balanceDict[dateStart]! += amount
+                }
+            }
+            
+            return balanceDict.map { (date: $0.key, balance: $0.value) }
+                .sorted { $0.date < $1.date }
+            
+        case .twoYears:
+            guard let startDate = calendar.date(
+                byAdding: .month,
+                value: -24,
+                to: today
+            )?.startOfMonth() else {
+                return []
+            }
+            
+            let transactions = await TransactionsService.shared.getTransactions(
+                from: startDate,
+                to: todayEnd
+            )
+            
+            var balanceDict = [Date: Decimal]()
+            for monthOffset in 0..<24 {
+                guard let date = calendar.date(
+                    byAdding: .month,
+                    value: -monthOffset,
+                    to: today
+                ) else { continue }
+                
+                let monthStart = date.startOfMonth()
+                balanceDict[monthStart] = 0
+            }
+            
+            for transaction in transactions {
+                let monthStart = transaction.transactionDate.startOfMonth()
+                if balanceDict[monthStart] != nil {
+                    let amount = transaction.category.direction == .income ? transaction.amount : -transaction.amount
+                    balanceDict[monthStart]! += amount
+                }
+            }
+            
+            return balanceDict.map { (date: $0.key, balance: $0.value) }
+                .sorted { $0.date < $1.date }
+        }
     }
 }

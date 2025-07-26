@@ -19,6 +19,9 @@ final class BankAccountFlowViewModel: BankAccountListnerProtocol {
     
     var status: ShowStatus = .loading
     
+    var selectedHistotyPeriod: BankAccountsService.getBalancesPeriod = .month
+    var balanceHistory: [LineBakanceChartData] = []
+    
     private init() {
         BankAccountsService.subscribe(self)
         Task {
@@ -30,6 +33,7 @@ final class BankAccountFlowViewModel: BankAccountListnerProtocol {
     func updateBankAccounts() async throws  {
         let bankAccount = try await bankService.getAccount()
         self.bankAccount = bankAccount
+        await updateBalanceHistory()
         status = .loaded
     }
     
@@ -42,5 +46,10 @@ final class BankAccountFlowViewModel: BankAccountListnerProtocol {
         self.bankAccount = newValue
     }
     
-    
+    @MainActor
+    func updateBalanceHistory() async {
+        let history = await bankService.getAllBalances(period: selectedHistotyPeriod)
+        
+        balanceHistory = history.map { LineBakanceChartData(date: $0.date, balance: $0.balance) }
+    }
 }
