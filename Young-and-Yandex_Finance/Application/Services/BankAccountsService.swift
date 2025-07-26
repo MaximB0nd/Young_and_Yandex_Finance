@@ -154,8 +154,8 @@ actor BankAccountsService {
     }
     
     enum getBalancesPeriod: String, Equatable, CaseIterable {
-        case month = "Последний месяц"
-        case twoYears = "Последние 2 года"
+        case month = "По дням"
+        case twoYears = "По месяцам"
     }
     
     func getAllBalances(period: getBalancesPeriod) async -> [(date: Date, balance: Decimal)] {

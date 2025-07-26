@@ -28,10 +28,7 @@ struct StateBankAccountScreen: View {
             
            
             BankBalanceHistoryChart(data: $model.balanceHistory)
-                .frame(height: 250)
-            
-            
-                
+                .frame(height: 250)      
                 
         }
         .listSectionSpacing(16)

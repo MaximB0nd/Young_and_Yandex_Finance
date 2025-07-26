@@ -50,6 +50,8 @@ final class BankAccountFlowViewModel: BankAccountListnerProtocol {
     func updateBalanceHistory() async {
         let history = await bankService.getAllBalances(period: selectedHistotyPeriod)
         
-        balanceHistory = history.map { LineBakanceChartData(date: $0.date, balance: $0.balance) }
+        withAnimation() {
+            balanceHistory = history.map { LineBakanceChartData(date: $0.date, balance: $0.balance) }
+        }
     }
 }
