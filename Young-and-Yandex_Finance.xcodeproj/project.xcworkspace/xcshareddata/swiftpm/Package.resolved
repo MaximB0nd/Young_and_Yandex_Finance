@@ -1,5 +1,5 @@
 {
-  "originHash" : "e43f4d481afaa55de45c8b1b4679ca001e31a5e753a7eae6978576acae94c0f7",
+  "originHash" : "d2d91715ddd20c864eaebfe234fc2303464fa3deea669a48d17767bc6e881b2a",
   "pins" : [
     {
       "identity" : "fuzzysearch",
@@ -8,6 +8,24 @@
       "state" : {
         "branch" : "main",
         "revision" : "67f0485095fbc58f2c985ad49a69be607515b2ba"
+      }
+    },
+    {
+      "identity" : "lottie-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-spm.git",
+      "state" : {
+        "revision" : "04f2fd18cc9404a0a0917265a449002674f24ec9",
+        "version" : "4.5.2"
+      }
+    },
+    {
+      "identity" : "lottiestartwindowspm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MaximB0nd/LottieStartWindowSPM",
+      "state" : {
+        "branch" : "main",
+        "revision" : "db5b2bf151a46ec2c760763c93ea676ea5d03a60"
       }
     },
     {

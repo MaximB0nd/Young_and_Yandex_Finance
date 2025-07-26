@@ -152,4 +152,46 @@ actor BankAccountsService {
         await notifySubscribers()
 
     }
+    
+    enum getBalancesPeriod {
+        case month
+        case twoYears
+    }
+    
+    func getAllBalances(period: getBalancesPeriod) async -> [Decimal] {
+        
+        var result = [Decimal]()
+        
+        do {
+            let now = Date()
+            
+            switch period {
+                case .month:
+                var transactions = try await client.transaction.request(
+                    by: self.id,
+                    from: DateConverter.endOfDay(now),
+                    to: DateConverter.startOfDay((DateConverter.previousMonth(date: now))))
+                
+                transactions.sort { $0.transactionDate > $1.transactionDate}
+                
+                let dayAmount = transactions
+                
+                break
+            case .twoYears:
+
+                let twoYearsAgo = Calendar.current.date(byAdding: .year, value: -2, to: now)!
+                
+                var transactions = try await client.transaction.request(
+                    by: self.id,
+                    from: now,
+                    to: twoYearsAgo)
+                
+                break
+            }
+            
+        } catch {}
+        
+        
+        return result
+    }
 }
